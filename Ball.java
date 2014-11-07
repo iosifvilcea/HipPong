@@ -1,4 +1,4 @@
-//1 things to finish. 1) random directions in constructor
+//1 thing left to do 1) change the sets to do proper checks for each variable
 
 //*********************************************************************
 //class:
@@ -54,7 +54,7 @@ public class Ball{
 	//		the ball start in the center and go off in a random
 	//		direction.
 	//*********************************************************************
-	public void ball(int Size, double centerX, double centerY, int MaxX, int MaxY){
+	public void Ball(int Size, double centerX, double centerY, int MaxX, int MaxY){
 		//intializes rand with the seed of the current time.
 		Random rand = new Random(System.currentTimeMillis());
 		//this is used to set and min and max possible initial ball
@@ -97,13 +97,11 @@ public class Ball{
 	}
 
 	public void setDirX(double arg){
-		if (arg >= 0)
-			dirX = arg;
+		dirX = arg;
 	}
 
 	public void setDirY(double arg){
-		if (arg >= 0)
-			dirY = arg;
+		dirY = arg;
 	}
 
 	//*********************************************************************
