@@ -24,7 +24,7 @@ public class Player{
 	//		at the begining of a game when a player is created.
 	//*********************************************************************
 	public Player(int pos, int d, int s){
-		postion = pos;
+		position = pos;
 		curScore = 0;
 		delta = d;
 		size = s;

@@ -12,6 +12,10 @@
 import java.util.Random;
 
 public class BlackHole{
+	//Random variable that will be used to randomize where the ball will
+	//	be spit out to and at what speed
+	Random rand;
+	
 	//Declaration of all variables
 	//cur variables hold the Blackhole's current position, used to draw it
 	private double curX = 0;
@@ -26,6 +30,10 @@ public class BlackHole{
 	//size hold the blackhole's radius size in pixels, can only be set in
 	//	constructor
 	private int size = 1;
+
+	//ballSpVar holds a vaibale that will affect what the dirX and dirY of
+	//	the ball will be set to when it is expelled
+	private int ballSpVar;
 
 	//*********************************************************************
 	//Constructor:
@@ -43,12 +51,12 @@ public class BlackHole{
 	//		values, and curX and curY are set to random values
 	//		within the center 50% of the play field.
 	//*********************************************************************
-	public  BlackHole(int Size, int MaxX, int MaxY){
+	public BlackHole(int Size, int MaxX, int MaxY){
 		//intializes rand with the seed of the current time.
-		Random rand = new Random(System.currentTimeMillis());
+		rand = new Random(System.currentTimeMillis());
 		//this is used to set and min and max possible initial ball
 		//	speeds.
-		double ballSpVar = rand.nextInt(5);
+		ballSpVar = rand.nextInt(5);
 
 		//setting variables to passed in counterpart.
 		size = Size;
@@ -71,7 +79,7 @@ public class BlackHole{
 	//*********************************************************************
 	public void spit(Ball arg){
 		//setting direction variables to random numbers with mins
-		arg.setDirX = rand.nextInt((double)maxX/ballSpVar) + ((double)maxX/ballSpVar);
-		arg.setDirY = rand.nextInt((double)maxY/ballSpVar) + ((double)maxY/ballSpVar);
+		arg.setDirX (rand.nextInt(maxX/ballSpVar) + (maxX/ballSpVar));
+		arg.setDirY (rand.nextInt(maxY/ballSpVar) + (maxY/ballSpVar));
 	}
 }

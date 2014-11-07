@@ -35,7 +35,7 @@ public class Computer extends Player{
 	//		in the direction of the ball.
 	//*********************************************************************
 	public void move(Ball ball){
-		int ballPos; //will be used to hold the balls position
+		double ballPos; //will be used to hold the balls position
 
 		//determines which axis of the ball's position it should check
 		//	and gets the ball's position in that axis and stores it

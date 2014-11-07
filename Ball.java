@@ -59,7 +59,7 @@ public class Ball{
 		Random rand = new Random(System.currentTimeMillis());
 		//this is used to set and min and max possible initial ball
 		//	speeds.
-		double ballSpVar = 5;
+		int ballSpVar = 5;
 
 		//setting variables to passed in counterpart.
 		size = Size;
@@ -74,17 +74,15 @@ public class Ball{
 	}
 
 	//*********************************************************************
-	//Function Group:
-	//	Set
-	//	
-	//	Passed in Varibales:
-	//		double arg (for all except setSize)
+	//Function:
+	//	move
 	//
 	//	Operations:
-	//		This group of functions accept a passed in varibale
-	//		arg amd make sure that arg is within the correct
-	//		bounds for the specific ball variable. If arg checks
-	//		out then the specific variable is set to equal arg.
+	//		This fucntion move the ball in the direction of the
+	//		that it was already moving. Should be used only after
+	//		hit detection has been performed and it is known that
+	//		the ball won't hit anything. Esentially short hand for
+	//		the movement.
 	//*********************************************************************
 	public void move(){
 		curX += dirX;
