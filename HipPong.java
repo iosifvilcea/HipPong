@@ -15,39 +15,80 @@ import javax.swing.*;
 //		it runs all the updates for the movement of all the objects.
 //
 //		TO DO:
-//
-//
+//			finish writing what needs to go in the menus
+//			figure how to get info back from panels
+//			write the actual game code
 //*****************************************************************************
 public class HipPong{
 	public static void main(String[] args){
-		//Draw main menu where which players are human players,
-		//	computer players or walls are choosen as drawn
-		//	on the top of the included image in this folder titled
-		//	plans.jpg. Should also have the ability to select
-		//	keyboard inputs for each player (any keyboard inputs
-		//	entered for computers or walls will be ignored when
-		//	setting everything up).
+		//initilization of the frame with Boarder Layout
+		JFrame frame = new JFrame("HipPong");
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        frame.setLayout(new BorderLayout());
+	
+		//game loop test???????
+		boolean gLoop;
+		do{
+		//initilization of menu panels
+		LMenu left = new LMenu();
+		RMenu right = new RMenu();
+		TMenu top = new TMenu();
+		BMenu bottom = new BMenu();
+		CMenu center = new CMenu();
+		
+		//putting menu on frame and showing menu to user(s)
+	        frame.add(left, BorderLayout.WEST);
+	        frame.add(right, BorderLayout.EAST);
+	        frame.add(top, BorderLayout.NORTH);
+	        frame.add(bottom, BorderLayout.SOUTH);
+	        frame.add(center, BorderLayout.CENTER);
+	        frame.setSize(900, 900);
+        	frame.setVisible(true);
 
+		//for testing switch between menu and game (should be switched
+		//	for return of accept in center menu)
+		JFrame popupcheck = new JFrame("check");
+		JOptionPane.showConfirmDialog (popupcheck,
+			"assume all info has been entered");
+
+		//errases the menu
+		//frame.setVisible(false);
+		frame.remove(left);
+		frame.remove(right);
+		frame.remove(top);
+		frame.remove(bottom);
+		frame.remove(center);
 		//Setup the game according to the choices made in the main menu.
 		//	Declare all the classes with the correct passed in
 		//	parameters.
 		//	
 	
-        // ************************************
-        //  Main Game Frame
-        //
-        //  Creates frame and panel for the game.
-        // ************************************
-        JFrame gameFrame = new JFrame("HipPong");
-        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setLayout(new BorderLayout());
+	        // ************************************
+	        //  Main Game Frame
+	        //
+	        //  Creates frame and panel for the game.
+	        // ************************************
+	        //JFrame gameFrame = new JFrame("HipPong");
+	        //gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        //gameFrame.setLayout(new BorderLayout());
+		GamePanel gamePanel = new GamePanel();
+	        frame.add(gamePanel);
+        	frame.setVisible(true);
 
-        GamePanel gamePanel = new GamePanel();
-        gameFrame.add(gamePanel, BorderLayout.CENTER);
-        gameFrame.setSize(500, 500);
-        gameFrame.setVisible(true);
-    
-    }
+		//for testing exit
+		int loopNum = JOptionPane.showConfirmDialog (popupcheck,
+			"assume game has completed\nPlayer X is the winner.\nPlay again?");
+		if (loopNum == 0){
+			gLoop = true;
+		}
+		else{
+			gLoop = false;
+		}
+		}while(gLoop);
+
+		frame.setVisible(false);
+		System.exit(0);
+	}
 }
 
 //*****************************************************************************
@@ -56,17 +97,122 @@ public class HipPong{
 //*****************************************************************************
 
 class GamePanel extends JPanel{
-    public GamePanel(){
-        
-    }
+	public GamePanel(){
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
+	}
+
+	public void paintComponent(Graphics g){
+	super.paintComponent(g);
         
-        //Testing to see if it works.
-        g.setColor(Color.BLACK);
-        g.fillOval(250,250,20,20);
+	//Testing to see if it works.
+	g.setColor(Color.BLACK);
+	g.fillOval(400,400,100,100);
     
     
-    }
+	}
 } 
+
+//*****************************************************************************
+//Class:
+//	LMenu
+//
+//	Operation:
+//		This Panel will paint the Left paddle choices of the menu.
+//		These choices include movement keys, human, computer, or
+//		wall(maybe, if implemeneted);
+//*****************************************************************************
+class LMenu extends JPanel{
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+
+		//paint stuff
+		g.setColor(Color.BLACK);
+		g.fillOval(100,100,50,450);
+		setBackground(Color.red);
+	}
+}
+
+
+//*****************************************************************************
+//Class:
+//	RMenu
+//
+//	Operation:
+//		This Panel will paint the Right paddle choices of the menu.
+//		These choices include movement keys, human, computer, or
+//		wall(maybe, if implemeneted);
+//*****************************************************************************
+class RMenu extends JPanel{
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+
+		//paint stuff
+		g.setColor(Color.BLACK);
+		g.fillOval(100,100,850,850);
+		setBackground(Color.blue);
+	}
+}
+
+
+//*****************************************************************************
+//Class:
+//	TMenu
+//
+//	Operation:
+//		This Panel will paint the Top paddle choices of the menu.
+//		These choices include movement keys, human, computer, or
+//		wall(maybe, if implemeneted);
+//*****************************************************************************
+class TMenu extends JPanel{
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+
+		//paint stuff
+		g.setColor(Color.BLACK);
+		g.fillOval(100,100,50,850);
+		setBackground(Color.green);
+	}
+}
+
+
+//*****************************************************************************
+//Class:
+//	BMenu
+//
+//	Operation:
+//		This Panel will paint the Bottom paddle choices of the menu.
+//		These choices include movement keys, human, computer, or
+//		wall(maybe, if implemeneted);
+//*****************************************************************************
+class BMenu extends JPanel{
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+
+		//paint stuff
+		g.setColor(Color.BLACK);
+		g.fillOval(100,100,450,850);
+		setBackground(Color.black);
+	}
+}
+
+
+//*****************************************************************************
+//Class:
+//	CMenu
+//
+//	Operation:
+//		This Panel will paint the Center choices of the menu.
+//		These choices include the difficulty level(Easy, Medium, Hard),
+//		and the "Play" button that will start the game.
+//*****************************************************************************
+class CMenu extends JPanel{
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+
+		//paint stuff
+		g.setColor(Color.BLACK);
+		g.fillOval(100,100,450,450);
+		setBackground(Color.white);
+	}
+}
+
