@@ -54,7 +54,7 @@ public class Ball{
 	//		the ball start in the center and go off in a random
 	//		direction.
 	//*********************************************************************
-	public void Ball(int Size, double centerX, double centerY, int MaxX, int MaxY){
+	public Ball(int Size, double centerX, double centerY, int MaxX, int MaxY){
 		//intializes rand with the seed of the current time.
 		Random rand = new Random(System.currentTimeMillis());
 		//this is used to set and min and max possible initial ball
@@ -71,6 +71,24 @@ public class Ball{
 		//setting direction variables to random numbers with mins
 		dirX = rand.nextInt(maxX/ballSpVar) + (maxX/ballSpVar);
 		dirY = rand.nextInt(maxY/ballSpVar) + (maxY/ballSpVar);
+	}
+
+	//*********************************************************************
+	//Function Group:
+	//	Set
+	//	
+	//	Passed in Varibales:
+	//		double arg (for all except setSize)
+	//
+	//	Operations:
+	//		This group of functions accept a passed in varibale
+	//		arg amd make sure that arg is within the correct
+	//		bounds for the specific ball variable. If arg checks
+	//		out then the specific variable is set to equal arg.
+	//*********************************************************************
+	public void move(){
+		curX += dirX;
+		curY += dirY;
 	}
 
 	//*********************************************************************

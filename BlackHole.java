@@ -43,7 +43,7 @@ public class BlackHole{
 	//		values, and curX and curY are set to random values
 	//		within the center 50% of the play field.
 	//*********************************************************************
-	public void BlackHole(int Size, int MaxX, int MaxY){
+	public  BlackHole(int Size, int MaxX, int MaxY){
 		//intializes rand with the seed of the current time.
 		Random rand = new Random(System.currentTimeMillis());
 		//this is used to set and min and max possible initial ball
