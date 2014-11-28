@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.text.*;
+import javax.swing.event.*;
 import java.lang.*;
 
 
@@ -15,9 +17,6 @@ import java.lang.*;
 //		and players constantly. It also takes in input from the
 //		and translates it the the movement of the paddles. Lastly,
 //		it runs all the updates for the movement of all the objects.
-//
-//		TO DO
-//			write the actual game code
 //*****************************************************************************
 public class HipPong{
 	//initialization of the frame with Boarder Layout
@@ -29,12 +28,21 @@ public class HipPong{
 	private static char[] Controls = {'q','a','c','v','[',';','m',','};
 	private static int difficulty = 1; //0 = easy; 1 = normal; 2 = hard;
 	
+	//*************************************************************************
+	//main
+	//		passed in values:
+	//			ignored!!
+	//		operations:
+	//			sets up the frame and panels for the games menu with the
+	//			correct spacing
+	//*************************************************************************
 	public static void main(String[] args){
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setLayout(new GridBagLayout());
 	    frame.setSize(1400, 900);
 		frame.setBackground(Color.BLACK);
 		
+		//sets the constraints for spacing around the panels
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(100,10,100,10);
 		
@@ -64,6 +72,18 @@ public class HipPong{
         frame.setVisible(true);
 	}
 	
+	//*************************************************************************
+	//PlayerConfirm
+	//		returns:
+	//			JPanel containing a single the games difficulty choice and
+	//			an accept/play button to start the game
+	//		operations:
+	//			creates two horizontal boxlayouts of radiobuttons or normal
+	//			buttons and puts everything in a vertial boxlayout. Then it
+	//			returns everything to the calling object. The radiobuttons
+	//			change the difficulty and the single normal button calls the
+	//			game function which then starts the game
+	//*************************************************************************
 	private static JPanel PlayersConfirm(){
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
@@ -71,13 +91,18 @@ public class HipPong{
 		//menu.setBackground(Color.BLACK);
 		//top.setBackground(Color.BLACK);
 		
+		//setting the layouts for everything so it is forced to display
+		//	how I want it to display
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 		top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
 
+		//setting the returned's panel dimensions
 		menu.setPreferredSize(new Dimension(400,50));
 		menu.setMaximumSize(new Dimension(400,50));
 		menu.setMinimumSize(new Dimension(400,50));
 		
+		//creating player type buttons and adding them to a group so
+		// they are aware of each other
 		JRadioButton easy = new JRadioButton("Easy",false);
 		JRadioButton normal = new JRadioButton("Normal",true);
 		JRadioButton hard = new JRadioButton("Hard",false);
@@ -86,6 +111,8 @@ public class HipPong{
 		playerType.add(normal);
 		playerType.add(hard);
 		
+		//adding listeners so that when ever a buttons state changes to
+		//	selected it updates the player type value
 		easy.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
@@ -108,6 +135,9 @@ public class HipPong{
 			}
 		});
 		
+		//creating the accept/play button and setting to when pressed it
+		//	calls the game class. then setting it to be in the center to the
+		//	boxlayout
 		JButton accept = new JButton("Play");
 		accept.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -116,16 +146,30 @@ public class HipPong{
 		});
 		accept.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
+		//adding everything to the top and bottom half's
 		top.add(easy);
 		top.add(normal);
 		top.add(hard);
 		
+		//adding everything to the panel that will be returned
 		menu.add(top);
 		menu.add(accept);
 		
 		return menu;
 	}
 	
+	//*************************************************************************
+	//PlayerOptions
+	//		passed in values:
+	//			player: used to reference which player's settings change
+	//		returns:
+	//			JPanel containing a single player's choices for type, and
+	//			controls
+	//		operations:
+	//			creates two horizontal boxlayouts of buttons or labels and
+	//			text fields and puts everything in a vertial boxlayout. Then
+	//			it returns everything to the calling object.
+	//*************************************************************************
 	private static JPanel PlayerOptions(final int player){
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
@@ -135,14 +179,19 @@ public class HipPong{
 		//top.setBackground(Color.BLACK);
 		//bottom.setBackground(Color.BLACK);
 		
+		//setting the layouts for everything so it is forced to display
+		//	how I want it to display
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 		top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
 		bottom.setLayout(new BoxLayout(bottom,BoxLayout.X_AXIS));
 
+		//setting the returned's panel dimensions
 		menu.setPreferredSize(new Dimension(400,50));
 		menu.setMaximumSize(new Dimension(400,50));
 		menu.setMinimumSize(new Dimension(400,50));
 		
+		//creating player type buttons and adding them to a group so
+		// they are aware of each other
 		JRadioButton human = new JRadioButton("Human",true);
 		JRadioButton computer = new JRadioButton("Computer",false);
 		JRadioButton wall = new JRadioButton("Wall",false);
@@ -151,11 +200,12 @@ public class HipPong{
 		playerType.add(computer);
 		playerType.add(wall);
 		
+		//adding listeners so that when ever a buttons state changes to
+		//	selected it updates the player type value
 		human.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 0;
-					System.out.println("Player" + (player+1) + " = " + players[0]);
 				}
 			}
 		});
@@ -163,7 +213,6 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 1;
-					System.out.println("Player" + (player+1) + " = " + players[0]);
 				}
 			}
 		});
@@ -171,31 +220,45 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 2;
-					System.out.println("Player" + (player+1) + " = " + players[0]);
 				}
 			}
 		});
 		
+		//creates text labels and field for player controls
 		JLabel left = new JLabel("Left:");
 		JLabel right = new JLabel("Right:");
 		final JTextField leftControl = new JTextField(String.valueOf(Controls[player * 2]), 2);
 		final JTextField rightControl = new JTextField(String.valueOf(Controls[(player * 2) + 1]), 2);
 		
-		leftControl.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
+		//creating the document listeners so update the controls if the user
+		//	changes or adds something to the field. does nothing upon character
+		//	removal.
+		leftControl.getDocument().addDocumentListener(new DocumentListener(){
+			public void changedUpdate(DocumentEvent e){
+				warn();
+			}
+			public void removeUpdate(DocumentEvent e){}
+			public void insertUpdate(DocumentEvent e){
+				warn();
+			}
+			public void warn(){
 				Controls[player * 2] = leftControl.getText().charAt(0);
-				System.out.println("left" + (player+1) + " key: " + Controls[player * 2]);
 			}
 		});
-		rightControl.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
+		rightControl.getDocument().addDocumentListener(new DocumentListener(){
+			public void changedUpdate(DocumentEvent e){
+				warn();
+			}
+			public void removeUpdate(DocumentEvent e){}
+			public void insertUpdate(DocumentEvent e){
+				warn();
+			}
+			public void warn(){
 				Controls[(player * 2) + 1] = rightControl.getText().charAt(0);
-				System.out.println("right" + (player+1) + " key: " + Controls[(player * 2) + 1]);
 			}
 		});
 		
-		//leftControl.addItemListener
-		
+		//adding everything to the top and bottom half's
 		top.add(human);
 		top.add(computer);
 		top.add(wall);
@@ -204,28 +267,27 @@ public class HipPong{
 		bottom.add(right);
 		bottom.add(rightControl);
 		
+		//adding everything to the panel that will be returned
 		menu.add(top);
 		menu.add(bottom);
 		
 		return menu;
 	}
-	
+	//*************************************************************************
+	//Game
+	//		called by the accept button. It clears the frame and adds a new
+	//		game to it. when creating the game panel it passes in the recorded
+	//		values of the menu screen.
+	//*************************************************************************
 	private static void Game(){
+		//clearing frame
 		frame.setVisible(false);
 		frame.getContentPane().removeAll();
 		
+		//creating game and adding it to the frame
 		JPanel game = new GamePanel(players, Controls, difficulty);
 		frame.add(game);
 		frame.setVisible(true);
-		
-		
-		int i = 0;
-		while(i < 4){
-			System.out.println("player " + (i+1) + ": " + players[i]);
-			System.out.println("      l: " + Controls[i*2] + "   r: " + Controls[(i*2)+1]);
-			i++;
-		}
-		System.out.println("diff: " + difficulty);
 	}
 }
 
@@ -243,14 +305,6 @@ class GamePanel extends JPanel{
 		players = p;
 		controls = c;
 		difficulty = d;
-		
-		int i = 0;
-		while(i < 4){
-			System.out.println("player " + (i+1) + ": " + players[i]);
-			System.out.println("      l: " + controls[i*2] + "   r: " + controls[(i*2)+1]);
-			i++;
-		}
-		System.out.println("diff: " + difficulty);
 	}
 
 	/*public void paintComponent(Graphics g){
@@ -261,99 +315,3 @@ class GamePanel extends JPanel{
 		g.fillOval(100,100,100,100);
 	}*/
 } 
-
-//*****************************************************************************
-//Class:
-//	Menu
-//
-//	Operation:
-//		This class will paint all the choices of the menu for all players.
-//		These choices include movement keys, human, computer, or
-//		wall(maybe, if implemented);
-//*****************************************************************************
-class Menu extends JPanel implements ActionListener{
-
-    // ***************
-    // Initialize Look
-    // ***************
-    protected Color color = null;
-    protected Color background = null;
-    protected int[] dim = {0, 0, 0, 0};
-
-    // ***************
-    // Game Keys
-    // ***************
-    char leftKey = ' ', rightKey = ' ';
-    JTextField leftKeyJT = new JTextField(1);
-    JTextField rightKeyJT = new JTextField(1);
-
-    // ************
-    // Constructors
-    // ************
-    public Menu(){
-        ; //Do Nothing. Everything is already initialized.
-    }
-
-    // ********************************************************
-    // Constructor
-    //  Params: Color, Background Color, Fill Oval Dimensions.
-    //  *******************************************************
-    public Menu(Color c, Color bg, int x, int y, int width, int height){
-        
-        // set Look
-        color = c;
-        background = bg;
-        dim[0] = x;
-        dim[1] = y;
-        dim[2] = width;
-        dim[3] = height;
-
-        //Set key
-        add(leftKeyJT);
-        add(rightKeyJT);
-        leftKeyJT.addActionListener(this);
-        rightKeyJT.addActionListener(this);
-    }
-
-    // ***************
-    // Getters/Setters
-    // ***************
-    public void setKey(char l, char r){ 
-        leftKey = l; 
-        rightKey = r; 
-    }
-
-    public char getLeftKey(){ return leftKey; }
-    public char getRightKey(){ return rightKey; }
-
-    public void actionPerformed(ActionEvent e){
-        System.out.println("test.");
-
-        if(e.getSource() == leftKeyJT)
-        {
-            leftKey = leftKeyJT.getText().charAt(0);    //Gets leftKeyJT value
-            System.out.println("Left Key: " + leftKey);
-        }
-        else if(e.getSource() == rightKeyJT )
-        {
-            rightKey = rightKeyJT.getText().charAt(0);   //Gets leftKeyJT value
-            System.out.println("Right Key: " + rightKey);
-        }
-        else
-            ;
-    }
-
-    // *****************
-    // Paint Data/Specs
-    // *****************
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        //Paint
-        g.setColor(color);
-        g.fillOval(dim[0], dim[1], dim[2], dim[3]);
-        setBackground(background);
-
-    }
-}   //End of class Menu
-
