@@ -11,9 +11,9 @@ import java.lang.*;
 //	Operations:
 //		This class is the main class. It uses the Player, Computer,
 //		Ball, and BlackHole classes to run the game. It's main
-//		is function painting the field, ball, blackhole, computers
+//		is function painting the field, ball, BlackHole, computers
 //		and players constantly. It also takes in input from the
-//		and translates it the the movement of the paddles. Lastely,
+//		and translates it the the movement of the paddles. Lastly,
 //		it runs all the updates for the movement of all the objects.
 //
 //		TO DO:
@@ -22,80 +22,188 @@ import java.lang.*;
 //			write the actual game code
 //*****************************************************************************
 public class HipPong{
-    public static void main(String[] args){
-		//initilization of the frame with Boarder Layout
-		JFrame frame = new JFrame("HipPong");
+	//initialization of the frame with Boarder Layout
+	private static JFrame frame = new JFrame("HipPong");
+	
+	//initialization of the game options
+	private static int[] players = {0,0,0,0}; //0 = human; 1 = computer; 2 = wall;
+	//every pair is a player. first in pair is left/up. second in pair is right/down.
+	private static char[] Controls = {'q','a','c','v','[',';','m',','};
+	private static int difficulty = 1; //0 = easy; 1 = normal; 2 = hard;
+	
+	public static void main(String[] args){
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.setLayout(new BorderLayout());
-	
-		//game loop test???????
-		boolean gLoop;
-		//do{
+	    frame.setLayout(new GridBagLayout());
+	    frame.setSize(1400, 900);
 		
-            //Color, Background, Dimenisons.
-            Menu left = new Menu(Color.BLACK, Color.RED, 100, 100, 50, 450);
-            Menu right = new Menu(Color.BLACK, Color.BLUE, 100, 100, 850, 850);
-            Menu top = new Menu(Color.BLACK, Color.GREEN, 100, 100, 50, 850 );
-            Menu bottom = new Menu(Color.BLACK, Color.BLACK, 100, 100, 450, 850);
-            Menu center = new Menu(Color.BLACK, Color.WHITE, 100, 100, 450, 450);
-
-		    //putting menu on frame and showing menu to user(s)
-	        frame.add(left, BorderLayout.WEST);
-	        frame.add(right, BorderLayout.EAST);
-	        frame.add(top, BorderLayout.NORTH);
-	        frame.add(bottom, BorderLayout.SOUTH);
-	        frame.add(center, BorderLayout.CENTER);
-	        frame.setSize(900, 900);
-        	frame.setVisible(true);
-
-
-		    //for testing switch between menu and game (should be switched
-		    //	for return of accept in center menu)
-		    //JFrame popupcheck = new JFrame("check");
-		    //JOptionPane.showConfirmDialog (popupcheck,
-			//"assume all info has been entered");
-
-		    //errases the menu
-		    //frame.setVisible(false);
-            
-            /*
-            frame.remove(left);
-		    frame.remove(right);
-		    frame.remove(top);
-		    frame.remove(bottom);
-		    frame.remove(center);
-            */
-
-            //Setup the game according to the choices made in the main menu.
-		    //	Declare all the classes with the correct passed in
-		    //	parameters.
-		    //	
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(100,10,100,10);
+		
+		//initialization of menu panels
+		JPanel left = PlayerOptions(players[0]);
+		JPanel top = PlayerOptions(players[1]);
+		JPanel right = PlayerOptions(players[2]);
+		JPanel bottom = PlayerOptions(players[3]);
+		JPanel center = PlayersConfirm();
+		
+		//putting menus on frame with constraints and showing menu to user(s)
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		frame.add(left, gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 0;
+	    frame.add(top, gbc);
+		gbc.gridx = 5;
+		gbc.gridy = 2;
+		frame.add(right, gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 4;
+		frame.add(bottom, gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 2;
+		frame.add(center, gbc);
+        frame.setVisible(true);
+	}
 	
-	        // ************************************
-	        //  Main Game Frame
-	        //
-	        //  Creates frame and panel for the game.
-	        // ************************************
-	        //JFrame gameFrame = new JFrame("HipPong");
-	        //gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        //gameFrame.setLayout(new BorderLayout());
-		    
-            //GamePanel gamePanel = new GamePanel();
-	        //frame.add(gamePanel);
-        	//frame.setVisible(true);
+	private static JPanel PlayersConfirm(){
+		JPanel menu = new JPanel();
+		JPanel top = new JPanel();
+		JPanel bottom = new JPanel();
+		
+		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
+		top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
+		bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
 
-		    //for testing exit
-		    //int loopNum = JOptionPane.showConfirmDialog (popupcheck,
-			//"assume game has completed\nPlayer X is the winner.\nPlay again?");
-		    
-            //if (loopNum == 0) 
-            //     gLoop = true;
-		    //else gLoop = false;
+		menu.setPreferredSize(new Dimension(400,50));
+		menu.setMaximumSize(new Dimension(400,50));
+		menu.setMinimumSize(new Dimension(400,50));
+		
+		JRadioButton easy = new JRadioButton("Easy",false);
+		JRadioButton normal = new JRadioButton("Normal",true);
+		JRadioButton hard = new JRadioButton("Hard",false);
+		ButtonGroup playerType = new ButtonGroup();
+		playerType.add(easy);
+		playerType.add(normal);
+		playerType.add(hard);
+		
+		easy.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					difficulty = 0;
+				}
+			}
+		});
+		normal.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					difficulty = 1;
+				}
+			}
+		});
+		hard.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					difficulty = 2;
+				}
+			}
+		});
+		
+		JButton accept = new JButton("Play");
+		accept.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+		});
+		accept.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		top.add(easy);
+		top.add(normal);
+		top.add(hard);
+		
+		menu.add(top);
+		menu.add(accept);
+		
+		return menu;
+	}
+	
+	private static JPanel PlayerOptions(final int player){
+		JPanel menu = new JPanel();
+		JPanel top = new JPanel();
+		JPanel bottom = new JPanel();
+		
+		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
+		top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
+		bottom.setLayout(new BoxLayout(bottom,BoxLayout.X_AXIS));
 
-		//}while(gLoop);
-
-        //frame.setVisible(false);
-		//System.exit(0);
+		menu.setPreferredSize(new Dimension(400,50));
+		menu.setMaximumSize(new Dimension(400,50));
+		menu.setMinimumSize(new Dimension(400,50));
+		
+		JRadioButton human = new JRadioButton("Human",true);
+		JRadioButton computer = new JRadioButton("Computer",false);
+		JRadioButton wall = new JRadioButton("Wall",false);
+		ButtonGroup playerType = new ButtonGroup();
+		playerType.add(human);
+		playerType.add(computer);
+		playerType.add(wall);
+		
+		human.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					players[player] = 0;
+					System.out.println("Player = " + players[0]);
+				}
+			}
+		});
+		computer.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					players[player] = 1;
+					System.out.println("Player = " + players[0]);
+				}
+			}
+		});
+		wall.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					players[player] = 2;
+					System.out.println("Player = " + players[0]);
+				}
+			}
+		});
+		
+		JLabel left = new JLabel("Left:");
+		JLabel right = new JLabel("Right:");
+		final JTextField leftControl = new JTextField(String.valueOf(Controls[player * 2]), 2);
+		final JTextField rightControl = new JTextField(String.valueOf(Controls[(player * 2) + 1]), 2);
+		
+		leftControl.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Controls[player * 2] = leftControl.getText().charAt(0);
+				System.out.println("left key: " + Controls[player * 2]);
+			}
+		});
+		rightControl.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Controls[(player * 2) + 1] = rightControl.getText().charAt(0);
+				System.out.println("right key: " + Controls[(player * 2) + 1]);
+			}
+		});
+		
+		//leftControl.addItemListener
+		
+		top.add(human);
+		top.add(computer);
+		top.add(wall);
+		bottom.add(left);
+		bottom.add(leftControl);
+		bottom.add(right);
+		bottom.add(rightControl);
+		
+		menu.add(top);
+		menu.add(bottom);
+		
+		return menu;
 	}
 }
 
@@ -118,16 +226,16 @@ class GamePanel extends JPanel{
     
     
 	}
-}
+} 
 
 //*****************************************************************************
 //Class:
 //	Menu
 //
 //	Operation:
-//		This Panel will paint the paddle choices of the menu.
+//		This class will paint all the choices of the menu for all players.
 //		These choices include movement keys, human, computer, or
-//		wall;
+//		wall(maybe, if implemented);
 //*****************************************************************************
 class Menu extends JPanel implements ActionListener{
 
