@@ -16,9 +16,7 @@ import java.lang.*;
 //		and translates it the the movement of the paddles. Lastly,
 //		it runs all the updates for the movement of all the objects.
 //
-//		TO DO:
-//			finish writing what needs to go in the menus
-//			figure how to get info back from panels
+//		TO DO
 //			write the actual game code
 //*****************************************************************************
 public class HipPong{
@@ -35,15 +33,16 @@ public class HipPong{
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setLayout(new GridBagLayout());
 	    frame.setSize(1400, 900);
+		frame.setBackground(Color.BLACK);
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(100,10,100,10);
 		
 		//initialization of menu panels
-		JPanel left = PlayerOptions(players[0]);
-		JPanel top = PlayerOptions(players[1]);
-		JPanel right = PlayerOptions(players[2]);
-		JPanel bottom = PlayerOptions(players[3]);
+		JPanel left = PlayerOptions(0);
+		JPanel top = PlayerOptions(1);
+		JPanel right = PlayerOptions(2);
+		JPanel bottom = PlayerOptions(3);
 		JPanel center = PlayersConfirm();
 		
 		//putting menus on frame with constraints and showing menu to user(s)
@@ -68,11 +67,12 @@ public class HipPong{
 	private static JPanel PlayersConfirm(){
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
-		JPanel bottom = new JPanel();
+		
+		//menu.setBackground(Color.BLACK);
+		//top.setBackground(Color.BLACK);
 		
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 		top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
-		bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
 
 		menu.setPreferredSize(new Dimension(400,50));
 		menu.setMaximumSize(new Dimension(400,50));
@@ -111,7 +111,7 @@ public class HipPong{
 		JButton accept = new JButton("Play");
 		accept.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				System.exit(0);
+				Game();
 			}
 		});
 		accept.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -130,6 +130,10 @@ public class HipPong{
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
 		JPanel bottom = new JPanel();
+		
+		//menu.setBackground(Color.BLACK);
+		//top.setBackground(Color.BLACK);
+		//bottom.setBackground(Color.BLACK);
 		
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 		top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
@@ -151,7 +155,7 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 0;
-					System.out.println("Player = " + players[0]);
+					System.out.println("Player" + (player+1) + " = " + players[0]);
 				}
 			}
 		});
@@ -159,7 +163,7 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 1;
-					System.out.println("Player = " + players[0]);
+					System.out.println("Player" + (player+1) + " = " + players[0]);
 				}
 			}
 		});
@@ -167,7 +171,7 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 2;
-					System.out.println("Player = " + players[0]);
+					System.out.println("Player" + (player+1) + " = " + players[0]);
 				}
 			}
 		});
@@ -180,13 +184,13 @@ public class HipPong{
 		leftControl.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Controls[player * 2] = leftControl.getText().charAt(0);
-				System.out.println("left key: " + Controls[player * 2]);
+				System.out.println("left" + (player+1) + " key: " + Controls[player * 2]);
 			}
 		});
 		rightControl.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Controls[(player * 2) + 1] = rightControl.getText().charAt(0);
-				System.out.println("right key: " + Controls[(player * 2) + 1]);
+				System.out.println("right" + (player+1) + " key: " + Controls[(player * 2) + 1]);
 			}
 		});
 		
@@ -205,6 +209,24 @@ public class HipPong{
 		
 		return menu;
 	}
+	
+	private static void Game(){
+		frame.setVisible(false);
+		frame.getContentPane().removeAll();
+		
+		JPanel game = new GamePanel(players, Controls, difficulty);
+		frame.add(game);
+		frame.setVisible(true);
+		
+		
+		int i = 0;
+		while(i < 4){
+			System.out.println("player " + (i+1) + ": " + players[i]);
+			System.out.println("      l: " + Controls[i*2] + "   r: " + Controls[(i*2)+1]);
+			i++;
+		}
+		System.out.println("diff: " + difficulty);
+	}
 }
 
 //*****************************************************************************
@@ -213,19 +235,31 @@ public class HipPong{
 //*****************************************************************************
 
 class GamePanel extends JPanel{
-	public GamePanel(){
-
+	private int[] players;
+	private char[] controls;
+	private int difficulty;
+	
+	public GamePanel(int[] p, char[] c, int d){
+		players = p;
+		controls = c;
+		difficulty = d;
+		
+		int i = 0;
+		while(i < 4){
+			System.out.println("player " + (i+1) + ": " + players[i]);
+			System.out.println("      l: " + controls[i*2] + "   r: " + controls[(i*2)+1]);
+			i++;
+		}
+		System.out.println("diff: " + difficulty);
 	}
 
-	public void paintComponent(Graphics g){
-	super.paintComponent(g);
+	/*public void paintComponent(Graphics g){
+		super.paintComponent(g);
         
-	//Testing to see if it works.
-	g.setColor(Color.BLACK);
-	g.fillOval(400,400,100,100);
-    
-    
-	}
+		//Testing to see if it works.
+		g.setColor(Color.BLACK);
+		g.fillOval(100,100,100,100);
+	}*/
 } 
 
 //*****************************************************************************
