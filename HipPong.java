@@ -80,7 +80,7 @@ public class HipPong{
 	        //gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        //gameFrame.setLayout(new BorderLayout());
 		    
-            //GamePanel gamePanel = new GamePanel();
+            //Game GamePanel = new Game();
 	        //frame.add(gamePanel);
         	//frame.setVisible(true);
 
@@ -103,9 +103,19 @@ public class HipPong{
 //  GamePanel
 //      Will hold game graphics.
 //*****************************************************************************
-
+/*
 class GamePanel extends JPanel{
-	public GamePanel(){
+	
+    private boolean pressedLeft = false;
+    private boolean pressedRight = false;
+    
+    private ballX = 250;
+    private ballY = 250;
+    private int diameter = 20;
+    private int ballDX = -1;
+    private int ballDY = 3;
+    
+    public GamePanel(){
 
 	}
 
@@ -119,6 +129,7 @@ class GamePanel extends JPanel{
     
 	}
 }
+*/
 
 //*****************************************************************************
 //Class:
