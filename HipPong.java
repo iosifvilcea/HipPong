@@ -126,32 +126,6 @@ public class HipPong{
 		return menu;
 	}
 	
-	        // ************************************
-	        //  Main Game Frame
-	        //
-	        //  Creates frame and panel for the game.
-	        // ************************************
-	        //JFrame gameFrame = new JFrame("HipPong");
-	        //gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        //gameFrame.setLayout(new BorderLayout());
-		    
-            //Game GamePanel = new Game();
-	        //frame.add(gamePanel);
-        	//frame.setVisible(true);
-
-		    //for testing exit
-		    //int loopNum = JOptionPane.showConfirmDialog (popupcheck,
-			//"assume game has completed\nPlayer X is the winner.\nPlay again?");
-		    
-            //if (loopNum == 0) 
-            //     gLoop = true;
-		    //else gLoop = false;
-
-		//}while(gLoop);
-
-        //frame.setVisible(false);
-		//System.exit(0);
-	
     private static JPanel PlayerOptions(final int player){
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
@@ -232,38 +206,6 @@ public class HipPong{
 		return menu;
 	}
 }
-
-//*****************************************************************************
-//  GamePanel
-//      Will hold game graphics.
-//*****************************************************************************
-/*
-class GamePanel extends JPanel{
-	
-    private boolean pressedLeft = false;
-    private boolean pressedRight = false;
-    
-    private ballX = 250;
-    private ballY = 250;
-    private int diameter = 20;
-    private int ballDX = -1;
-    private int ballDY = 3;
-    
-    public GamePanel(){
-
-	}
-
-	public void paintComponent(Graphics g){
-	super.paintComponent(g);
-        
-	//Testing to see if it works.
-	g.setColor(Color.BLACK);
-	g.fillOval(400,400,100,100);
-    
-    
-	}
-}
-*/
 
 //*****************************************************************************
 //Class:
