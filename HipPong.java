@@ -29,13 +29,14 @@ public class HipPong{
 		//game loop test???????
 		boolean gLoop;
 		do{
-		//initilization of menu panels
-		LMenu left = new LMenu();
-		RMenu right = new RMenu();
-		TMenu top = new TMenu();
-		BMenu bottom = new BMenu();
-		CMenu center = new CMenu();
 		
+            //Color, Background, Dimenisons.
+            Menu left = new Menu(Color.BLACK, Color.RED, 100, 100, 50, 450);
+            Menu right = new Menu(Color.BLACK, Color.BLUE, 100, 100, 850, 850);
+            Menu top = new Menu(Color.BLACK, Color.GREEN, 100, 100, 50, 850 );
+            Menu bottom = new Menu(Color.BLACK, Color.BLACK, 100, 100, 450, 850);
+            Menu center = new Menu(Color.BLACK, Color.WHITE, 100, 100, 450, 450);
+
 		//putting menu on frame and showing menu to user(s)
 	        frame.add(left, BorderLayout.WEST);
 	        frame.add(right, BorderLayout.EAST);
@@ -53,12 +54,13 @@ public class HipPong{
 
 		//errases the menu
 		//frame.setVisible(false);
-		frame.remove(left);
+        frame.remove(left);
 		frame.remove(right);
 		frame.remove(top);
 		frame.remove(bottom);
 		frame.remove(center);
-		//Setup the game according to the choices made in the main menu.
+        
+        //Setup the game according to the choices made in the main menu.
 		//	Declare all the classes with the correct passed in
 		//	parameters.
 		//	
@@ -110,109 +112,42 @@ class GamePanel extends JPanel{
     
     
 	}
-} 
+}
 
 //*****************************************************************************
 //Class:
-//	LMenu
+//	Menu
 //
 //	Operation:
-//		This Panel will paint the Left paddle choices of the menu.
+//		This Panel will paint the paddle choices of the menu.
 //		These choices include movement keys, human, computer, or
-//		wall(maybe, if implemeneted);
+//		wall;
 //*****************************************************************************
-class LMenu extends JPanel{
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
+class Menu extends JPanel{
+    protected Color color = null;
+    protected Color background = null;
+    protected int[] dim = {0, 0, 0, 0};
+   
+    public Menu(){
+        ; //Do Nothing. Everything is already initialized.
+    }
 
-		//paint stuff
-		g.setColor(Color.BLACK);
-		g.fillOval(100,100,50,450);
-		setBackground(Color.red);
-	}
+    public Menu(Color c, Color bg, int x, int y, int width, int height){
+        color = c;
+        background = bg;
+        dim[0] = x;
+        dim[1] = y;
+        dim[2] = width;
+        dim[3] = height;
+    }
+
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        //Paint
+        g.setColor(color);
+        g.fillOval(dim[0], dim[1], dim[2], dim[3]);
+        setBackground(background);
+
+    }
 }
-
-
-//*****************************************************************************
-//Class:
-//	RMenu
-//
-//	Operation:
-//		This Panel will paint the Right paddle choices of the menu.
-//		These choices include movement keys, human, computer, or
-//		wall(maybe, if implemeneted);
-//*****************************************************************************
-class RMenu extends JPanel{
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-
-		//paint stuff
-		g.setColor(Color.BLACK);
-		g.fillOval(100,100,850,850);
-		setBackground(Color.blue);
-	}
-}
-
-
-//*****************************************************************************
-//Class:
-//	TMenu
-//
-//	Operation:
-//		This Panel will paint the Top paddle choices of the menu.
-//		These choices include movement keys, human, computer, or
-//		wall(maybe, if implemeneted);
-//*****************************************************************************
-class TMenu extends JPanel{
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-
-		//paint stuff
-		g.setColor(Color.BLACK);
-		g.fillOval(100,100,50,850);
-		setBackground(Color.green);
-	}
-}
-
-
-//*****************************************************************************
-//Class:
-//	BMenu
-//
-//	Operation:
-//		This Panel will paint the Bottom paddle choices of the menu.
-//		These choices include movement keys, human, computer, or
-//		wall(maybe, if implemeneted);
-//*****************************************************************************
-class BMenu extends JPanel{
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-
-		//paint stuff
-		g.setColor(Color.BLACK);
-		g.fillOval(100,100,450,850);
-		setBackground(Color.black);
-	}
-}
-
-
-//*****************************************************************************
-//Class:
-//	CMenu
-//
-//	Operation:
-//		This Panel will paint the Center choices of the menu.
-//		These choices include the difficulty level(Easy, Medium, Hard),
-//		and the "Play" button that will start the game.
-//*****************************************************************************
-class CMenu extends JPanel{
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-
-		//paint stuff
-		g.setColor(Color.BLACK);
-		g.fillOval(100,100,450,450);
-		setBackground(Color.white);
-	}
-}
-
