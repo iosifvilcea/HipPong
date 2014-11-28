@@ -286,7 +286,8 @@ public class HipPong{
 
 		//creating game and adding it to the frame
 		Game game = new Game();
-        frame.add(game);
+		frame.setLayout(new BorderLayout());
+        frame.add(game, BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
 }
