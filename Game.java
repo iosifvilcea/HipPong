@@ -30,14 +30,23 @@ public class Game extends JPanel implements ActionListener{
     }
 
     public void run(){
-        int nextBallA = ballX + ballDX;
-        int nextBallB = ballX + ballDX + diameter;
-        int nextBallC = ballY + ballDY;
-        int nextBallD = ballY + ballDY + diameter;
+        //int nextBallA = ballX + ballDX;
+        //int nextBallB = ballX + ballDX + diameter;
+        //int nextBallC = ballY + ballDY;
+        //int nextBallD = ballY + ballDY + diameter;
+
+        //ballX += ballDX;
+        //ballY += ballDY;
+
+        //TESTING THINGS:
+        if(ballX < diameter/2) ballDX = Math.abs(ballDX);
+        if(ballX > getWidth() - diameter/2) ballDX = -Math.abs(ballDX);
+        if(ballY < diameter/2) ballDY = Math.abs(ballDY);
+        if(ballY > getHeight()- diameter/2) ballDY = -Math.abs(ballDY);
 
         ballX += ballDX;
         ballY += ballDY;
-
+        
         repaint();
     }
 }

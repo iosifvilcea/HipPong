@@ -141,7 +141,7 @@ public class HipPong{
 		JButton accept = new JButton("Play");
 		accept.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Game();
+				PlayGame();
 			}
 		});
 		accept.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -279,14 +279,14 @@ public class HipPong{
 	//		game to it. when creating the game panel it passes in the recorded
 	//		values of the menu screen.
 	//*************************************************************************
-	private static void Game(){
+    private static void PlayGame(){
 		//clearing frame
 		frame.setVisible(false);
 		frame.getContentPane().removeAll();
-		
+
 		//creating game and adding it to the frame
-		JPanel game = new GamePanel(players, Controls, difficulty);
-		frame.add(game);
+		Game game = new Game();
+        frame.add(game);
 		frame.setVisible(true);
 	}
 }
@@ -385,30 +385,3 @@ class Menu extends JPanel implements ActionListener{
 
     }
 }   //End of class Menu
-
-
-/*
-// ****************************************************************************
-//  GamePanel
-//      Will hold game graphics.
-// ****************************************************************************
-class GamePanel extends JPanel{
-	private int[] players;
-	private char[] controls;
-	private int difficulty;
-	
-	public GamePanel(int[] p, char[] c, int d){
-		players = p;
-		controls = c;
-		difficulty = d;
-	}
-
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-        
-		//Testing to see if it works.
-		g.setColor(Color.BLACK);
-		g.fillOval(100,100,100,100);
-	}
-}
-*/
