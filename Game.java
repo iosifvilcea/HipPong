@@ -1,52 +1,138 @@
+// ********************************************************
+// * Game Class
+// *    Actual game play is drawn/handled here.
+// *
+// * Note: 
+// *
+// * Credits:
+// *   Ball boundaries used from
+// *    ~/myers/cop3252/notes/examples/gui/Ball.java
+// ********************************************************
+
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
-public class Game extends JPanel implements ActionListener{
+import java.awt.event.*;
+import java.awt.event.KeyListener;
+
+public class Game extends JPanel implements ActionListener, KeyListener{
     
+    // *********************
+    // Ball Attributes
+    // *********************
+    //Ball Position.
     private int ballX = 250;
     private int ballY = 250;
+    
+    //Ball Position Change
     private int ballDX = -1;
     private int ballDY = 3;
-    private int diameter = 20;
     
+    //Ball Size
+    private int diameter = 20;
+
+    // *********************
+    // Player Attributes
+    // *********************
+    private int p1x = 25;
+    private int p1y = 250;
+    private int p1Width = 10;
+    private int p1Height = 50;
+    private int p1Speed = 5;
+
+    private boolean p1LeftPress = false;
+    private boolean p1RightPress = false;
+   
+    // ********************
+    //  Constructor
+    // ********************
     public Game(){
         setBackground(Color.BLACK);
+
+        //Check Key Presses
+        setFocusable(true);     //Allows key component to receive focus.
+        addKeyListener(this);   //Allows panel to access key events.
 
         // 60fps
         Timer refresh = new Timer(1000/60, this);
         refresh.start();
     }
 
-    //Paint Ball
+    // ************************************
+    //  Paint Game Screen
+    // ************************************
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.WHITE);
-        g.fillOval(ballX,ballY,diameter,diameter);
+        
+        g.setColor(Color.WHITE);                    //Set Component Colors
+        g.fillOval(ballX,ballY,diameter,diameter);  //Create Ball
+        g.fillRect(p1x, p1y, p1Width, p1Height);    //Create P1 Paddle
+        
     }
 
+    // ***********************************
+    //  Starts the Game when constructor
+    //   is called.
+    // ***********************************
     public void actionPerformed(ActionEvent e){
         run();
     }
 
+    // ***********************************
+    // Handles KeyEvents
+    // ***********************************
+    public void keyPressed(KeyEvent e){
+        if( 'q' == e.getKeyText( e.getKeyCode() ) ){
+            System.out.print("Left Pressed.\n");
+            p1LeftPress = true;
+        }
+        if( 'a' == e.getKeyText( e.getKeyCode() ) )
+            p1RightPress = true;
+    }
+
+    public void keyReleased(KeyEvent e){}
+    public void keyTyped(KeyEvent e){}
+
+    // ***********************************
+    //  Run()
+    //    Handles movement and interactions
+    //    between objects (paddles & ball)
+    // ***********************************
     public void run(){
-        //int nextBallA = ballX + ballDX;
-        //int nextBallB = ballX + ballDX + diameter;
-        //int nextBallC = ballY + ballDY;
-        //int nextBallD = ballY + ballDY + diameter;
 
-        //ballX += ballDX;
-        //ballY += ballDY;
+        if(p1LeftPress){
+            System.out.print("Left Pressed.\n");
+            if(p1y - p1Speed > 0) 
+                p1y -= p1Speed;
+        }
 
-        //TESTING THINGS:
+        if(p1RightPress){
+            System.out.print("Left Pressed.\n"); 
+            if(p1y + p1Speed + p1Height < getHeight())
+                p1y += p1Speed;
+        }
+
+
+        //Left Boundaries
+        
+        //Right Boundaries
+
+        //Top Boundaries
+        
+        //Bottom Boundaries
+
+        //Check for boundaries.
         if(ballX < diameter/2) ballDX = Math.abs(ballDX);
         if(ballX > getWidth() - diameter/2) ballDX = -Math.abs(ballDX);
         if(ballY < diameter/2) ballDY = Math.abs(ballDY);
         if(ballY > getHeight()- diameter/2) ballDY = -Math.abs(ballDY);
 
+
+        //Sets new ball position.
         ballX += ballDX;
         ballY += ballDY;
         
+        //Draw it.
         repaint();
     }
 }
