@@ -248,7 +248,7 @@ public class HipPong{
 				Controls[(player * 2) + 1] = JOptionPane.showInputDialog(
 						frame, "Enter new right key:",
 						"new Right key", JOptionPane.PLAIN_MESSAGE).charAt(0);
-				leftControlKey.setText("" + Controls[(player * 2) + 1]);
+				rightControlKey.setText("" + Controls[(player * 2) + 1]);
 			}
 		});
 

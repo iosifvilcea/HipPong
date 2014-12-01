@@ -49,10 +49,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public Game(){
         setBackground(Color.BLACK);
 
-        //Check Key Presses
-        setFocusable(true);     //Allows key component to receive focus.
-        addKeyListener(this);   //Allows panel to access key events.
-
         // 60fps
         Timer refresh = new Timer(1000/60, this);
         refresh.start();
@@ -63,6 +59,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ************************************
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+
+        //Check Key Presses
+        setFocusable(true);     //Allows key component to receive focus.
+        addKeyListener(this);   //Allows panel to access key events.
         
         g.setColor(Color.WHITE);                    //Set Component Colors
         g.fillOval(ballX,ballY,diameter,diameter);  //Create Ball
@@ -82,15 +82,16 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // Handles KeyEvents
     // ***********************************
     public void keyPressed(KeyEvent e){
-        if( 'q' == e.getKeyText( e.getKeyCode() ) ){
-            System.out.print("Left Pressed.\n");
+        if( "Q".equals( e.getKeyText( e.getKeyCode() ) ) ){
             p1LeftPress = true;
         }
-        if( 'a' == e.getKeyText( e.getKeyCode() ) )
+        if( "A".equals( e.getKeyText( e.getKeyCode() ) ) )
             p1RightPress = true;
     }
-
-    public void keyReleased(KeyEvent e){}
+    public void keyReleased(KeyEvent e){
+	p1LeftPress = false;
+	p1RightPress = false;
+    }
     public void keyTyped(KeyEvent e){}
 
     // ***********************************
@@ -107,7 +108,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         }
 
         if(p1RightPress){
-            System.out.print("Left Pressed.\n"); 
+            System.out.print("Right Pressed.\n"); 
             if(p1y + p1Speed + p1Height < getHeight())
                 p1y += p1Speed;
         }
