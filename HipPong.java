@@ -37,9 +37,10 @@ public class HipPong{
 	//			correct spacing
 	//*************************************************************************
 	public static void main(String[] args){
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.setLayout(new GridBagLayout());
-	    frame.setSize(1400, 900);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new GridBagLayout());
+		frame.setSize(1400, 900);
+		frame.setResizable(false);
 		frame.setBackground(Color.BLACK);
 		
 		//sets the constraints for spacing around the panels
@@ -59,7 +60,7 @@ public class HipPong{
 		frame.add(left, gbc);
 		gbc.gridx = 3;
 		gbc.gridy = 0;
-	    frame.add(top, gbc);
+		frame.add(top, gbc);
 		gbc.gridx = 5;
 		gbc.gridy = 2;
 		frame.add(right, gbc);
@@ -69,7 +70,7 @@ public class HipPong{
 		gbc.gridx = 3;
 		gbc.gridy = 2;
 		frame.add(center, gbc);
-        frame.setVisible(true);
+		frame.setVisible(true);
 	}
 	
 	//*************************************************************************
@@ -227,9 +228,30 @@ public class HipPong{
 		//creates text labels and field for player controls
 		JLabel left = new JLabel("Left:");
 		JLabel right = new JLabel("Right:");
+		final JButton leftControlKey = new JButton(String.valueOf(Controls[player * 2]));
+		final JButton rightControlKey = new JButton(String.valueOf(Controls[(player * 2) + 1]));
 		final JTextField leftControl = new JTextField(String.valueOf(Controls[player * 2]), 2);
 		final JTextField rightControl = new JTextField(String.valueOf(Controls[(player * 2) + 1]), 2);
 		
+		//creating the listeners for the buttons. when clicked it calls a dialog
+		//	asking the user for a key and returns the first key typed
+		leftControlKey.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Controls[player * 2] = JOptionPane.showInputDialog(
+						frame, "Enter new left key:",
+						"new Left key", JOptionPane.PLAIN_MESSAGE).charAt(0);
+				leftControlKey.setText("" + Controls[player * 2]);
+			}
+		});
+		rightControlKey.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Controls[(player * 2) + 1] = JOptionPane.showInputDialog(
+						frame, "Enter new right key:",
+						"new Right key", JOptionPane.PLAIN_MESSAGE).charAt(0);
+				leftControlKey.setText("" + Controls[(player * 2) + 1]);
+			}
+		});
+
 		//creating the document listeners so update the controls if the user
 		//	changes or adds something to the field. does nothing upon character
 		//	removal.
@@ -263,9 +285,9 @@ public class HipPong{
 		top.add(computer);
 		top.add(wall);
 		bottom.add(left);
-		bottom.add(leftControl);
+		bottom.add(leftControlKey);
 		bottom.add(right);
-		bottom.add(rightControl);
+		bottom.add(rightControlKey);
 		
 		//adding everything to the panel that will be returned
 		menu.add(top);
@@ -287,7 +309,10 @@ public class HipPong{
 		//creating game and adding it to the frame
 		Game game = new Game();
 		frame.setLayout(new BorderLayout());
-        frame.add(game, BorderLayout.CENTER);
+		frame.add(game, BorderLayout.CENTER);
+		frame.setResizable(true);
+		frame.setSize(1000,1000);
+		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 }
