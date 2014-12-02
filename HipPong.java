@@ -308,12 +308,10 @@ public class HipPong{
 
 		//creating game and adding it to the frame
 		Game game = new Game();
-		frame.setLayout(new BorderLayout());
+		frame.setSize(500,500);
+        frame.setLayout(new BorderLayout());
 		frame.add(game, BorderLayout.CENTER);
-		frame.setResizable(true);
-		frame.setSize(1000,1000);
-		//frame.setResizable(false);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setResizable(false);
 		frame.setVisible(true);
 	}
 }

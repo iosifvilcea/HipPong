@@ -246,7 +246,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Check for boundaries.
         //Left Side
         if(ballX < (p1x + p1Width)){                //If ball passes Left Paddle Position
-            if (ballY+ballDY > (p1y + p1Height) || (ballY+ballDY + diameter) < p1y)     //If ball Misses the paddle
+            if (ballY+ballDY > (p1y + p1Height) 
+                            || 
+               (ballY+ballDY + diameter) < p1y)     //If ball Misses the paddle
             {    
                 //Announce Winner, Score Points
                 System.out.println("P1 Loses.");            //Game Blouses.
@@ -265,7 +267,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Right Side
         if(ballX > (p2x + p2Width)){                 //If ball Right Passes Paddle Position
-            if (ballY+ballDY > (p2y + p2Height) || (ballY+ballDY + diameter) < p2y)
+            if (ballY+ballDY > (p2y + p2Height) 
+                            ||
+               (ballY+ballDY + diameter) < p2y)
             {
                 //Announce Winner, Score Points
                 System.out.println("P2 Loses.");            //Game Blouses.
