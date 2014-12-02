@@ -16,7 +16,18 @@ import java.awt.event.*;
 import java.awt.event.KeyListener;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
-    
+   
+    // *********************
+    // Wall Attributes
+    // *********************
+    private boolean wallTop = false;
+    private boolean wallBottom = false;
+
+    private int wallTopX = 0;
+    private int wallBottomX = 250; 
+    private int wallHeight = 10;
+    private int wallWidth = getWidth(); 
+
     // *********************
     // Ball Attributes
     // *********************
@@ -65,6 +76,17 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean p3LeftPress = false;
     private boolean p3RightPress = false;
 
+    //BOTTOM
+    private int p4x = 0;
+    private int p4y = 500;
+    private int p4Width = 50;
+    private int p4Height = 10;
+    private int p4Speed = 5;
+
+    private boolean p4LeftPress = false;
+    private boolean p4RightPress = false;
+
+
 
     // ********************
     //  Constructor
@@ -91,7 +113,18 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         g.fillOval(ballX,ballY,diameter,diameter);  //Create Ball
         g.fillRect(p1x, p1y, p1Width, p1Height);    //Create P1 Paddle
         g.fillRect(p2x, p2y, p2Width, p2Height);    //Create P2 Paddle 
-        g.fillRect(p3x, p3y, p3Width, p3Height);    //Create P3 Paddle
+        
+        if(!wallTop)
+            g.fillRect(p3x, p3y, p3Width, p3Height);    //Create P3 Paddle
+        else
+            ;   //Needs Testing.
+            //g.fillRect(wallTopX, wallWidth, wallWidth, wallHeight);
+
+        if(!wallBottom)
+            g.fillRect(p4x, p4y, p4Width, p4Height);    //Create p4 Paddle
+        else
+            ; //Needs Testing.
+            //g.fillRect(wallBottomX, wallWidth, wallWidth, wallHeight);
     }
 
     // ***********************************
@@ -125,9 +158,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             p3LeftPress = true;
         if( e.getKeyCode() == KeyEvent.VK_RIGHT )
             p3RightPress = true;
-
        
         //BOTTOM PLAYER
+        if( e.getKeyCode() == KeyEvent.VK_Z )
+            p4LeftPress = true;
+        if( e.getKeyCode() == KeyEvent.VK_X )
+            p4RightPress = true;
+
+
     }
 
     public void keyReleased(KeyEvent e){
@@ -148,6 +186,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             p3LeftPress = false;
         if( e.getKeyCode() == KeyEvent.VK_RIGHT )
             p3RightPress = false;
+
+        //BOTTOM PLAYER
+        if( e.getKeyCode() == KeyEvent.VK_Z )
+            p4LeftPress = false;
+        if( e.getKeyCode() == KeyEvent.VK_X )
+            p4RightPress = false;
+
 
     }
 
@@ -186,6 +231,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(p3RightPress)
             if( (p3x + p3Speed + p3Width) < getWidth() )
                 p3x += p3Speed;
+
+        //Player4/BOTTOM
+        if(p4LeftPress)
+            if( (p4x - p3Speed) > 0) 
+                p4x -= p3Speed;
+
+        if(p4RightPress)
+            if( (p4x + p4Speed + p4Width) < getWidth() )
+                p4x += p4Speed;
 
 
 

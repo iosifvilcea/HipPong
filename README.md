@@ -7,7 +7,6 @@ TODO:
     See Through Menu
     Integrate Menu
     Fix 2nd Player Paddle
-    Add P3, P4.
     Add BlackHole
     Add Point System
     Fixed Screen Size
@@ -18,3 +17,8 @@ NOTES:
     Ball doesn't detect 2nd Player Paddle in the right location.
     Will be fixed once we have a fixed size for the screen.
     1200x900 is way too big.
+    
+    12/2 - 10:21 - Added Both Paddles.
+        -Needs to be relocated.
+        -Needs to be detected by ball.
+        -Wall set up, need to be relocated.
