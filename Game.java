@@ -25,8 +25,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int ballY = 250;
     
     //Ball Position Change
-    private int ballDX = -1;
-    private int ballDY = 3;
+    private int ballDX = -2;
+    private int ballDY = 5;
     
     //Ball Size
     private int diameter = 20;
@@ -49,6 +49,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public Game(){
         setBackground(Color.BLACK);
 
+        //Check Key Presses
+        setFocusable(true);     //Allows key component to receive focus.
+        addKeyListener(this);   //Allows panel to access key events.
+
         // 60fps
         Timer refresh = new Timer(1000/60, this);
         refresh.start();
@@ -60,10 +64,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        //Check Key Presses
-        setFocusable(true);     //Allows key component to receive focus.
-        addKeyListener(this);   //Allows panel to access key events.
-        
         g.setColor(Color.WHITE);                    //Set Component Colors
         g.fillOval(ballX,ballY,diameter,diameter);  //Create Ball
         g.fillRect(p1x, p1y, p1Width, p1Height);    //Create P1 Paddle
@@ -89,9 +89,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             p1RightPress = true;
     }
     public void keyReleased(KeyEvent e){
-	p1LeftPress = false;
-	p1RightPress = false;
+	    p1LeftPress = false;
+	    p1RightPress = false;
     }
+
     public void keyTyped(KeyEvent e){}
 
     // ***********************************
@@ -114,19 +115,30 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         }
 
 
-        //Left Boundaries
-        
-        //Right Boundaries
-
-        //Top Boundaries
-        
-        //Bottom Boundaries
-
         //Check for boundaries.
-        if(ballX < diameter/2) ballDX = Math.abs(ballDX);
-        if(ballX > getWidth() - diameter/2) ballDX = -Math.abs(ballDX);
-        if(ballY < diameter/2) ballDY = Math.abs(ballDY);
-        if(ballY > getHeight()- diameter/2) ballDY = -Math.abs(ballDY);
+        //Left Side
+        if(ballX < (p1x + p1Width)){                //If ball Passes Paddle Position
+            if (ballY+ballDY > (p1y + p1Height) || 
+               (ballY+ballDY + diameter) < p1y)     //If ball Misses the paddle
+                System.out.println("Miss.");            //Game Blouses.
+            else                                    //Else, were good, it hit.
+                ballDX = Math.abs(ballDX);
+        }
+
+        //Right Side
+        if(ballX > getWidth() - diameter/2){
+            ballDX = -Math.abs(ballDX);
+        }
+
+        //Top
+        if(ballY < diameter/2){
+            ballDY = Math.abs(ballDY);
+        }
+
+        //Bottom
+        if(ballY > getHeight()- diameter/2){
+            ballDY = -Math.abs(ballDY);
+        }
 
 
         //Sets new ball position.
