@@ -55,6 +55,16 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean p2LeftPress = false;
     private boolean p2RightPress = false;
 
+    //TOP
+    private int p3x = 250;
+    private int p3y = 0;
+    private int p3Width = 50;
+    private int p3Height = 10;
+    private int p3Speed = 5;
+
+    private boolean p3LeftPress = false;
+    private boolean p3RightPress = false;
+
 
     // ********************
     //  Constructor
@@ -81,6 +91,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         g.fillOval(ballX,ballY,diameter,diameter);  //Create Ball
         g.fillRect(p1x, p1y, p1Width, p1Height);    //Create P1 Paddle
         g.fillRect(p2x, p2y, p2Width, p2Height);    //Create P2 Paddle 
+        g.fillRect(p3x, p3y, p3Width, p3Height);    //Create P3 Paddle
     }
 
     // ***********************************
@@ -110,7 +121,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             p2RightPress = true;
 
         //TOP PLAYER
-        
+        if( e.getKeyCode() == KeyEvent.VK_LEFT )
+            p3LeftPress = true;
+        if( e.getKeyCode() == KeyEvent.VK_RIGHT )
+            p3RightPress = true;
+
+       
         //BOTTOM PLAYER
     }
 
@@ -126,6 +142,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             p2LeftPress = false;
         if( e.getKeyCode() == KeyEvent.VK_COMMA )
             p2RightPress = false;
+
+        //TOP PLAYER
+        if( e.getKeyCode() == KeyEvent.VK_LEFT )
+            p3LeftPress = false;
+        if( e.getKeyCode() == KeyEvent.VK_RIGHT )
+            p3RightPress = false;
 
     }
 
@@ -150,11 +172,21 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Player2/RightSide
         if(p2LeftPress)
             if( (p2y - p2Speed) > 0) 
-                p2y -= p1Speed;
+                p2y -= p2Speed;
 
         if(p2RightPress)
             if( (p2y + p2Speed + p2Height) < getHeight())
                 p2y += p2Speed;
+
+        //Player3/TOP
+        if(p3LeftPress)
+            if( (p3x - p3Speed) > 0) 
+                p3x -= p3Speed;
+
+        if(p3RightPress)
+            if( (p3x + p3Speed + p3Width) < getWidth() )
+                p3x += p3Speed;
+
 
 
         //Check for boundaries.
