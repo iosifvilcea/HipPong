@@ -16,7 +16,14 @@ import java.awt.event.*;
 import java.awt.event.KeyListener;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
-   
+    
+    // *********************
+    // Game Options
+    // *********************
+    private int[] players;
+    private String[] controls;
+    private int difficulty; 
+
     // *********************
     // Wall Attributes
     // *********************
@@ -91,7 +98,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ********************
     //  Constructor
     // ********************
-    public Game(){
+    public Game(int[] p, String[] c, int d){
+	//setting in passed in values
+	players = p;
+	controls = c;
+	difficulty = d;
+
         setBackground(Color.BLACK);
 
         //Check Key Presses

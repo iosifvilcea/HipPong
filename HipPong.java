@@ -25,7 +25,7 @@ public class HipPong{
 	//initialization of the game options
 	private static int[] players = {0,0,0,0}; //0 = human; 1 = computer; 2 = wall;
 	//every pair is a player. first in pair is left/up. second in pair is right/down.
-	private static char[] Controls = {'q','a','c','v','[',';','m',','};
+	private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
 	private static int difficulty = 1; //0 = easy; 1 = normal; 2 = hard;
 	
 	//*************************************************************************
@@ -230,53 +230,17 @@ public class HipPong{
 		JLabel right = new JLabel("Right:");
 		final JButton leftControlKey = new JButton(String.valueOf(Controls[player * 2]));
 		final JButton rightControlKey = new JButton(String.valueOf(Controls[(player * 2) + 1]));
-		final JTextField leftControl = new JTextField(String.valueOf(Controls[player * 2]), 2);
-		final JTextField rightControl = new JTextField(String.valueOf(Controls[(player * 2) + 1]), 2);
 		
 		//creating the listeners for the buttons. when clicked it calls a dialog
 		//	asking the user for a key and returns the first key typed
 		leftControlKey.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Controls[player * 2] = JOptionPane.showInputDialog(
-						frame, "Enter new left key:",
-						"new Left key", JOptionPane.PLAIN_MESSAGE).charAt(0);
-				leftControlKey.setText("" + Controls[player * 2]);
+				getKey(player, true, leftControlKey);
 			}
 		});
 		rightControlKey.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Controls[(player * 2) + 1] = JOptionPane.showInputDialog(
-						frame, "Enter new right key:",
-						"new Right key", JOptionPane.PLAIN_MESSAGE).charAt(0);
-				rightControlKey.setText("" + Controls[(player * 2) + 1]);
-			}
-		});
-
-		//creating the document listeners so update the controls if the user
-		//	changes or adds something to the field. does nothing upon character
-		//	removal.
-		leftControl.getDocument().addDocumentListener(new DocumentListener(){
-			public void changedUpdate(DocumentEvent e){
-				warn();
-			}
-			public void removeUpdate(DocumentEvent e){}
-			public void insertUpdate(DocumentEvent e){
-				warn();
-			}
-			public void warn(){
-				Controls[player * 2] = leftControl.getText().charAt(0);
-			}
-		});
-		rightControl.getDocument().addDocumentListener(new DocumentListener(){
-			public void changedUpdate(DocumentEvent e){
-				warn();
-			}
-			public void removeUpdate(DocumentEvent e){}
-			public void insertUpdate(DocumentEvent e){
-				warn();
-			}
-			public void warn(){
-				Controls[(player * 2) + 1] = rightControl.getText().charAt(0);
+				getKey(player, false, rightControlKey);
 			}
 		});
 		
@@ -307,12 +271,52 @@ public class HipPong{
 		frame.getContentPane().removeAll();
 
 		//creating game and adding it to the frame
-		Game game = new Game();
-		frame.setSize(500,500);
-        frame.setLayout(new BorderLayout());
+		Game game = new Game(players, Controls, difficulty);
+		frame.setLayout(new BorderLayout());
 		frame.add(game, BorderLayout.CENTER);
-        frame.setResizable(false);
+		frame.setResizable(true);
+		frame.setSize(700,700);
+		//frame.setResizable(false);
 		frame.setVisible(true);
+	}
+	//*********************************************************************
+	//getKey
+	//
+	//
+	//
+	//*********************************************************************
+	private static void getKey(final int player, final boolean left, final JButton button){
+		final boolean[] check = {false};
+		final JFrame popup = new JFrame("New Key");
+		popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		popup.setSize(300,100);
+		popup.add(new JLabel("Press the new Control Key"));
+		popup.setVisible(true);
+		popup.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e){
+				String holder = e.getKeyText( e.getKeyCode());
+
+				if (left)
+					Controls[player * 2] = holder;
+				else
+					Controls[(player * 2) + 1] = holder;
+
+				button.setText(holder);
+				popup.dispose();
+			}
+			public void keyReleased(KeyEvent e) {}
+			public void keyTyped(KeyEvent e) {
+				String holder = e.getKeyText( e.getKeyCode());
+
+				if (left)
+					Controls[player * 2] = holder;
+				else
+					Controls[(player * 2) + 1] = holder;
+
+				button.setText(holder);
+				popup.dispose();
+			}
+		});
 	}
 }
 
