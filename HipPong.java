@@ -39,7 +39,8 @@ public class HipPong{
 	public static void main(String[] args){
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridBagLayout());
-		frame.setSize(1400, 900);
+		frame.setSize(702, 725);
+        frame.setLocationRelativeTo(null); //Adds window in center of screen.
 		frame.setResizable(false);
 		frame.setBackground(Color.BLACK);
 		
@@ -272,12 +273,10 @@ public class HipPong{
 
 		//creating game and adding it to the frame
 		Game game = new Game(players, Controls, difficulty);
-		frame.setLayout(new BorderLayout());
-		frame.add(game, BorderLayout.CENTER);
-		frame.setResizable(true);
-		frame.setSize(700,700);
-		//frame.setResizable(false);
-		frame.setVisible(true);
+        frame.setLayout(new BorderLayout());
+        frame.add(game, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
 	}
 	//*********************************************************************
 	//getKey

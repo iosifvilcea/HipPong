@@ -5,7 +5,7 @@
 // * Note: 
 // *
 // * Credits:
-// *   Ball boundaries used from
+// *   Ball boundaries inspired from
 // *    ~/myers/cop3252/notes/examples/gui/Ball.java
 // ********************************************************
 
@@ -22,18 +22,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // *********************
     private int[] players;
     private String[] controls;
-    private int difficulty; 
+    private int difficulty;
 
     // *********************
     // Wall Attributes
     // *********************
     private boolean wallTop = false;
     private boolean wallBottom = false;
-
-    private int wallTopX = 0;
-    private int wallBottomX = 250; 
-    private int wallHeight = 10;
-    private int wallWidth = getWidth(); 
 
     // *********************
     // Ball Attributes
@@ -43,19 +38,22 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int ballY = 250;
     
     //Ball Position Change
-    private int ballDX = -2;
-    private int ballDY = 5;
-    
+    private int ballDX = -1;
+    private int ballDY = 3;
+    private int rounds = 0;
+
     //Ball Size
     private int diameter = 20;
 
     // *********************
     // Player Attributes
     // *********************
+    
+    //Note: Real width: 698, height: 675
 
     //LEFT
     private int p1x = 25;
-    private int p1y = 250;
+    private int p1y = 325;
     private int p1Width = 10;
     private int p1Height = 50;
     private int p1Speed = 5;
@@ -64,8 +62,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean p1RightPress = false;
 
     //RIGHT
-    private int p2x = 465;
-    private int p2y = 250;
+    private int p2x = 675;
+    private int p2y = 325;
     private int p2Width = 10;
     private int p2Height = 50;
     private int p2Speed = 5;
@@ -74,8 +72,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean p2RightPress = false;
 
     //TOP
-    private int p3x = 250;
-    private int p3y = 0;
+    private int p3x = 325;
+    private int p3y = 25;
     private int p3Width = 50;
     private int p3Height = 10;
     private int p3Speed = 5;
@@ -84,8 +82,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean p3RightPress = false;
 
     //BOTTOM
-    private int p4x = 0;
-    private int p4y = 500;
+    private int p4x = 325;
+    private int p4y = 675;
     private int p4Width = 50;
     private int p4Height = 10;
     private int p4Speed = 5;
@@ -99,10 +97,17 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //  Constructor
     // ********************
     public Game(int[] p, String[] c, int d){
-	//setting in passed in values
-	players = p;
-	controls = c;
-	difficulty = d;
+        
+        //setting in passed in values
+        players = p;
+	    controls = c;
+	    difficulty = d;
+
+        System.out.println("P3:" + p[2] + "P4:" + p[3]);
+        if(p[2] == 2)
+            wallTop = true;
+        if(p[3] == 2)
+            wallBottom = true;
 
         setBackground(Color.BLACK);
 
@@ -129,14 +134,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(!wallTop)
             g.fillRect(p3x, p3y, p3Width, p3Height);    //Create P3 Paddle
         else
-            ;   //Needs Testing.
-            //g.fillRect(wallTopX, wallWidth, wallWidth, wallHeight);
+            ;   //Don't draw anything.
 
         if(!wallBottom)
             g.fillRect(p4x, p4y, p4Width, p4Height);    //Create p4 Paddle
         else
-            ; //Needs Testing.
-            //g.fillRect(wallBottomX, wallWidth, wallWidth, wallHeight);
+            ; //Don't draw anything.
+        
     }
 
     // ***********************************
@@ -144,7 +148,30 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //   is called.
     // ***********************************
     public void actionPerformed(ActionEvent e){
+        
+        //Speed Up Game
+        /*
+        if(rounds > 5 && rounds < 10)
+        {
+            ballDX = -2;
+            ballDY = 4;
+        }else if(rounds > 10 && rounds < 15)
+        {
+            ballDX = -3;
+            ballDY = 5;
+        }else if(rounds > 20)
+        {
+            ballDX = -5;
+            ballDY = 7;
+        }
+        */
+
         run();
+
+        System.out.println("pLeft:" + p2x + " y:" + p2y);
+        //System.out.println("pTop:" + p3x + " y:" + p3y);
+        System.out.println("w:" + getWidth() + " h:" + getHeight());
+        //System.out.println("ballx:" + ballX + " y:" + ballY);
     }
 
     // ***********************************
@@ -223,7 +250,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p1y -= p1Speed;
 
         if(p1RightPress)
-            if( (p1y + p1Speed + p1Height) < getHeight())
+            if( (p1y + p1Speed + p1Height) < getWidth() )
                 p1y += p1Speed;
 
         //Player2/RightSide
@@ -232,7 +259,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p2y -= p2Speed;
 
         if(p2RightPress)
-            if( (p2y + p2Speed + p2Height) < getHeight())
+            if( (p2y + p2Speed + p2Height) < getWidth() )
                 p2y += p2Speed;
 
         //Player3/TOP
@@ -241,7 +268,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p3x -= p3Speed;
 
         if(p3RightPress)
-            if( (p3x + p3Speed + p3Width) < getWidth() )
+            if( (p3x + p3Speed + p3Width) < getHeight() )
                 p3x += p3Speed;
 
         //Player4/BOTTOM
@@ -250,61 +277,55 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p4x -= p3Speed;
 
         if(p4RightPress)
-            if( (p4x + p4Speed + p4Width) < getWidth() )
+            if( (p4x + p4Speed + p4Width) < getHeight())
                 p4x += p4Speed;
 
 
 
         //Check for boundaries.
         //Left Side
-        if(ballX < (p1x + p1Width)){                //If ball passes Left Paddle Position
+        if( (ballX+ballDX) < (p1x + p1Width)){                //If ball passes Left Paddle Position
             if (ballY+ballDY > (p1y + p1Height) 
                             || 
                (ballY+ballDY + diameter) < p1y)     //If ball Misses the paddle
             {    
                 //Announce Winner, Score Points
                 System.out.println("P1 Loses.");            //Game Blouses.
-               
-                //Reset Paddles
-                p1x = 25;
-                p2x = 465;
 
-                //Reset Ball Position
-                ballX = 250;
-                ballY = 250;
+                gameOver();
 
             }else                                    //Else, were good, it hit.
+            {
                 ballDX = Math.abs(ballDX);
+                rounds++;
+            }
         }
 
         //Right Side
-        if(ballX > (p2x + p2Width)){                 //If ball Right Passes Paddle Position
-            if (ballY+ballDY > (p2y + p2Height) 
+        if( (ballX + ballDX + diameter) > (p2x)){                 //If ball Right Passes Paddle Position
+            if ( (ballY+ballDY) > (p2y + p2Height) 
                             ||
                (ballY+ballDY + diameter) < p2y)
             {
                 //Announce Winner, Score Points
                 System.out.println("P2 Loses.");            //Game Blouses.
-               
-                //Reset Paddles
-                p1x = 25;
-                p2x = 465;
+            
+                gameOver();
 
-                //Reset Ball Position
-                ballX = 250;
-                ballY = 250;
-
-            }else
+            }
+            else{
                 ballDX = -Math.abs(ballDX);
+                rounds++;
+            }
         }
 
         //Top
-        if(ballY < diameter/2){
-            ballDY = Math.abs(ballDY);
+        if(ballY < diameter/2 ){
+                ballDY = Math.abs(ballDY);
         }
 
         //Bottom
-        if(ballY > getHeight()- diameter/2){
+        if(ballY > getHeight() - diameter/2){
             ballDY = -Math.abs(ballDY);
         }
 
@@ -315,5 +336,36 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         
         //Draw it.
         repaint();
+    }
+
+    // ***********************************
+    // * GameOver
+    // *  Resets paddles, ball, counter w/
+    // *   start values/positions.
+    // ***********************************
+    public void gameOver(){
+    
+        //Reset ball
+        ballX = 325;
+        ballY = 325;
+        
+        //Reset P1 Position
+        p1x = 25;
+        p1y = 325;
+ 
+        //Reset P2 Position
+        p2x = 675;
+        p2y = 325;
+
+        //Reset P3 Position
+        p3x = 325;
+        p3y = 25;
+
+        //Reset P4 Position
+        p4x = 325;
+        p4y = 675;
+
+        //Reset Speed Up Counter
+        rounds = 0;
     }
 }

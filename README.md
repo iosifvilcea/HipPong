@@ -4,21 +4,18 @@ HipPong
 Original Pong but way cooler.
 
 TODO:
-    See Through Menu
-    Integrate Menu
-    Fix 2nd Player Paddle
+    See Through/In game/Resume/Options Menu
     Add BlackHole
     Add Point System
-    Fixed Screen Size
+    Fix Screen Size
     Get Fixed Size, base paddle position off of it.
     Implement Walls/Computers
-   
-NOTES:
-    Ball doesn't detect 2nd Player Paddle in the right location.
-    Will be fixed once we have a fixed size for the screen.
-    1200x900 is way too big.
-    
-    12/2 - 10:21 - Added Both Paddles.
-        -Needs to be relocated.
-        -Needs to be detected by ball.
-        -Wall set up, need to be relocated.
+    Fix paddle/ball detection for P3, P4.
+
+Known Issues:
+    -P3 Wall radio does not work. 
+    -Size is off.
+    -Paddles are off.
+    -Paddles intersect.
+    -Menu is not the right size.
+    -Round Speed Up gets stuck after 5+ rounds.

@@ -9,6 +9,7 @@ CLASSES = \
 		Player.java \
 		Ball.java \
 		BlackHole.java \
+		Game.java \
 		HipPong.java
 
 default: classes
