@@ -77,9 +77,9 @@ public class BlackHole{
 	//		This function changes the balls direction so some
 	//		random set of doubles.
 	//*********************************************************************
-	public void spit(Ball arg){
+	public void spit( /*Ball arg */ ){
 		//setting direction variables to random numbers with mins
-		arg.setDirX (rand.nextInt(maxX/ballSpVar) + (maxX/ballSpVar));
-		arg.setDirY (rand.nextInt(maxY/ballSpVar) + (maxY/ballSpVar));
+		//arg.setDirX (rand.nextInt(maxX/ballSpVar) + (maxX/ballSpVar));
+		//arg.setDirY (rand.nextInt(maxY/ballSpVar) + (maxY/ballSpVar));
 	}
 }

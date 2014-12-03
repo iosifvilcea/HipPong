@@ -7,7 +7,6 @@ JC = javac
 CLASSES = \
 		Computer.java \
 		Player.java \
-		Ball.java \
 		BlackHole.java \
 		Game.java \
 		HipPong.java

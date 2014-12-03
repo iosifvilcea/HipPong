@@ -34,7 +34,8 @@ public class Computer extends Player{
 	//		This function moves the computer's paddle position
 	//		in the direction of the ball.
 	//*********************************************************************
-	public void move(Ball ball){
+	/*
+    public void move(Ball ball){
 		double ballPos; //will be used to hold the balls position
 
 		//determines which axis of the ball's position it should check
@@ -55,4 +56,5 @@ public class Computer extends Player{
 		else
 			setPosition(false);
 	}
+    */
 }
