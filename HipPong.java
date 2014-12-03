@@ -39,7 +39,7 @@ public class HipPong{
 	public static void main(String[] args){
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridBagLayout());
-		frame.setSize(702, 725);
+		frame.setSize(1400, 900);
         frame.setLocationRelativeTo(null); //Adds window in center of screen.
 		frame.setResizable(false);
 		frame.setBackground(Color.BLACK);
@@ -266,17 +266,19 @@ public class HipPong{
 	//		game to it. when creating the game panel it passes in the recorded
 	//		values of the menu screen.
 	//*************************************************************************
-    private static void PlayGame(){
+	private static void PlayGame(){
 		//clearing frame
 		frame.setVisible(false);
 		frame.getContentPane().removeAll();
 
 		//creating game and adding it to the frame
 		Game game = new Game(players, Controls, difficulty);
-        frame.setLayout(new BorderLayout());
-        frame.add(game, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
+		frame.setResizable(true);
+		frame.setSize(702,725);
+		frame.setResizable(false);
+	        frame.setLayout(new BorderLayout());
+	        frame.add(game, BorderLayout.CENTER);
+	        frame.setVisible(true);
 	}
 	//*********************************************************************
 	//getKey
@@ -318,98 +320,3 @@ public class HipPong{
 		});
 	}
 }
-
-//*****************************************************************************
-//Class:
-//	Menu
-//
-//	Operation:
-//		This class will paint all the choices of the menu for all players.
-//		These choices include movement keys, human, computer, or
-//		wall(maybe, if implemented);
-//*****************************************************************************
-class Menu extends JPanel implements ActionListener{
-
-    // ***************
-    // Initialize Look
-    // ***************
-    protected Color color = null;
-    protected Color background = null;
-    protected int[] dim = {0, 0, 0, 0};
-
-    // ***************
-    // Game Keys
-    // ***************
-    char leftKey = ' ', rightKey = ' ';
-    JTextField leftKeyJT = new JTextField(1);
-    JTextField rightKeyJT = new JTextField(1);
-
-    // ************
-    // Constructors
-    // ************
-    public Menu(){
-        ; //Do Nothing. Everything is already initialized.
-    }
-
-    // ********************************************************
-    // Constructor
-    //  Params: Color, Background Color, Fill Oval Dimensions.
-    //  *******************************************************
-    public Menu(Color c, Color bg, int x, int y, int width, int height){
-        
-        // set Look
-        color = c;
-        background = bg;
-        dim[0] = x;
-        dim[1] = y;
-        dim[2] = width;
-        dim[3] = height;
-
-        //Set key
-        add(leftKeyJT);
-        add(rightKeyJT);
-        leftKeyJT.addActionListener(this);
-        rightKeyJT.addActionListener(this);
-    }
-
-    // ***************
-    // Getters/Setters
-    // ***************
-    public void setKey(char l, char r){ 
-        leftKey = l; 
-        rightKey = r; 
-    }
-
-    public char getLeftKey(){ return leftKey; }
-    public char getRightKey(){ return rightKey; }
-
-    public void actionPerformed(ActionEvent e){
-        System.out.println("test.");
-
-        if(e.getSource() == leftKeyJT)
-        {
-            leftKey = leftKeyJT.getText().charAt(0);    //Gets leftKeyJT value
-            System.out.println("Left Key: " + leftKey);
-        }
-        else if(e.getSource() == rightKeyJT )
-        {
-            rightKey = rightKeyJT.getText().charAt(0);   //Gets leftKeyJT value
-            System.out.println("Right Key: " + rightKey);
-        }
-        else
-            ;
-    }
-
-    // *****************
-    // Paint Data/Specs
-    // *****************
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        //Paint
-        g.setColor(color);
-        g.fillOval(dim[0], dim[1], dim[2], dim[3]);
-        setBackground(background);
-
-    }
-}   //End of class Menu
