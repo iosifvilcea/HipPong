@@ -22,10 +22,13 @@ public class HipPong{
 	//initialization of the frame with Boarder Layout
 	private static JFrame frame = new JFrame("HipPong");
 	
+	//initialization max poinst to play game
+	private static int maxPoints = 5;
 	//initialization of the game options
 	private static int[] players = {0,0,0,0}; //0 = human; 1 = computer; 2 = wall;
 	//every pair is a player. first in pair is left/up. second in pair is right/down.
-	private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
+	//private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
+	private static String[] Controls = {"W","S","A","D","UP","DOWN","LEFT","RIGHT"};
 	private static int difficulty = 1; //0 = easy; 1 = normal; 2 = hard;
 	
 	//*************************************************************************
@@ -94,19 +97,20 @@ public class HipPong{
 	private static JPanel PlayersConfirm(){
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
-		
+		JPanel bottom = new JPanel();
+
 		//menu.setBackground(Color.BLACK);
 		//top.setBackground(Color.BLACK);
-		
+
 		//setting the layouts for everything so it is forced to display
 		//	how I want it to display
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 		top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
 
 		//setting the returned's panel dimensions
-		menu.setPreferredSize(new Dimension(200,50));
-		menu.setMaximumSize(new Dimension(200,50));
-		menu.setMinimumSize(new Dimension(200,50));
+		menu.setPreferredSize(new Dimension(200,60));
+		menu.setMaximumSize(new Dimension(200,60));
+		menu.setMinimumSize(new Dimension(200,60));
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
@@ -145,22 +149,34 @@ public class HipPong{
 		//creating the accept/play button and setting to when pressed it
 		//	calls the game class. then setting it to be in the center to the
 		//	boxlayout
+		JLabel mp = new JLabel("Max Points:");
+		final JTextField points = new JTextField("5");
 		JButton accept = new JButton("Play");
 		accept.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				PlayGame();
+				try{
+					maxPoints = Integer.parseInt(points.getText());
+				} catch (Exception excep) {
+					
+				} finally {
+					PlayGame();
+				}
 			}
 		});
-		accept.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		//accept.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		//adding everything to the top and bottom half's
 		top.add(easy);
 		top.add(normal);
 		top.add(hard);
+		bottom.add(mp);
+		bottom.add(points);
+		bottom.add(accept);
 		
 		//adding everything to the panel that will be returned
 		menu.add(top);
-		menu.add(accept);
+		menu.add(bottom);
 		
 		return menu;
 	}
@@ -274,53 +290,79 @@ public class HipPong{
 	//		values of the menu screen.
 	//*************************************************************************
 	private static void PlayGame(){
+		boolean loop = false;
 		//clearing frame
 		frame.setVisible(false);
 		frame.getContentPane().removeAll();
 
 		//creating game and adding it to the frame
-		Game game = new Game(players, Controls, difficulty);
+		Game game = new Game(players, Controls, difficulty, maxPoints, loop);
 		frame.setResizable(true);
 		frame.setSize(702,725);
 		frame.setResizable(false);
 	        frame.setLayout(new BorderLayout());
 	        frame.add(game, BorderLayout.CENTER);
 	        frame.setVisible(true);
+		if (loop){
+			frame.setVisible(false);
+			frame.getContentPane().removeAll();
+			main(new String[] {"",""});
+		}
 	}
 	//*********************************************************************
 	//getKey
+	//	passed in:
+	//		player: the player who's change is being requested
+	//		left: left control or not
+	//		button: reference to the button that was clicked
 	//
-	//
-	//
+	//	operation:
+	//		creates a popup style jframe that listens for any keys
+	//		hit by the player. It gets he key code, translates that
+	//		into text and then sets the calling button text to the
+	//		string of the new key as well as the control key for
+	//		the corresponding player. The jframe is then distroyed.
+	//		if closed out, the jframe wont do anything, and will
+	//		close out.
 	//*********************************************************************
 	private static void getKey(final int player, final boolean left, final JButton button){
-		final boolean[] check = {false};
+		//creation of popup frame
 		final JFrame popup = new JFrame("New Key");
 		popup.setSize(300,100);
 		popup.add(new JLabel("Press the new Control Key"));
 		popup.setVisible(true);
+
+		//adding listeners to get new key and set the correct control to it
 		popup.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e){
+				//gets the entered key's string representation
 				String holder = e.getKeyText( e.getKeyCode());
 
+				//checks which of the players keys is getting reset
 				if (left)
 					Controls[player * 2] = holder;
 				else
 					Controls[(player * 2) + 1] = holder;
-
+				
+				//sets the buttons text to the new key
 				button.setText(holder);
+				//closes the jframe
 				popup.dispose();
 			}
 			public void keyReleased(KeyEvent e) {}
 			public void keyTyped(KeyEvent e) {
+				//gets the entered key's string representation
 				String holder = e.getKeyText( e.getKeyCode());
 
+				//checks which of the players keys is getting reset
 				if (left)
 					Controls[player * 2] = holder;
 				else
 					Controls[(player * 2) + 1] = holder;
-
+				
+				//sets the buttons text to the new key
 				button.setText(holder);
+				//closes the jframe
 				popup.dispose();
 			}
 		});

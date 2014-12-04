@@ -23,6 +23,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int[] players;
     private String[] controls;
     private int difficulty;
+    private boolean loop;
 
     // *********************
     // Wall Attributes
@@ -96,12 +97,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ********************
     //  Constructor
     // ********************
-    public Game(int[] p, String[] c, int d){
+    public Game(int[] p, String[] c, int d, int pl, boolean l){
         
         //setting in passed in values
         players = p;
-	    controls = c;
-	    difficulty = d;
+	controls = c;
+	difficulty = d;
+	loop = l;
 
         System.out.println("P3:" + p[2] + "P4:" + p[3]);
         if(p[2] == 2)
