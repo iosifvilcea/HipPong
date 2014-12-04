@@ -28,7 +28,7 @@ public class HipPong{
 	private static int[] players = {0,0,0,0}; //0 = human; 1 = computer; 2 = wall;
 	//every pair is a player. first in pair is left/up. second in pair is right/down.
 	//private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
-	private static String[] Controls = {"W","S","A","D","UP","DOWN","LEFT","RIGHT"};
+	private static String[] Controls = {"W","S","A","D","Up","Down","Left","Right"};
 	private static int difficulty = 1; //0 = easy; 1 = normal; 2 = hard;
 	
 	//*************************************************************************
@@ -41,8 +41,9 @@ public class HipPong{
 	//*************************************************************************
 	public static void main(String[] args){
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
 		frame.setLayout(new GridBagLayout());
-		frame.setSize(1000, 500);
+		frame.setSize(700,700);
 	        frame.setLocationRelativeTo(null); //Adds window in center of screen.
 		frame.setResizable(true);
 		frame.setBackground(Color.BLACK);
@@ -52,10 +53,10 @@ public class HipPong{
 		gbc.insets = new Insets(50,0,0,50);
 		
 		//initialization of menu panels
-		JPanel left = PlayerOptions(0);
-		JPanel top = PlayerOptions(1);
-		JPanel right = PlayerOptions(2);
-		JPanel bottom = PlayerOptions(3);
+		JPanel left = vPlayerOptions(0);
+		JPanel top = hPlayerOptions(1);
+		JPanel right = vPlayerOptions(2);
+		JPanel bottom = hPlayerOptions(3);
 		JPanel center = PlayersConfirm();
 		
 		//putting menus on frame with constraints and showing menu to user(s)
@@ -98,9 +99,6 @@ public class HipPong{
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
 		JPanel bottom = new JPanel();
-
-		//menu.setBackground(Color.BLACK);
-		//top.setBackground(Color.BLACK);
 
 		//setting the layouts for everything so it is forced to display
 		//	how I want it to display
@@ -182,7 +180,7 @@ public class HipPong{
 	}
 	
 	//*************************************************************************
-	//PlayerOptions
+	//hPlayerOptions
 	//		passed in values:
 	//			player: used to reference which player's settings change
 	//		returns:
@@ -193,14 +191,10 @@ public class HipPong{
 	//			text fields and puts everything in a vertial boxlayout. Then
 	//			it returns everything to the calling object.
 	//*************************************************************************
-	private static JPanel PlayerOptions(final int player){
+	private static JPanel hPlayerOptions(final int player){
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
 		JPanel bottom = new JPanel();
-		
-		//menu.setBackground(Color.BLACK);
-		//top.setBackground(Color.BLACK);
-		//bottom.setBackground(Color.BLACK);
 		
 		//setting the layouts for everything so it is forced to display
 		//	how I want it to display
@@ -270,8 +264,7 @@ public class HipPong{
 		//adding everything to the top and bottom half's
 		top.add(human);
 		top.add(computer);
-		if (player != 0 && player != 2)
-			top.add(wall);
+		top.add(wall);
 		bottom.add(left);
 		bottom.add(leftControlKey);
 		bottom.add(right);
@@ -283,6 +276,98 @@ public class HipPong{
 		
 		return menu;
 	}
+
+	//****************************************************************************
+	//vPlayerOptions
+	//	passed in values:
+	//		player: used to reference which player's settings change
+	//	returns:
+	//		JPanel containing a single player's choices for type, and
+	//		controls
+	//	operations:
+	//		creates three horizontal boxlayouts of buttons or labels and
+	//		text fields and puts everything in a vertial boxlayout. Then
+	//		it returns everything to the calling object.
+	//****************************************************************************
+	private static JPanel vPlayerOptions(final int player){
+		JPanel menu = new JPanel();
+		JPanel top = new JPanel();
+		JPanel upP = new JPanel();
+		JPanel downP = new JPanel();
+		
+		//setting the layouts for everything so it is forced to display
+		//	how I want it to display
+		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
+		top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
+		upP.setLayout(new BoxLayout(upP,BoxLayout.X_AXIS));
+		downP.setLayout(new BoxLayout(downP,BoxLayout.X_AXIS));
+
+		//setting the returned's panel dimensions
+		menu.setPreferredSize(new Dimension(200,200));
+		menu.setMaximumSize(new Dimension(200,200));
+		menu.setMinimumSize(new Dimension(200,200));
+		
+		//creating player type buttons and adding them to a group so
+		// they are aware of each other
+		JRadioButton human = new JRadioButton("Human",true);
+		JRadioButton computer = new JRadioButton("Computer",false);
+		ButtonGroup playerType = new ButtonGroup();
+		playerType.add(human);
+		playerType.add(computer);
+		
+		//adding listeners so that when ever a buttons state changes to
+		//	selected it updates the player type value
+		human.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					players[player] = 0;
+				}
+			}
+		});
+		computer.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					players[player] = 1;
+				}
+			}
+		});
+		
+		//creates text labels and field for player controls
+		JLabel up = new JLabel("Up:");
+		JLabel down = new JLabel("Down:");
+		final JButton upControlKey = new JButton(String.valueOf(Controls[player * 2]));
+		final JButton downControlKey = new JButton(String.valueOf(Controls[(player * 2) + 1]));
+		
+		//creating the listeners for the buttons. when clicked it calls a dialog
+		//	asking the user for a key and returns the first key typed
+
+		upControlKey.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				getKey(player, true, upControlKey);
+			}
+		});
+		downControlKey.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				getKey(player, false, downControlKey);
+			}
+		});
+		
+		//adding everything to the top and bottom half's
+		top.add(human);
+		top.add(computer);
+		upP.add(up);
+		upP.add(upControlKey);
+		downP.add(down);
+		downP.add(downControlKey);
+		
+		//adding everything to the panel that will be returned
+		menu.add(top);
+		menu.add(upP);
+		menu.add(downP);
+		
+		return menu;
+	}
+
 	//*************************************************************************
 	//Game
 	//		called by the accept button. It clears the frame and adds a new
@@ -330,6 +415,7 @@ public class HipPong{
 		final JFrame popup = new JFrame("New Key");
 		popup.setSize(300,100);
 		popup.add(new JLabel("Press the new Control Key"));
+		popup.setLocationRelativeTo(null);
 		popup.setVisible(true);
 
 		//adding listeners to get new key and set the correct control to it
@@ -338,14 +424,17 @@ public class HipPong{
 				//gets the entered key's string representation
 				String holder = e.getKeyText( e.getKeyCode());
 
-				//checks which of the players keys is getting reset
-				if (left)
-					Controls[player * 2] = holder;
-				else
-					Controls[(player * 2) + 1] = holder;
+				//ESC isn't a valid key entry
+				if (holder != "Escape"){
+					//checks which of the players keys is getting reset
+					if (left)
+						Controls[player * 2] = holder;
+					else
+						Controls[(player * 2) + 1] = holder;
 				
-				//sets the buttons text to the new key
-				button.setText(holder);
+					//sets the buttons text to the new key
+					button.setText(holder);
+				}
 				//closes the jframe
 				popup.dispose();
 			}
@@ -354,14 +443,17 @@ public class HipPong{
 				//gets the entered key's string representation
 				String holder = e.getKeyText( e.getKeyCode());
 
-				//checks which of the players keys is getting reset
-				if (left)
-					Controls[player * 2] = holder;
-				else
-					Controls[(player * 2) + 1] = holder;
+				//ESC isn't a valid key entry
+				if (holder != "Escape"){
+					//checks which of the players keys is getting reset
+					if (left)
+						Controls[player * 2] = holder;
+					else
+						Controls[(player * 2) + 1] = holder;
 				
-				//sets the buttons text to the new key
-				button.setText(holder);
+					//sets the buttons text to the new key
+					button.setText(holder);
+				}
 				//closes the jframe
 				popup.dispose();
 			}
