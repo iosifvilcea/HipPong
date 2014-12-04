@@ -4,16 +4,18 @@ HipPong
 Original Pong but way cooler.
 
 TODO:
-    See Through/In game/Resume/Options Menu
+    Quit/MainMenu
+    Resume/Pause for "ESC"
+    Implement Computers
+    Swap controls back to default
+
     Add BlackHole
     Add Point System
-    Implement Computers
     Adjust so that chosen buttons actually work. 
 
 Known Issues:
-    -Size is off.
     -Paddles intersect.
     -Bottom Paddle/ball is out of sync.
-    -Menu is not the right size.
+    -Menu is not the right size. Needs to be 700x700
     -Round Speed Up gets stuck. Fix it so when the wall is enabled, the limit
     is changed to the frame. 

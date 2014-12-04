@@ -149,6 +149,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public void actionPerformed(ActionEvent e){
         
         //Speed Up Game
+        /*
         if(rounds > 2 && rounds < 4)
         {
             ballDX = -3;
@@ -164,6 +165,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             ballDX = -5;
             ballDY = 7;
         }
+        */
 
         run();
 
@@ -205,6 +207,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if( e.getKeyCode() == KeyEvent.VK_X )
             p4RightPress = true;
 
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+            pause();
 
     }
 
@@ -402,4 +406,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Reset Speed Up Counter
         rounds = 0;
     }
+
+    // ***********************************
+    // * Pause
+    // *  Resets paddles, ball, counter w/
+    // *   start values/positions.
+    // ***********************************
+    public void pause(){
+        System.out.println("\n\nPaused Called.\n\n");
+    }
+   
 }
