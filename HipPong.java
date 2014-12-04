@@ -39,14 +39,14 @@ public class HipPong{
 	public static void main(String[] args){
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridBagLayout());
-		frame.setSize(702, 725);
-        frame.setLocationRelativeTo(null); //Adds window in center of screen.
-		frame.setResizable(false);
+		frame.setSize(1000, 500);
+	        frame.setLocationRelativeTo(null); //Adds window in center of screen.
+		frame.setResizable(true);
 		frame.setBackground(Color.BLACK);
 		
 		//sets the constraints for spacing around the panels
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(100,10,100,10);
+		gbc.insets = new Insets(50,0,0,50);
 		
 		//initialization of menu panels
 		JPanel left = PlayerOptions(0);
@@ -58,18 +58,23 @@ public class HipPong{
 		//putting menus on frame with constraints and showing menu to user(s)
 		gbc.gridx = 0;
 		gbc.gridy = 2;
+		gbc.gridwidth = 1;
 		frame.add(left, gbc);
-		gbc.gridx = 3;
+		gbc.gridx = 0;
 		gbc.gridy = 0;
+		gbc.gridwidth = 5;
 		frame.add(top, gbc);
-		gbc.gridx = 5;
+		gbc.gridx = 3;
 		gbc.gridy = 2;
+		gbc.gridwidth = 1;
 		frame.add(right, gbc);
-		gbc.gridx = 3;
+		gbc.gridx = 0;
 		gbc.gridy = 4;
+		gbc.gridwidth = 5;
 		frame.add(bottom, gbc);
-		gbc.gridx = 3;
+		gbc.gridx = 2;
 		gbc.gridy = 2;
+		gbc.gridwidth = 1;
 		frame.add(center, gbc);
 		frame.setVisible(true);
 	}
@@ -99,9 +104,9 @@ public class HipPong{
 		top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
 
 		//setting the returned's panel dimensions
-		menu.setPreferredSize(new Dimension(400,50));
-		menu.setMaximumSize(new Dimension(400,50));
-		menu.setMinimumSize(new Dimension(400,50));
+		menu.setPreferredSize(new Dimension(200,50));
+		menu.setMaximumSize(new Dimension(200,50));
+		menu.setMinimumSize(new Dimension(200,50));
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
@@ -188,9 +193,9 @@ public class HipPong{
 		bottom.setLayout(new BoxLayout(bottom,BoxLayout.X_AXIS));
 
 		//setting the returned's panel dimensions
-		menu.setPreferredSize(new Dimension(400,50));
-		menu.setMaximumSize(new Dimension(400,50));
-		menu.setMinimumSize(new Dimension(400,50));
+		menu.setPreferredSize(new Dimension(350,50));
+		menu.setMaximumSize(new Dimension(350,50));
+		menu.setMinimumSize(new Dimension(350,50));
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
@@ -222,6 +227,7 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 2;
+					System.out.println(player + " is " + players[player]);
 				}
 			}
 		});
@@ -248,7 +254,8 @@ public class HipPong{
 		//adding everything to the top and bottom half's
 		top.add(human);
 		top.add(computer);
-		top.add(wall);
+		if (player != 0 && player != 2)
+			top.add(wall);
 		bottom.add(left);
 		bottom.add(leftControlKey);
 		bottom.add(right);
@@ -266,17 +273,19 @@ public class HipPong{
 	//		game to it. when creating the game panel it passes in the recorded
 	//		values of the menu screen.
 	//*************************************************************************
-    private static void PlayGame(){
+	private static void PlayGame(){
 		//clearing frame
 		frame.setVisible(false);
 		frame.getContentPane().removeAll();
 
 		//creating game and adding it to the frame
 		Game game = new Game(players, Controls, difficulty);
-        frame.setLayout(new BorderLayout());
-        frame.add(game, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
+		frame.setResizable(true);
+		frame.setSize(702,725);
+		frame.setResizable(false);
+	        frame.setLayout(new BorderLayout());
+	        frame.add(game, BorderLayout.CENTER);
+	        frame.setVisible(true);
 	}
 	//*********************************************************************
 	//getKey
@@ -287,7 +296,6 @@ public class HipPong{
 	private static void getKey(final int player, final boolean left, final JButton button){
 		final boolean[] check = {false};
 		final JFrame popup = new JFrame("New Key");
-		popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		popup.setSize(300,100);
 		popup.add(new JLabel("Press the new Control Key"));
 		popup.setVisible(true);
@@ -318,98 +326,3 @@ public class HipPong{
 		});
 	}
 }
-
-//*****************************************************************************
-//Class:
-//	Menu
-//
-//	Operation:
-//		This class will paint all the choices of the menu for all players.
-//		These choices include movement keys, human, computer, or
-//		wall(maybe, if implemented);
-//*****************************************************************************
-class Menu extends JPanel implements ActionListener{
-
-    // ***************
-    // Initialize Look
-    // ***************
-    protected Color color = null;
-    protected Color background = null;
-    protected int[] dim = {0, 0, 0, 0};
-
-    // ***************
-    // Game Keys
-    // ***************
-    char leftKey = ' ', rightKey = ' ';
-    JTextField leftKeyJT = new JTextField(1);
-    JTextField rightKeyJT = new JTextField(1);
-
-    // ************
-    // Constructors
-    // ************
-    public Menu(){
-        ; //Do Nothing. Everything is already initialized.
-    }
-
-    // ********************************************************
-    // Constructor
-    //  Params: Color, Background Color, Fill Oval Dimensions.
-    //  *******************************************************
-    public Menu(Color c, Color bg, int x, int y, int width, int height){
-        
-        // set Look
-        color = c;
-        background = bg;
-        dim[0] = x;
-        dim[1] = y;
-        dim[2] = width;
-        dim[3] = height;
-
-        //Set key
-        add(leftKeyJT);
-        add(rightKeyJT);
-        leftKeyJT.addActionListener(this);
-        rightKeyJT.addActionListener(this);
-    }
-
-    // ***************
-    // Getters/Setters
-    // ***************
-    public void setKey(char l, char r){ 
-        leftKey = l; 
-        rightKey = r; 
-    }
-
-    public char getLeftKey(){ return leftKey; }
-    public char getRightKey(){ return rightKey; }
-
-    public void actionPerformed(ActionEvent e){
-        System.out.println("test.");
-
-        if(e.getSource() == leftKeyJT)
-        {
-            leftKey = leftKeyJT.getText().charAt(0);    //Gets leftKeyJT value
-            System.out.println("Left Key: " + leftKey);
-        }
-        else if(e.getSource() == rightKeyJT )
-        {
-            rightKey = rightKeyJT.getText().charAt(0);   //Gets leftKeyJT value
-            System.out.println("Right Key: " + rightKey);
-        }
-        else
-            ;
-    }
-
-    // *****************
-    // Paint Data/Specs
-    // *****************
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        //Paint
-        g.setColor(color);
-        g.fillOval(dim[0], dim[1], dim[2], dim[3]);
-        setBackground(background);
-
-    }
-}   //End of class Menu
