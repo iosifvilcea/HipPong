@@ -7,15 +7,13 @@ TODO:
     See Through/In game/Resume/Options Menu
     Add BlackHole
     Add Point System
-    Fix Screen Size
-    Get Fixed Size, base paddle position off of it.
-    Implement Walls/Computers
-    Fix paddle/ball detection for P3, P4.
+    Implement Computers
+    Adjust so that chosen buttons actually work. 
 
 Known Issues:
-    -P3 Wall radio does not work. 
     -Size is off.
-    -Paddles are off.
     -Paddles intersect.
+    -Bottom Paddle/ball is out of sync.
     -Menu is not the right size.
-    -Round Speed Up gets stuck after 5+ rounds.
+    -Round Speed Up gets stuck. Fix it so when the wall is enabled, the limit
+    is changed to the frame. 

@@ -38,8 +38,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int ballY = 250;
     
     //Ball Position Change
-    private int ballDX = -1;
-    private int ballDY = 3;
+    private int ballDX = -3;
+    private int ballDY = 5;
     private int rounds = 0;
 
     //Ball Size
@@ -62,7 +62,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean p1RightPress = false;
 
     //RIGHT
-    private int p2x = 675;
+    private int p2x = 700 - 25 - 10;
     private int p2y = 325;
     private int p2Width = 10;
     private int p2Height = 50;
@@ -83,7 +83,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
     //BOTTOM
     private int p4x = 325;
-    private int p4y = 675;
+    private int p4y = 700 - 25 - 10;
     private int p4Width = 50;
     private int p4Height = 10;
     private int p4Speed = 5;
@@ -103,8 +103,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	    controls = c;
 	    difficulty = d;
 
-        System.out.println("P3:" + p[2] + "P4:" + p[3]);
-        if(p[2] == 2)
+        if(p[1] == 2)
             wallTop = true;
         if(p[3] == 2)
             wallBottom = true;
@@ -150,28 +149,30 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public void actionPerformed(ActionEvent e){
         
         //Speed Up Game
-        /*
-        if(rounds > 5 && rounds < 10)
-        {
-            ballDX = -2;
-            ballDY = 4;
-        }else if(rounds > 10 && rounds < 15)
+        if(rounds > 2 && rounds < 4)
         {
             ballDX = -3;
             ballDY = 5;
-        }else if(rounds > 20)
+        }
+        else if(rounds > 4 && rounds < 6)
+        {
+            ballDX = -4;
+            ballDY = 6;
+        }
+        else if(rounds > 6)
         {
             ballDX = -5;
             ballDY = 7;
         }
-        */
 
         run();
 
-        System.out.println("pLeft:" + p2x + " y:" + p2y);
-        //System.out.println("pTop:" + p3x + " y:" + p3y);
-        System.out.println("w:" + getWidth() + " h:" + getHeight());
-        //System.out.println("ballx:" + ballX + " y:" + ballY);
+        System.out.println("pLeft:" + p1x + " y:" + p1y);
+        System.out.println("pRight:" + p2x + " y:" + p2y);
+        System.out.println("pTop:" + p3x + " y:" + p3y);
+        System.out.println("pBottom:" + p4x + " y:" + p4y);
+        System.out.println("width:" + getWidth() + " height:" + getHeight());
+        System.out.println("round:"+rounds+" Bdx:"+ballDX+" Bdy:"+ballDY);
     }
 
     // ***********************************
@@ -281,8 +282,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p4x += p4Speed;
 
 
-
         //Check for boundaries.
+        //NOTE:
+        // x boundaries are from x to x+width-1
+        // y boundaries are from y to y+height-1
+
         //Left Side
         if( (ballX+ballDX) < (p1x + p1Width)){                //If ball passes Left Paddle Position
             if (ballY+ballDY > (p1y + p1Height) 
@@ -291,7 +295,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             {    
                 //Announce Winner, Score Points
                 System.out.println("P1 Loses.");            //Game Blouses.
-
                 gameOver();
 
             }else                                    //Else, were good, it hit.
@@ -309,7 +312,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             {
                 //Announce Winner, Score Points
                 System.out.println("P2 Loses.");            //Game Blouses.
-            
                 gameOver();
 
             }
@@ -320,13 +322,45 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         }
 
         //Top
-        if(ballY < diameter/2 ){
+        if(wallTop)
+        {   
+            if(ballY < diameter/2) 
                 ballDY = Math.abs(ballDY);
         }
+        else if( ( (ballY+ballDY) < p3y ) ){
+            if( (ballX+ballDX) > (p3x+p3Width)
+                        ||
+                (ballX+ballDX+diameter) < p3x)
+            {
+                //Announce Winner, Score Points
+                System.out.println("P3 Loses.");
+                gameOver();
+            }
+            else{    
+                ballDY = Math.abs(ballDY);
+                rounds++;
+            }
+        }
+        
 
         //Bottom
-        if(ballY > getHeight() - diameter/2){
-            ballDY = -Math.abs(ballDY);
+        if(wallBottom)
+        {    
+            if(ballY > getHeight() - diameter/2)
+                ballDY = -Math.abs(ballDY);
+        }
+        else if(ballY+ballDY > p4y){
+            if( (ballX+ballDX >(p4x+p3Width))
+                    ||
+                (ballX+ballDX+diameter) < p4x)
+            {
+                System.out.println("P4 Loses.");
+                gameOver();
+            }
+            else{
+                ballDY = -Math.abs(ballDY);
+                rounds++;
+            }
         }
 
 
@@ -354,7 +388,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         p1y = 325;
  
         //Reset P2 Position
-        p2x = 675;
+        p2x = 700 - 25 - 10;
         p2y = 325;
 
         //Reset P3 Position
@@ -363,7 +397,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Reset P4 Position
         p4x = 325;
-        p4y = 675;
+        p4y = 700 - 25 - 10;
 
         //Reset Speed Up Counter
         rounds = 0;
