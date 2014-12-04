@@ -39,14 +39,14 @@ public class HipPong{
 	public static void main(String[] args){
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridBagLayout());
-		frame.setSize(1400, 900);
-        frame.setLocationRelativeTo(null); //Adds window in center of screen.
-		frame.setResizable(false);
+		frame.setSize(1000, 500);
+	        frame.setLocationRelativeTo(null); //Adds window in center of screen.
+		frame.setResizable(true);
 		frame.setBackground(Color.BLACK);
 		
 		//sets the constraints for spacing around the panels
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(100,10,100,10);
+		gbc.insets = new Insets(50,0,0,50);
 		
 		//initialization of menu panels
 		JPanel left = PlayerOptions(0);
@@ -58,18 +58,23 @@ public class HipPong{
 		//putting menus on frame with constraints and showing menu to user(s)
 		gbc.gridx = 0;
 		gbc.gridy = 2;
+		gbc.gridwidth = 1;
 		frame.add(left, gbc);
-		gbc.gridx = 3;
+		gbc.gridx = 0;
 		gbc.gridy = 0;
+		gbc.gridwidth = 5;
 		frame.add(top, gbc);
-		gbc.gridx = 5;
+		gbc.gridx = 3;
 		gbc.gridy = 2;
+		gbc.gridwidth = 1;
 		frame.add(right, gbc);
-		gbc.gridx = 3;
+		gbc.gridx = 0;
 		gbc.gridy = 4;
+		gbc.gridwidth = 5;
 		frame.add(bottom, gbc);
-		gbc.gridx = 3;
+		gbc.gridx = 2;
 		gbc.gridy = 2;
+		gbc.gridwidth = 1;
 		frame.add(center, gbc);
 		frame.setVisible(true);
 	}
@@ -99,9 +104,9 @@ public class HipPong{
 		top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
 
 		//setting the returned's panel dimensions
-		menu.setPreferredSize(new Dimension(400,50));
-		menu.setMaximumSize(new Dimension(400,50));
-		menu.setMinimumSize(new Dimension(400,50));
+		menu.setPreferredSize(new Dimension(200,50));
+		menu.setMaximumSize(new Dimension(200,50));
+		menu.setMinimumSize(new Dimension(200,50));
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
@@ -188,9 +193,9 @@ public class HipPong{
 		bottom.setLayout(new BoxLayout(bottom,BoxLayout.X_AXIS));
 
 		//setting the returned's panel dimensions
-		menu.setPreferredSize(new Dimension(400,50));
-		menu.setMaximumSize(new Dimension(400,50));
-		menu.setMinimumSize(new Dimension(400,50));
+		menu.setPreferredSize(new Dimension(350,50));
+		menu.setMaximumSize(new Dimension(350,50));
+		menu.setMinimumSize(new Dimension(350,50));
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
@@ -222,6 +227,7 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 2;
+					System.out.println(player + " is " + players[player]);
 				}
 			}
 		});
@@ -248,7 +254,8 @@ public class HipPong{
 		//adding everything to the top and bottom half's
 		top.add(human);
 		top.add(computer);
-		top.add(wall);
+		if (player != 0 && player != 2)
+			top.add(wall);
 		bottom.add(left);
 		bottom.add(leftControlKey);
 		bottom.add(right);
@@ -289,7 +296,6 @@ public class HipPong{
 	private static void getKey(final int player, final boolean left, final JButton button){
 		final boolean[] check = {false};
 		final JFrame popup = new JFrame("New Key");
-		popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		popup.setSize(300,100);
 		popup.add(new JLabel("Press the new Control Key"));
 		popup.setVisible(true);
