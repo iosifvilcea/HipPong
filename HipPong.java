@@ -28,7 +28,7 @@ public class HipPong{
 	private static int[] players = {0,0,0,0}; //0 = human; 1 = computer; 2 = wall;
 	//every pair is a player. first in pair is left/up. second in pair is right/down.
 	//private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
-	private static String[] Controls = {"W","S","A","D","UP","DOWN","LEFT","RIGHT"};
+	private static String[] Controls = {"W","S","A","D","Up","Down","Left","Right"};
 	private static int difficulty = 1; //0 = easy; 1 = normal; 2 = hard;
 	
 	//*************************************************************************

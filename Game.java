@@ -101,9 +101,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         
         //setting in passed in values
         players = p;
-	controls = c;
-	difficulty = d;
-	loop = l;
+        controls = c;
+        difficulty = d;
+        loop = l;
 
         if(p[1] == 2)
             wallTop = true;
@@ -171,12 +171,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         run();
 
+        /*
         System.out.println("pLeft:" + p1x + " y:" + p1y);
         System.out.println("pRight:" + p2x + " y:" + p2y);
         System.out.println("pTop:" + p3x + " y:" + p3y);
         System.out.println("pBottom:" + p4x + " y:" + p4y);
         System.out.println("width:" + getWidth() + " height:" + getHeight());
         System.out.println("round:"+rounds+" Bdx:"+ballDX+" Bdy:"+ballDY);
+        */
     }
 
     // ***********************************
@@ -184,29 +186,33 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ***********************************
     public void keyPressed(KeyEvent e){
 
-        //LEFT PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_Q )
-            p1LeftPress = true;
+        System.out.println("Keys:");
+        System.out.println(e.getKeyCode());
+
+        System.out.println( ":" + e.getKeyText(e.getKeyCode()) );
         
-        if(e.getKeyCode() == KeyEvent.VK_A )
+        //LEFT PLAYER
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[0] ) )
+            p1LeftPress = true;
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[1] ) )
             p1RightPress = true;
 
         //RIGHT PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_M )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[2] ) )
             p2LeftPress = true;
-        if( e.getKeyCode() == KeyEvent.VK_COMMA )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[3] ) )
             p2RightPress = true;
 
         //TOP PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_LEFT )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[4] ) )
             p3LeftPress = true;
-        if( e.getKeyCode() == KeyEvent.VK_RIGHT )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[5] ) )
             p3RightPress = true;
        
         //BOTTOM PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_Z )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[6] ) )
             p4LeftPress = true;
-        if( e.getKeyCode() == KeyEvent.VK_X )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[7] ) )
             p4RightPress = true;
 
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -216,27 +222,27 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
     public void keyReleased(KeyEvent e){
         //LEFT PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_Q ) 
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[0] ) )
             p1LeftPress = false;
-        if( e.getKeyCode() == KeyEvent.VK_A ) 
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[1] ) )
             p1RightPress = false;
 
         //RIGHT PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_M )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[2] ) )
             p2LeftPress = false;
-        if( e.getKeyCode() == KeyEvent.VK_COMMA )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[3] ) )
             p2RightPress = false;
 
         //TOP PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_LEFT )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[4] ) )
             p3LeftPress = false;
-        if( e.getKeyCode() == KeyEvent.VK_RIGHT )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[5] ) )
             p3RightPress = false;
-
+       
         //BOTTOM PLAYER
-        if( e.getKeyCode() == KeyEvent.VK_Z )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[6] ) )
             p4LeftPress = false;
-        if( e.getKeyCode() == KeyEvent.VK_X )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[7] ) )
             p4RightPress = false;
 
 
