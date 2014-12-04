@@ -4,18 +4,18 @@ HipPong
 Original Pong but way cooler.
 
 TODO:
-    See Through/In game/Resume/Options Menu
+    Quit/MainMenu
+    Resume/Pause for "ESC"
+    Implement Computers
+    Swap controls back to default
+
     Add BlackHole
     Add Point System
-    Fix Screen Size
-    Get Fixed Size, base paddle position off of it.
-    Implement Walls/Computers
-    Fix paddle/ball detection for P3, P4.
+    Adjust so that chosen buttons actually work. 
 
 Known Issues:
-    -P3 Wall radio does not work. 
-    -Size is off.
-    -Paddles are off.
     -Paddles intersect.
-    -Menu is not the right size.
-    -Round Speed Up gets stuck after 5+ rounds.
+    -Bottom Paddle/ball is out of sync.
+    -Menu is not the right size. Needs to be 700x700
+    -Round Speed Up gets stuck. Fix it so when the wall is enabled, the limit
+    is changed to the frame. 
