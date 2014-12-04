@@ -11,10 +11,9 @@ TODO:
 
     Add BlackHole
     Add Point System
-    Adjust so that chosen buttons actually work. 
 
 Known Issues:
     -Paddles intersect.
     -Bottom Paddle/ball is out of sync.
-    -Round Speed Up gets stuck. Fix it so when the wall is enabled, the limit
-    is changed to the frame. 
+    -Can't distinguish between similar keys.
+      ex: up/down/left/right is the same as 8, 2, 4, 6 on num pad.
