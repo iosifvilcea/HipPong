@@ -47,6 +47,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean wallBottom = false;
 
     // *********************
+    // BlackHole Attributes
+    // *********************
+    private int roundBoost;
+
+    // *********************
     // Ball Attributes
     // *********************
     //Ball Position.
@@ -465,15 +470,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	
         //Black Hole
-        if(!hole){
+        if(!hole && difficulty != 0){
             if( (newBallPosX > 305 && newBallPosX < 345) &&
                 (newBallPosY > 305 && newBallPosY < 345) &&
                 (lastPaddle != 0) )
             {//Randomize Ball direction
 		do{
-	   		ballDX = randX.nextInt(8) - 4;
-	   		ballDY = randY.nextInt(8) - 4;
-		} while (ballDX == 0 || ballDY == 0);
+	   		ballDX = randX.nextInt(8 + roundBoost) - (4 + roundBoost);
+	   		ballDY = randY.nextInt(8 + roundBoost) - (4 + roundBoost);
+		} while (ballDX < roundBoost || ballDY < roundBoost);
             }
         }
         else
@@ -495,6 +500,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private void ballSpeedUp(){
 	if ((difficulty == 1 && rounds != 0 && rounds%5 == 0) ||
 	    (difficulty == 2 && rounds != 0 && rounds%3 == 0)){
+		roundBoost++;
 		if(ballDX > 0)
 			ballDX++;
 		else
@@ -535,6 +541,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Reset Speed Up Counter
         rounds = 0;
+	roundBoost = 0;
 
         //Reset last touched
         lastPaddle = 0;
@@ -637,12 +644,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	});
 	if (winner != 0){
 		endframe.add(whoWins);
+		endframe.add(Box.createRigidArea(new Dimension(0,5)));
 		endframe.add(restart);
 	} else
 		endframe.add(resume);
+	endframe.add(Box.createRigidArea(new Dimension(0,5)));
 	endframe.add(mainMenu);
+	endframe.add(Box.createRigidArea(new Dimension(0,5)));
 	endframe.add(quit);
-	//endframe.pack();
+	endframe.pack();
 	endframe.setVisible(true);
     }
    
