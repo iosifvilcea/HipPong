@@ -5,9 +5,6 @@ JC = javac
 		$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
-		Computer.java \
-		Player.java \
-		BlackHole.java \
 		Game.java \
 		HipPong.java
 

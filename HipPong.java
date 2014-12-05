@@ -41,22 +41,20 @@ public class HipPong{
 	//*************************************************************************
 	public static void main(String[] args){
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
 		frame.setLayout(new GridBagLayout());
-		frame.setSize(700,700);
+		frame.setSize(702,725);
 	        frame.setLocationRelativeTo(null); //Adds window in center of screen.
 		frame.setResizable(true);
-		frame.setBackground(Color.BLACK);
 		
 		//sets the constraints for spacing around the panels
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(50,0,0,50);
 		
 		//initialization of menu panels
-		JPanel left = vPlayerOptions(0);
-		JPanel top = hPlayerOptions(1);
-		JPanel right = vPlayerOptions(2);
-		JPanel bottom = hPlayerOptions(3);
+		JPanel left = PlayerOptions(0);
+		JPanel top = PlayerOptions(1);
+		JPanel right = PlayerOptions(2);
+		JPanel bottom = PlayerOptions(3);
 		JPanel center = PlayersConfirm();
 		
 		//putting menus on frame with constraints and showing menu to user(s)
@@ -210,10 +208,6 @@ public class HipPong{
 		top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
 		bottom.setLayout(new BoxLayout(bottom,BoxLayout.X_AXIS));
 
-		//setting the returned's panel dimensions
-		menu.setPreferredSize(new Dimension(350,50));
-		menu.setMaximumSize(new Dimension(350,50));
-		menu.setMinimumSize(new Dimension(350,50));
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
@@ -296,9 +290,10 @@ public class HipPong{
 	//		text fields and puts everything in a vertial boxlayout. Then
 	//		it returns everything to the calling object.
 	//****************************************************************************
-	private static JPanel vPlayerOptions(final int player){
+	private static JPanel PlayerOptions(final int player){
 		JPanel menu = new JPanel();
 		JPanel top = new JPanel();
+		JPanel bottom = new JPanel();
 		JPanel upP = new JPanel();
 		JPanel downP = new JPanel();
 		
@@ -306,21 +301,44 @@ public class HipPong{
 		//	how I want it to display
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 		top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
+		bottom.setLayout(new BoxLayout(bottom,BoxLayout.X_AXIS));
 		upP.setLayout(new BoxLayout(upP,BoxLayout.X_AXIS));
 		downP.setLayout(new BoxLayout(downP,BoxLayout.X_AXIS));
 
-		//setting the returned's panel dimensions
-		menu.setPreferredSize(new Dimension(200,200));
-		menu.setMaximumSize(new Dimension(200,200));
-		menu.setMinimumSize(new Dimension(200,200));
+		if(player == 0 || player == 2){
+		//setting vertical panel dimensions
+			menu.setPreferredSize(new Dimension(200,200));
+			menu.setMaximumSize(new Dimension(200,200));
+			menu.setMinimumSize(new Dimension(200,200));
+		} else{
+		//setting horizontal panel dimensions
+			menu.setPreferredSize(new Dimension(350,100));
+			menu.setMaximumSize(new Dimension(350,100));
+			menu.setMinimumSize(new Dimension(350,100));
+		}
+
+
+		//setting label saying which player this is;
+		JLabel who;
+		if(player == 0)
+			who = new JLabel("Player 1");
+		else if(player == 1)
+			who = new JLabel("Player 3");
+		else if(player == 2)
+			who = new JLabel("Player 2");
+		else
+			who = new JLabel("Player 4");
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
 		JRadioButton human = new JRadioButton("Human",true);
-		JRadioButton computer = new JRadioButton("Computer",false);
-		ButtonGroup playerType = new ButtonGroup();
-		playerType.add(human);
-		playerType.add(computer);
+                JRadioButton computer = new JRadioButton("Computer",false);
+                JRadioButton wall = new JRadioButton("Wall",false);
+                ButtonGroup playerType = new ButtonGroup();
+                playerType.add(human);
+                playerType.add(computer);
+		if(player == 1 || player == 2)
+	                playerType.add(wall);
 		
 		//adding listeners so that when ever a buttons state changes to
 		//	selected it updates the player type value
@@ -338,10 +356,26 @@ public class HipPong{
 				}
 			}
 		});
+                wall.addItemListener(new ItemListener(){
+                        public void itemStateChanged(ItemEvent e){
+                                if (e.getStateChange() == ItemEvent.SELECTED){
+                                        players[player] = 2;
+                                }
+                        }
+                });
 		
 		//creates text labels and field for player controls
-		JLabel up = new JLabel("Up:");
-		JLabel down = new JLabel("Down:");
+		JLabel up = new JLabel();
+		JLabel down = new JLabel();
+		JLabel left = new JLabel();
+		JLabel right = new JLabel();
+		if(player == 0 || player == 2){
+			up.setText("Up:");
+			down.setText("Down:");
+		}else {
+               		left.setText("Left:");
+                	right.setText("Right:");
+		}
 		final JButton upControlKey = new JButton(String.valueOf(Controls[player * 2]));
 		final JButton downControlKey = new JButton(String.valueOf(Controls[(player * 2) + 1]));
 		
@@ -362,15 +396,27 @@ public class HipPong{
 		//adding everything to the top and bottom half's
 		top.add(human);
 		top.add(computer);
-		upP.add(up);
-		upP.add(upControlKey);
-		downP.add(down);
-		downP.add(downControlKey);
+		if(player == 0 || player == 2){
+			upP.add(up);
+			upP.add(upControlKey);
+			downP.add(down);
+			downP.add(downControlKey);
+		} else {
+			top.add(wall);
+	                bottom.add(left);
+	                bottom.add(upControlKey);
+	                bottom.add(right);
+	                bottom.add(downControlKey);
+		}
 		
 		//adding everything to the panel that will be returned
+		menu.add(who);
 		menu.add(top);
-		menu.add(upP);
-		menu.add(downP);
+		if (player == 0 || player == 2){
+			menu.add(upP);
+			menu.add(downP);
+		} else
+			menu.add(bottom);
 		
 		return menu;
 	}
@@ -382,24 +428,22 @@ public class HipPong{
 	//	values of the menu screen.
 	//*************************************************************************
 	private static void PlayGame(){
-		boolean loop = false;
 		//clearing frame
 		frame.setVisible(false);
-		frame.getContentPane().removeAll();
+		frame.dispose();
+		//frame.getContentPane().removeAll();
 
-		//creating game and adding it to the frame
-		game = new Game(players, Controls, difficulty, maxPoints, loop);
+		//creating frame. then creating game and adding it to the frame
+		frame = new JFrame("HipPong");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		game = new Game(players, Controls, difficulty, maxPoints);
 		frame.setResizable(true);
 		frame.setSize(702,725);
 		frame.setResizable(false);
 	        frame.setLayout(new BorderLayout());
 	        frame.add(game, BorderLayout.CENTER);
 	        frame.setVisible(true);
-		if (loop){
-			frame.setVisible(false);
-			frame.getContentPane().removeAll();
-			main(new String[] {"",""});
-		}
 	}
 	//*********************************************************************
 	//getKey

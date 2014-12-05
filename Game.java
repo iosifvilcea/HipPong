@@ -27,7 +27,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int[] players;
     private String[] controls;
     private int difficulty;
-    private boolean loop;
     private boolean paused = false;
     private boolean hole = false;
 
@@ -120,7 +119,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ********************
     //  Constructor
     // ********************
-    public Game(int[] p, String[] c, int d, int pl, boolean l){
+    public Game(int[] p, String[] c, int d, int pl){
         //setting in passed in values
 	players = new int[4];
     for(int i = 0; i < 4; i++){
@@ -130,7 +129,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	controls = c;
 	difficulty = d;
 	maxPoints = pl;
-	loop = l;
 
         if(p[1] == 2)
             wallTop = true;
@@ -233,35 +231,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //   is called.
     // ***********************************
     public void actionPerformed(ActionEvent e){
-        
-        //Speed Up Game
-        /*
-        if(rounds > 2 && rounds < 4)
-        {
-            ballDX = -3;
-            ballDY = 5;
-        }
-        else if(rounds > 4 && rounds < 6)
-        {
-            ballDX = -4;
-            ballDY = 6;
-        }
-        else if(rounds > 6)
-        {
-            ballDX = -5;
-            ballDY = 7;
-        }
-        */
-
         run();
-        /*
-        System.out.println("pLeft:" + p1x + " y:" + p1y);
-        System.out.println("pRight:" + p2x + " y:" + p2y);
-        System.out.println("pTop:" + p3x + " y:" + p3y);
-        System.out.println("pBottom:" + p4x + " y:" + p4y);
-        System.out.println("width:" + getWidth() + " height:" + getHeight());
-        System.out.println("round:"+rounds+" Bdx:"+ballDX+" Bdy:"+ballDY);
-        */
     }
 
     // ***********************************
@@ -294,7 +264,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
 	    if (!paused)
-               pause();
+               end(0);
 	}
 
     }
@@ -418,7 +388,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if (newBallPosY > (p1y + p1Height) || (newBallPosY + diameter) < p1y)     //If ball Misses the paddle
             {    
                 //Announce Winner, Score Points
-                System.out.println("P1 Loses.");            //Game Blouses.
                 playerScore[lastPaddle] += 1;
                 roundOver();
 
@@ -427,6 +396,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDX = Math.abs(ballDX);
                 lastPaddle = 1;
                 rounds++;
+		ballSpeedUp();
             }
         }
 
@@ -435,7 +405,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if ( (newBallPosY) > (p2y + p2Height) || (newBallPosY + diameter) < p2y)
             {
                 //Announce Winner, Score Points
-                System.out.println("P2 Loses.");            //Game Blouses.
                 playerScore[lastPaddle] += 1;
                 roundOver();
 
@@ -444,6 +413,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDX = -Math.abs(ballDX);
                 lastPaddle = 2;
                 rounds++;
+		ballSpeedUp();
             }
         }
 
@@ -457,7 +427,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if( (newBallPosX) > (p3x+p3Width) || (newBallPosX+diameter) < p3x)
             {
                 //Announce Winner, Score Points
-                System.out.println("P3 Loses.");
                 playerScore[lastPaddle] += 1;
                 roundOver();
             }
@@ -465,6 +434,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDY = Math.abs(ballDY);
                 lastPaddle = 3;
                 rounds++;
+		ballSpeedUp();
             }
         }
         
@@ -478,7 +448,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         else if( (newBallPosY) > (p4y-p4Height) ){  //If it passes the paddle
             if( (newBallPosX+diameter) < p4x || (newBallPosX) > (p4x+p4Width) )
             {
-                System.out.println("P4 Loses.");
                 playerScore[lastPaddle] += 1;
                 roundOver();
             }
@@ -486,6 +455,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDY = -Math.abs(ballDY);
                 lastPaddle = 4;
                 rounds++;
+		ballSpeedUp();
             }
         }
 
@@ -505,9 +475,29 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Sets new ball position.
         ballX += ballDX;
         ballY += ballDY;
+        System.out.println("X: " + ballDX + " Y: " + ballDY);
 
         //Draw it.
         repaint();
+    }
+
+    // ***********************************
+    // * ballSpeedUp
+    // *  increments the ball speed given
+    // *   right conditions
+    // ***********************************
+    private void ballSpeedUp(){
+	if ((difficulty == 1 && rounds != 0 && rounds%5 == 0) ||
+	    (difficulty == 2 && rounds != 0 && rounds%3 == 0)){
+		if(ballDX > 0)
+			ballDX++;
+		else
+			ballDX--;
+		if(ballDY > 0)
+			ballDY++;
+		else
+			ballDY--;
+	}
     }
 
     // ***********************************
@@ -542,34 +532,28 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Reset last touched
         lastPaddle = 0;
+
+	//Randomize Ball direction
+	do{
+	   ballDX = randX.nextInt(8) - 4;
+	   ballDY = randY.nextInt(8) - 4;
+	} while (ballDX == 0 || ballDY == 0);
        
         //Check if GameOver
         for(int i=1; i<playerScore.length; i++)
             if(playerScore[i] >= maxPoints)
-                gameOver(playerScore[i]);
-
-	//Randomize Ball direction
-	do{
-	   ballDX = randX.nextInt(10) - 5;
-	   ballDY = randY.nextInt(10) - 5;
-	} while (ballDX == 0 || ballDY == 0);
+                end(i);
     }
 
     // ***********************************
-    // * gameOver
-    // *  Stops the game, brings up popup
-    // *   asking to continue or end
+    // * end
+    // *  pauses the game, declares winner
+    // *   0 not passed in, makes popup
+    // *   with options of what to do next
     // ***********************************
-    private void gameOver(int winner){
-	//0 = no winner; 1-4 correspond to different players
-	loop = true;
+    private void end(int winner){
 	paused = true;
 	
-	final JPanel end = new JPanel ();
-	end.setLayout(new BoxLayout(end, BoxLayout.Y_AXIS));
-	end.setSize(200,200);
-	end.setBackground(new Color(255,255,255,255));
-
 	//section that pauses everything
 	final int[] holder = {p1Speed,p2Speed,p3Speed,p4Speed,ballDX,ballDY};
 	p1Speed = 0;
@@ -578,6 +562,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	p4Speed = 0;
 	ballDX = 0;
 	ballDY = 0;
+
+	final JFrame endframe = new JFrame("Game Over");
+	endframe.setLocationRelativeTo(this);
+	endframe.setSize(200,150);
+	endframe.setLayout(new BoxLayout(endframe.getContentPane(), BoxLayout.Y_AXIS));
 
 	String message;
 	if (winner == 0)
@@ -592,71 +581,22 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	restart.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//reset score, speeds, call roundOver
-            for(int i=0; i<playerScore.length; i++)
-                playerScore[i] = 0;
+            		for(int i=0; i<playerScore.length; i++)
+                		playerScore[i] = 0;
 
-            p1Speed = holder[0];
+           		p1Speed = holder[0];
 			p2Speed = holder[1];
 			p3Speed = holder[2];
 			p4Speed = holder[3];
 			ballDX = randX.nextInt(10) - 5;
 			ballDY = randY.nextInt(10) - 5;
-			remove(end);
+			endframe.dispose();
 		}
 	});
-
-	JButton mainMenu = new JButton("Main Menu");
-	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
-	mainMenu.addActionListener(new ActionListener(){
-		public void actionPerformed( ActionEvent e){
-			//quit to main menu
-			HipPong.reset();
-		}
-	});
-
-	JButton quit = new JButton("Quit");
-	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
-	quit.addActionListener(new ActionListener(){
-		public void actionPerformed( ActionEvent e){
-			System.exit(0);
-		}
-	});
-
-	end.add(whoWins);
-	end.add(restart);
-	end.add(mainMenu);
-	end.add(quit);
-	add(end);
-	end.revalidate();
-	end.setLocation(250,250);
-    }
-
-    // ***********************************
-    // * Pause
-    // *  Resets paddles, ball, counter w/
-    // *   start values/positions.
-    // ***********************************
-    public void pause(){
-	paused = true;
-
-	final JPanel pauseScreen = new JPanel ();
-	pauseScreen.setLayout(new BoxLayout(pauseScreen, BoxLayout.Y_AXIS));
-	pauseScreen.setLocation(250,250);
-	pauseScreen.setSize(200,200);
-	pauseScreen.setBackground(new Color(0,0,0,0));
-
-	//section that pauses everything
-	final int[] holder = {p1Speed,p2Speed,p3Speed,p4Speed,ballDX,ballDY};
-	p1Speed = 0;
-	p2Speed = 0;
-	p3Speed = 0;
-	p4Speed = 0;
-	ballDX = 0;
-	ballDY = 0;
 
 	final JButton resume = new JButton("Resume");
 	resume.setAlignmentX(Component.CENTER_ALIGNMENT);
-	final ActionListener res = new ActionListener(){
+	resume.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//do something to resume
 			p1Speed = holder[0];
@@ -665,35 +605,38 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 			p4Speed = holder[3];
 			ballDX = holder[4];
 			ballDY = holder[5];
-			remove(pauseScreen);
 			paused = false;
+			endframe.dispose();
 		}
-	};
-	resume.addActionListener(res);
+	});
 
-	final JButton quit = new JButton("Quit");
-	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
-	final ActionListener qui = new ActionListener(){
-		public void actionPerformed( ActionEvent e){
-			System.exit(0);
-		}
-	};
-	quit.addActionListener(qui);
-
-	final JButton mainMenu = new JButton("Main Menu");
+	JButton mainMenu = new JButton("Main Menu");
 	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
 	mainMenu.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//quit to main menu
+			endframe.dispose();
 			HipPong.reset();
 		}
 	});
 
-	pauseScreen.add(resume);
-	pauseScreen.add(mainMenu);
-	pauseScreen.add(quit);
-	add(pauseScreen);
-	revalidate();
+	JButton quit = new JButton("Quit");
+	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+	quit.addActionListener(new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			//terminate the game
+			System.exit(0);
+		}
+	});
+	if (winner != 0){
+		endframe.add(whoWins);
+		endframe.add(restart);
+	} else
+		endframe.add(resume);
+	endframe.add(mainMenu);
+	endframe.add(quit);
+	//endframe.pack();
+	endframe.setVisible(true);
     }
    
 }
