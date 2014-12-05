@@ -25,7 +25,7 @@ public class HipPong{
 	//initialization max poinst to play game
 	private static int maxPoints = 5;
 	//initialization of the game options
-	private static int[] players = {0,0,0,0}; //0 = human; 1 = computer; 2 = wall;
+	private static int[] players = new int[4]; //0 = human; 1 = computer; 2 = wall;
 	//every pair is a player. first in pair is left/up. second in pair is right/down.
 	//private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
 	private static String[] Controls = {"W","S","A","D","Up","Down","Left","Right"};
@@ -149,16 +149,24 @@ public class HipPong{
 		//	boxlayout
 		JLabel mp = new JLabel("Max Points:");
 		final JTextField points = new JTextField("5");
+		points.getDocument().addDocumentListener(new DocumentListener(){
+			public void changedUpdate(DocumentEvent e){
+				check();
+			}
+			public void removeUpdate(DocumentEvent e){}
+			public void insertUpdate(DocumentEvent e){
+				check();
+			}
+			public void check(){
+				try{
+					maxPoints = Integer.parseInt(points.getText());
+				} catch (Exception excep) {}
+			}
+		});
 		JButton accept = new JButton("Play");
 		accept.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				try{
-					maxPoints = Integer.parseInt(points.getText());
-				} catch (Exception excep) {
-					
-				} finally {
-					PlayGame();
-				}
+				PlayGame();
 			}
 		});
 		
@@ -369,10 +377,10 @@ public class HipPong{
 	}
 
 	//*************************************************************************
-	//Game
-	//		called by the accept button. It clears the frame and adds a new
-	//		game to it. when creating the game panel it passes in the recorded
-	//		values of the menu screen.
+	//PlayGame
+	//	called by the accept button. It clears the frame and adds a new
+	//	game to it. when creating the game panel it passes in the recorded
+	//	values of the menu screen.
 	//*************************************************************************
 	private static void PlayGame(){
 		boolean loop = false;
@@ -381,6 +389,7 @@ public class HipPong{
 		frame.getContentPane().removeAll();
 
 		//creating game and adding it to the frame
+System.out.println(""+players[0]+""+players[1]+""+players[2]+""+players[3]);
 		Game game = new Game(players, Controls, difficulty, maxPoints, loop);
 		frame.setResizable(true);
 		frame.setSize(702,725);

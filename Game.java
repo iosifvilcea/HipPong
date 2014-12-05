@@ -108,9 +108,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //  Constructor
     // ********************
     public Game(int[] p, String[] c, int d, int pl, boolean l){
-        
+System.out.println(""+p[0]+""+p[1]+""+p[2]+""+p[3]);
         //setting in passed in values
-        players = p;
+	players = new int[4];
+        for(int i = 0; i < 4; i++){
+		players[i] = p[i];
+	}
 	controls = c;
 	difficulty = d;
 	maxPoints = pl;
@@ -195,12 +198,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // Handles KeyEvents
     // ***********************************
     public void keyPressed(KeyEvent e){
-
-        System.out.println("Keys:");
-        System.out.println(e.getKeyCode());
-
-        System.out.println( ":" + e.getKeyText(e.getKeyCode()) );
-        
         //LEFT PLAYER
         if( e.getKeyText( e.getKeyCode() ).equals( controls[0] ) )
             p1LeftPress = true;
@@ -278,6 +275,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if( (p1y + p1Speed + p1Height) < getWidth() )
                 p1y += p1Speed;
 
+//        if(players[0] == 1)
+//            System.out.println("computer 1");
+
         //Player2/RightSide
         if(p2LeftPress && players[0] == 0)
             if( (p2y - p2Speed) > 0) 
@@ -286,6 +286,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(p2RightPress && players[0] == 0)
             if( (p2y + p2Speed + p2Height) < getWidth() )
                 p2y += p2Speed;
+
+//        if(players[1] == 1)
+//            System.out.println("computer 2");
 
         //Player3/TOP
         if(p3LeftPress && players[0] == 0)
@@ -296,6 +299,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if( (p3x + p3Speed + p3Width) < getHeight() )
                 p3x += p3Speed;
 
+//        if(players[2] == 1)
+//            System.out.println("computer 3");
+
         //Player4/BOTTOM
         if(p4LeftPress && players[0] == 0)
             if( (p4x - p3Speed) > 0) 
@@ -305,8 +311,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if( (p4x + p4Speed + p4Width) < getHeight())
                 p4x += p4Speed;
 
-        if(players[3] == 1)
-            System.out.println("computer");
+//        if(players[3] == 1)
+//            System.out.println("computer 4");
 
 
         //Check for boundaries.
