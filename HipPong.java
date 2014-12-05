@@ -389,7 +389,6 @@ public class HipPong{
 		frame.getContentPane().removeAll();
 
 		//creating game and adding it to the frame
-System.out.println(""+players[0]+""+players[1]+""+players[2]+""+players[3]);
 		Game game = new Game(players, Controls, difficulty, maxPoints, loop);
 		frame.setResizable(true);
 		frame.setSize(702,725);

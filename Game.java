@@ -29,7 +29,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean paused = false;
     
     private int maxPoints;
-    private int lastPaddle = 4;
+    private int lastPaddle = 0;
     private int playerScore[] = {0, 0, 0, 0, 0};
 
     // *********************
@@ -203,10 +203,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         Font font = new Font("Serif", Font.PLAIN, 40);
         g2d.setFont(font);
        
-        g2d.drawString(Integer.toString(playerScore[0]), 398, 360);
-        g2d.drawString(Integer.toString(playerScore[1]), 267, 360);
-        g2d.drawString(Integer.toString(playerScore[2]), 332, 300);
-        g2d.drawString(Integer.toString(playerScore[3]), 332, 420);
+        g2d.drawString(Integer.toString(playerScore[1]), 398, 360);
+        g2d.drawString(Integer.toString(playerScore[2]), 267, 360);
+        g2d.drawString(Integer.toString(playerScore[3]), 332, 300);
+        g2d.drawString(Integer.toString(playerScore[4]), 332, 420);
     }
 
     // ***********************************
@@ -326,44 +326,65 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if( (p1y + p1Speed + p1Height) < getWidth() )
                 p1y += p1Speed;
 
-//        if(players[0] == 1)
-//            System.out.println("computer 1");
+        if(players[0] == 1)
+	    if (ballX < 400){
+		if (p1y < ballY)
+		    p1y += p1Speed;
+		else if (p1y > ballY)
+		    p1y -= p1Speed;
+	    }
 
         //Player2/RightSide
-        if(p2LeftPress && players[0] == 0)
+        if(p2LeftPress && players[2] == 0)
             if( (p2y - p2Speed) > 0) 
                 p2y -= p2Speed;
 
-        if(p2RightPress && players[0] == 0)
+        if(p2RightPress && players[2] == 0)
             if( (p2y + p2Speed + p2Height) < getWidth() )
                 p2y += p2Speed;
 
-//        if(players[1] == 1)
-//            System.out.println("computer 2");
+        if(players[2] == 1)
+	    if (ballX > 400){
+		if (p2y < ballY)
+		    p2y += p2Speed;
+		else if (p2y > ballY)
+		    p2y -= p2Speed;
+	    }
 
         //Player3/TOP
-        if(p3LeftPress && players[0] == 0)
+        if(p3LeftPress && players[1] == 0)
             if( (p3x - p3Speed) > 0) 
                 p3x -= p3Speed;
 
-        if(p3RightPress && players[0] == 0)
+        if(p3RightPress && players[1] == 0)
             if( (p3x + p3Speed + p3Width) < getHeight() )
                 p3x += p3Speed;
 
-//        if(players[2] == 1)
-//            System.out.println("computer 3");
+        if(players[1] == 1)
+	    if (ballY < 400){
+		if (p3x > ballX)
+		    p3x -= p3Speed;
+		else if (p3x < ballX)
+		    p3x += p3Speed;
+	    }
+
 
         //Player4/BOTTOM
-        if(p4LeftPress && players[0] == 0)
-            if( (p4x - p3Speed) > 0) 
-                p4x -= p3Speed;
+        if(p4LeftPress && players[3] == 0)
+            if( (p4x - p4Speed) > 0) 
+                p4x -= p4Speed;
 
-        if(p4RightPress && players[0] == 0)
+        if(p4RightPress && players[3] == 0)
             if( (p4x + p4Speed + p4Width) < getHeight())
                 p4x += p4Speed;
 
-//        if(players[3] == 1)
-//            System.out.println("computer 4");
+        if(players[3] == 1)
+	    if (ballY > 400){
+		if (p4x > ballX)
+		    p4x -= p4Speed;
+		else if (p4x < ballX)
+		    p4x += p4Speed;
+	    }
 
 
         //Check for boundaries.
@@ -379,14 +400,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             {    
                 //Announce Winner, Score Points
                 System.out.println("P1 Loses.");            //Game Blouses.
-                
                 playerScore[lastPaddle] += 1;
                 roundOver();
 
             }else                                    //Else, were good, it hit.
             {
                 ballDX = Math.abs(ballDX);
-                lastPaddle = 0;
+                lastPaddle = 1;
                 rounds++;
             }
         }
@@ -403,7 +423,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             }
             else{
                 ballDX = -Math.abs(ballDX);
-                lastPaddle = 1;
+                lastPaddle = 2;
                 rounds++;
             }
         }
@@ -424,7 +444,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             }
             else{    
                 ballDY = Math.abs(ballDY);
-                lastPaddle = 2;
+                lastPaddle = 3;
                 rounds++;
             }
         }
@@ -441,18 +461,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             {
                 System.out.println("P4 Loses.");
                 playerScore[lastPaddle] += 1;
-               
-
-                        //scores:
-                for(int i=0; i<playerScore.length-1; i++){
-                    System.out.println("P"+i+": " + playerScore[i] );
-                }
-
                 roundOver();
             }
             else{
                 ballDY = -Math.abs(ballDY);
-                lastPaddle = 3;
+                lastPaddle = 4;
                 rounds++;
             }
         }
@@ -498,11 +511,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Reset Speed Up Counter
         rounds = 0;
 
-        //last touched
-        lastPaddle = 4; //4 is empty.
+        //Reset last touched
+        lastPaddle = 0;
        
         //Check if GameOver
-        for(int i=0; i<playerScore.length-1; i++)
+        for(int i=1; i<playerScore.length; i++)
             if(playerScore[i] >= maxPoints)
                 gameOver(playerScore[i]);
 

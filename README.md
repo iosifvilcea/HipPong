@@ -5,11 +5,10 @@ Original Pong but way cooler.
 
 TODO:
     make the main menu call work
-    Implement Computers
     Swap controls back to default
-    check for proper max points entry and switch to doc listener
 
-    Add BlackHole
+    Add BlackHole.
+    Make Shit Pretty.
 
 Known Issues:
     -Paddles intersect.
