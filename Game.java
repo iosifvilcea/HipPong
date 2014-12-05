@@ -13,6 +13,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.event.*;
+import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
@@ -24,6 +25,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private String[] controls;
     private int difficulty;
     private boolean loop;
+
+    private int player1Score = 0;
+    private int player2Score = 0;
+    private int player3Score = 0;
+    private int player4Score = 0; 
 
     // *********************
     // Wall Attributes
@@ -142,6 +148,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         else
             ; //Don't draw anything.
         
+        
+        // *
+        // * Draw Scoreboard
+        // *
+        g.fillOval(275-(diameter/4), 275-(diameter/4), 150, 150 );
+         
     }
 
     // ***********************************
@@ -198,15 +210,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             p1RightPress = true;
 
         //RIGHT PLAYER
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[2] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[4] ) )
             p2LeftPress = true;
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[3] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[5] ) )
             p2RightPress = true;
 
         //TOP PLAYER
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[4] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[2] ) )
             p3LeftPress = true;
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[5] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[3] ) )
             p3RightPress = true;
        
         //BOTTOM PLAYER
@@ -228,15 +240,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             p1RightPress = false;
 
         //RIGHT PLAYER
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[2] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[4] ) )
             p2LeftPress = false;
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[3] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[5] ) )
             p2RightPress = false;
 
         //TOP PLAYER
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[4] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[2] ) )
             p3LeftPress = false;
-        if( e.getKeyText( e.getKeyCode() ).equals( controls[5] ) )
+        if( e.getKeyText( e.getKeyCode() ).equals( controls[3] ) )
             p3RightPress = false;
        
         //BOTTOM PLAYER
@@ -298,12 +310,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //NOTE:
         // x boundaries are from x to x+width-1
         // y boundaries are from y to y+height-1
+        int newBallPosX = ballX + ballDX;
+        int newBallPosY = ballY + ballDY;
 
         //Left Side
-        if( (ballX+ballDX) < (p1x + p1Width)){                //If ball passes Left Paddle Position
-            if (ballY+ballDY > (p1y + p1Height) 
-                            || 
-               (ballY+ballDY + diameter) < p1y)     //If ball Misses the paddle
+        if( (newBallPosX) < (p1x + p1Width)){                //If ball passes Left Paddle Position
+            if (newBallPosY > (p1y + p1Height) || (newBallPosY + diameter) < p1y)     //If ball Misses the paddle
             {    
                 //Announce Winner, Score Points
                 System.out.println("P1 Loses.");            //Game Blouses.
@@ -318,9 +330,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Right Side
         if( (ballX + ballDX + diameter) > (p2x)){                 //If ball Right Passes Paddle Position
-            if ( (ballY+ballDY) > (p2y + p2Height) 
-                            ||
-               (ballY+ballDY + diameter) < p2y)
+            if ( (newBallPosY) > (p2y + p2Height) || (newBallPosY + diameter) < p2y)
             {
                 //Announce Winner, Score Points
                 System.out.println("P2 Loses.");            //Game Blouses.
@@ -339,10 +349,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if(ballY < diameter/2) 
                 ballDY = Math.abs(ballDY);
         }
-        else if( ( (ballY+ballDY) < p3y ) ){
-            if( (ballX+ballDX) > (p3x+p3Width)
-                        ||
-                (ballX+ballDX+diameter) < p3x)
+        else if( ( (newBallPosY) < p3y ) ){
+            if( (newBallPosX) > (p3x+p3Width) || (newBallPosX+diameter) < p3x)
             {
                 //Announce Winner, Score Points
                 System.out.println("P3 Loses.");
@@ -358,13 +366,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Bottom
         if(wallBottom)
         {    
-            if(ballY > getHeight() - diameter/2)
+            if(newBallPosY > getHeight() - diameter/2)
                 ballDY = -Math.abs(ballDY);
         }
-        else if(ballY+ballDY > p4y){
-            if( (ballX+ballDX >(p4x+p3Width))
-                    ||
-                (ballX+ballDX+diameter) < p4x)
+        else if( (newBallPosY) > (p4y-p4Height) ){  //If it passes the paddle
+            if( (newBallPosX+diameter) < p4x || (newBallPosX) > (p4x+p4Width) )
             {
                 System.out.println("P4 Loses.");
                 gameOver();
