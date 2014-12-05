@@ -5,6 +5,7 @@ Original Pong but way cooler.
 
 TODO:
     make the main menu call work
+    implement difficulty
     Swap controls back to default
 
     Add BlackHole.

@@ -20,7 +20,7 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
-    
+
     // *********************
     // Game Options
     // *********************
@@ -120,7 +120,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //  Constructor
     // ********************
     public Game(int[] p, String[] c, int d, int pl, boolean l){
-    System.out.println(""+p[0]+""+p[1]+""+p[2]+""+p[3]);
         //setting in passed in values
 	players = new int[4];
     for(int i = 0; i < 4; i++){
@@ -537,7 +536,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	   ballDX = randX.nextInt(10) - 5;
 	   ballDY = randY.nextInt(10) - 5;
 	} while (ballDX == 0 || ballDY == 0);
-//gameOver(0);
     }
 
     // ***********************************
@@ -595,6 +593,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	mainMenu.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//quit to main menu
+			HipPong.reset();
 		}
 	});
 
@@ -638,9 +637,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	ballDX = 0;
 	ballDY = 0;
 
-	JButton resume = new JButton("Resume");
+	final JButton resume = new JButton("Resume");
 	resume.setAlignmentX(Component.CENTER_ALIGNMENT);
-	resume.addActionListener(new ActionListener(){
+	final ActionListener res = new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//do something to resume
 			p1Speed = holder[0];
@@ -648,26 +647,28 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 			p3Speed = holder[2];
 			p4Speed = holder[3];
 			ballDX = holder[4];
-			ballDY = holder[5];	
+			ballDY = holder[5];
 			remove(pauseScreen);
 			paused = false;
 		}
-	});
+	};
+	resume.addActionListener(res);
 
-	JButton mainMenu = new JButton("Main Menu");
+	final JButton quit = new JButton("Quit");
+	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+	final ActionListener qui = new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			System.exit(0);
+		}
+	};
+	quit.addActionListener(qui);
+
+	final JButton mainMenu = new JButton("Main Menu");
 	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
 	mainMenu.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//quit to main menu
 			HipPong.reset();
-		}
-	});
-
-	JButton quit = new JButton("Quit");
-	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
-	quit.addActionListener(new ActionListener(){
-		public void actionPerformed( ActionEvent e){
-			System.exit(0);
 		}
 	});
 

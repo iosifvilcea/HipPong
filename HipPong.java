@@ -21,7 +21,7 @@ import java.lang.*;
 public class HipPong{
 	//initialization of the frame with Boarder Layout
 	private static JFrame frame = new JFrame("HipPong");
-	
+	private static Game game;
 	//initialization max poinst to play game
 	private static int maxPoints = 5;
 	//initialization of the game options
@@ -245,7 +245,6 @@ public class HipPong{
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 2;
-					System.out.println(player + " is " + players[player]);
 				}
 			}
 		});
@@ -389,7 +388,7 @@ public class HipPong{
 		frame.getContentPane().removeAll();
 
 		//creating game and adding it to the frame
-		Game game = new Game(players, Controls, difficulty, maxPoints, loop);
+		game = new Game(players, Controls, difficulty, maxPoints, loop);
 		frame.setResizable(true);
 		frame.setSize(702,725);
 		frame.setResizable(false);
@@ -443,6 +442,7 @@ public class HipPong{
 					//sets the buttons text to the new key
 					button.setText(holder);
 				}
+				popup.removeKeyListener(this);
 				//closes the jframe
 				popup.dispose();
 			}
@@ -462,9 +462,17 @@ public class HipPong{
 					//sets the buttons text to the new key
 					button.setText(holder);
 				}
+				popup.removeKeyListener(this);
 				//closes the jframe
 				popup.dispose();
 			}
 		});
+	}
+	
+	public static void reset(){
+		frame.setVisible(false);
+		frame.remove(game);
+		frame.dispose();
+		HipPong.main(new String[]{"",""});
 	}
 }
