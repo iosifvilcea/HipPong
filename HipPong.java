@@ -428,7 +428,6 @@ public class HipPong{
 	//	values of the menu screen.
 	//*************************************************************************
 	private static void PlayGame(){
-		boolean loop = false;
 		//clearing frame
 		frame.setVisible(false);
 		frame.dispose();
@@ -438,18 +437,13 @@ public class HipPong{
 		frame = new JFrame("HipPong");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-		game = new Game(players, Controls, difficulty, maxPoints, loop);
+		game = new Game(players, Controls, difficulty, maxPoints);
 		frame.setResizable(true);
 		frame.setSize(702,725);
 		frame.setResizable(false);
 	        frame.setLayout(new BorderLayout());
 	        frame.add(game, BorderLayout.CENTER);
 	        frame.setVisible(true);
-		if (loop){
-			frame.setVisible(false);
-			frame.getContentPane().removeAll();
-			main(new String[] {"",""});
-		}
 	}
 	//*********************************************************************
 	//getKey

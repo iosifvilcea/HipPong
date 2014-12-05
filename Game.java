@@ -27,7 +27,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int[] players;
     private String[] controls;
     private int difficulty;
-    private boolean loop;
     private boolean paused = false;
     
     private int maxPoints;
@@ -119,7 +118,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ********************
     //  Constructor
     // ********************
-    public Game(int[] p, String[] c, int d, int pl, boolean l){
+    public Game(int[] p, String[] c, int d, int pl){
         //setting in passed in values
 	players = new int[4];
     for(int i = 0; i < 4; i++){
@@ -129,7 +128,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	controls = c;
 	difficulty = d;
 	maxPoints = pl;
-	loop = l;
 
         if(p[1] == 2)
             wallTop = true;
@@ -226,35 +224,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //   is called.
     // ***********************************
     public void actionPerformed(ActionEvent e){
-        
-        //Speed Up Game
-        /*
-        if(rounds > 2 && rounds < 4)
-        {
-            ballDX = -3;
-            ballDY = 5;
-        }
-        else if(rounds > 4 && rounds < 6)
-        {
-            ballDX = -4;
-            ballDY = 6;
-        }
-        else if(rounds > 6)
-        {
-            ballDX = -5;
-            ballDY = 7;
-        }
-        */
-
         run();
-        /*
-        System.out.println("pLeft:" + p1x + " y:" + p1y);
-        System.out.println("pRight:" + p2x + " y:" + p2y);
-        System.out.println("pTop:" + p3x + " y:" + p3y);
-        System.out.println("pBottom:" + p4x + " y:" + p4y);
-        System.out.println("width:" + getWidth() + " height:" + getHeight());
-        System.out.println("round:"+rounds+" Bdx:"+ballDX+" Bdy:"+ballDY);
-        */
     }
 
     // ***********************************
@@ -411,7 +381,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if (newBallPosY > (p1y + p1Height) || (newBallPosY + diameter) < p1y)     //If ball Misses the paddle
             {    
                 //Announce Winner, Score Points
-                System.out.println("P1 Loses.");            //Game Blouses.
                 playerScore[lastPaddle] += 1;
                 roundOver();
 
@@ -420,6 +389,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDX = Math.abs(ballDX);
                 lastPaddle = 1;
                 rounds++;
+		ballSpeedUp();
             }
         }
 
@@ -428,7 +398,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if ( (newBallPosY) > (p2y + p2Height) || (newBallPosY + diameter) < p2y)
             {
                 //Announce Winner, Score Points
-                System.out.println("P2 Loses.");            //Game Blouses.
                 playerScore[lastPaddle] += 1;
                 roundOver();
 
@@ -437,6 +406,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDX = -Math.abs(ballDX);
                 lastPaddle = 2;
                 rounds++;
+		ballSpeedUp();
             }
         }
 
@@ -450,7 +420,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if( (newBallPosX) > (p3x+p3Width) || (newBallPosX+diameter) < p3x)
             {
                 //Announce Winner, Score Points
-                System.out.println("P3 Loses.");
                 playerScore[lastPaddle] += 1;
                 roundOver();
             }
@@ -458,6 +427,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDY = Math.abs(ballDY);
                 lastPaddle = 3;
                 rounds++;
+		ballSpeedUp();
             }
         }
         
@@ -471,7 +441,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         else if( (newBallPosY) > (p4y-p4Height) ){  //If it passes the paddle
             if( (newBallPosX+diameter) < p4x || (newBallPosX) > (p4x+p4Width) )
             {
-                System.out.println("P4 Loses.");
                 playerScore[lastPaddle] += 1;
                 roundOver();
             }
@@ -479,18 +448,38 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 ballDY = -Math.abs(ballDY);
                 lastPaddle = 4;
                 rounds++;
+		ballSpeedUp();
             }
         }
-
 
         //Sets new ball position.
         ballX += ballDX;
         ballY += ballDY;
+System.out.println("X: " + ballDX + " Y: " + ballDY);
 
 
         
         //Draw it.
         repaint();
+    }
+
+    // ***********************************
+    // * ballSpeedUp
+    // *  increments the ball speed given
+    // *   right conditions
+    // ***********************************
+    private void ballSpeedUp(){
+	if ((difficulty == 1 && rounds != 0 && rounds%5 == 0) ||
+	    (difficulty == 2 && rounds != 0 && rounds%3 == 0)){
+		if(ballDX > 0)
+			ballDX++;
+		else
+			ballDX--;
+		if(ballDY > 0)
+			ballDY++;
+		else
+			ballDY--;
+	}
     }
 
     // ***********************************
@@ -528,8 +517,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	//Randomize Ball direction
 	do{
-	   ballDX = randX.nextInt(10) - 5;
-	   ballDY = randY.nextInt(10) - 5;
+	   ballDX = randX.nextInt(8) - 4;
+	   ballDY = randY.nextInt(8) - 4;
 	} while (ballDX == 0 || ballDY == 0);
        
         //Check if GameOver
@@ -558,7 +547,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	final JFrame endframe = new JFrame("Game Over");
 	endframe.setLocationRelativeTo(this);
-	endframe.setSize(200,100);
+	endframe.setSize(200,150);
 	endframe.setLayout(new BoxLayout(endframe.getContentPane(), BoxLayout.Y_AXIS));
 
 	String message;
@@ -608,6 +597,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	mainMenu.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//quit to main menu
+			endframe.dispose();
 			HipPong.reset();
 		}
 	});
