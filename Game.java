@@ -29,7 +29,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int difficulty;
     private boolean loop;
     private boolean paused = false;
-    
+    private boolean hole = false;
+
     private int maxPoints;
     private int lastPaddle = 0;
     private int playerScore[] = {0, 0, 0, 0, 0};
@@ -193,10 +194,17 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         float[] dist = {0.1f, .7f};
         Color[] colors = {Color.BLACK, new Color(0,0,0,0)};
         RadialGradientPaint p = new RadialGradientPaint(center, radius, focus, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
-
         g2d.setPaint(p);
         g2d.fill(new Ellipse2D.Double(200,200,290,290));
 
+        //BlackHole Center
+        center = new Point2D.Float(350,350);
+        focus = new Point2D.Float(350, 350);
+        radius = 100;
+        RadialGradientPaint p2 = new RadialGradientPaint(center, radius, focus, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+        g2d.setPaint(p2);       
+        g2d.fill(new Ellipse2D.Double(295,295,100,100));
+        
         //Dashed Lines
         g2d.setColor(Color.WHITE);
         final float dash[] = {10.0f};
@@ -209,7 +217,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 
         //Actual Score Font
-
         g2d.setColor(Color.WHITE);
         
         Font font = new Font("Serif", Font.PLAIN, 40);
@@ -482,13 +489,23 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             }
         }
 
+        //Black Hole
+        if(!hole){
+            if( (newBallPosX > 305 && newBallPosX < 345) &&
+                (newBallPosY > 305 && newBallPosY < 345) &&
+                (lastPaddle != 0) )
+            { 
+                ballDX = randX.nextInt(10) - 5;
+	            ballDY = randY.nextInt(10) - 5;
+            }
+        }
+        else
+            hole = true;
 
         //Sets new ball position.
         ballX += ballDX;
         ballY += ballDY;
 
-
-        
         //Draw it.
         repaint();
     }
