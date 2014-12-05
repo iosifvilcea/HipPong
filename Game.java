@@ -37,7 +37,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // Computer Attributes
     // *********************
     private int trackDist = 275;
-    private int compSpeed = 3;
+    private int compSpeed = 4;
 
     // *********************
     // Wall Attributes
@@ -309,11 +309,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p1y += p1Speed;
 
         if(players[0] == 1)
-	    if (ballX < 400){
-		if (p1y < ballY)
-		    p1y += compSpeed;
-		else if (p1y > ballY)
+	    if (ballX < trackDist){
+		if (ballY < (p1y + (p1Width / 4)))
 		    p1y -= compSpeed;
+		else if (ballY > (p1y + (3 * p1Width / 4)))
+		    p1y += compSpeed;
 	    }
 
         //Player2/RightSide
@@ -326,11 +326,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p2y += p2Speed;
 
         if(players[2] == 1)
-	    if (ballX > 400){
-		if (p2y < ballY)
-		    p2y += compSpeed;
-		else if (p2y > ballY)
+	    if (ballX > trackDist){
+		if (ballY < (p2y + (p2Width / 4)))
 		    p2y -= compSpeed;
+		else if (ballY > (p2y + (3 * p2Width / 4)))
+		    p2y += compSpeed;
 	    }
 
         //Player3/TOP
@@ -343,10 +343,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p3x += p3Speed;
 
         if(players[1] == 1)
-	    if (ballY < 400){
-		if (p3x > ballX)
+	    if (ballY < trackDist){
+		if (ballX < (p3x + (p3Width / 4)))
 		    p3x -= compSpeed;
-		else if (p3x < ballX)
+		else if (ballX > (p3x + (3 * p3Width / 4)))
 		    p3x += compSpeed;
 	    }
 
@@ -361,10 +361,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 p4x += p4Speed;
 
         if(players[3] == 1)
-	    if (ballY > 400){
-		if (p4x > ballX)
+	    if (ballY > trackDist){
+		if (ballX < (p4x + (p4Width / 4)))
 		    p4x -= compSpeed;
-		else if (p4x < ballX)
+		else if (ballX > (p4x + (3 * p4Width / 4)))
 		    p4x += compSpeed;
 	    }
 
@@ -455,9 +455,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Sets new ball position.
         ballX += ballDX;
         ballY += ballDY;
-System.out.println("X: " + ballDX + " Y: " + ballDY);
-
-
         
         //Draw it.
         repaint();
