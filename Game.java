@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
+import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.event.KeyListener;
 import java.util.Random;
 
@@ -129,7 +131,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(p[3] == 2)
             wallBottom = true;
 
-        setBackground(Color.RED);
+        setBackground(Color.BLACK);
 
         //Check Key Presses
         setFocusable(true);     //Allows key component to receive focus.
@@ -171,34 +173,31 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         // * Draw Scoreboard
         // *
         
-        //Circle
-        /*
-        Point2D center = new Point2D.Float(150,150);
-        Point2D focus = new Point2D.Float(50,50);
-        float radius = diameter/2;
-        float[] dist = {0,0f, 250};
-        Color[] colors = {Color.WHITE, Color.BLACK};
-        RadialGradientPaint p = 
-            new RadialGradientPaint(center, radius, focus, 
-                    dist, colors);
+        //Draw BlackHole
+        Point2D center = new Point2D.Float(350,350);
+        Point2D focus = new Point2D.Float(350, 350);
+        float radius = 200;
+        float[] dist = {0.1f, .7f};
+        Color[] colors = {Color.BLACK, new Color(0,0,0,0)};
+        RadialGradientPaint p = new RadialGradientPaint(center, radius, focus, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+
         g2d.setPaint(p);
-        */
-        g2d.fillOval(275-(diameter/4), 275-(diameter/4), 150, 150 );
-       
+        g2d.fill(new Ellipse2D.Double(200,200,290,290));
+
         //Dashed Lines
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.WHITE);
         final float dash[] = {10.0f};
-        final BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+        final BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_ROUND,
                                                          BasicStroke.JOIN_MITER,
                                                          10.0f, dash, 0.0f);
         g2d.setStroke(dashed);
-        g2d.draw(new Line2D.Double(270,270,420,420));
+        g2d.draw(new Line2D.Double(280,280,420,420));
         g2d.draw(new Line2D.Double(420,270,270,420));
 
 
         //Actual Score Font
 
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.WHITE);
         
         Font font = new Font("Serif", Font.PLAIN, 40);
         g2d.setFont(font);
