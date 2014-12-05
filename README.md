@@ -4,7 +4,6 @@ HipPong
 Original Pong but way cooler.
 
 TODO:
-    make the main menu call work
     implement difficulty
     Swap controls back to default
 
@@ -12,6 +11,5 @@ TODO:
     Make Shit Pretty.
 
 Known Issues:
-    -Paddles intersect.
-    -On win, gameOver goes HAM. Should pause everything. 
+    -Paddles intersect. 
     -First round is null, so when game starts, no points are awarded.
