@@ -108,7 +108,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //  Constructor
     // ********************
     public Game(int[] p, String[] c, int d, int pl, boolean l){
-System.out.println(""+p[0]+""+p[1]+""+p[2]+""+p[3]);
         //setting in passed in values
 	players = new int[4];
         for(int i = 0; i < 4; i++){
@@ -275,44 +274,65 @@ System.out.println(""+p[0]+""+p[1]+""+p[2]+""+p[3]);
             if( (p1y + p1Speed + p1Height) < getWidth() )
                 p1y += p1Speed;
 
-//        if(players[0] == 1)
-//            System.out.println("computer 1");
+        if(players[0] == 1)
+	    if (ballX < 400){
+		if (p1y < ballY)
+		    p1y += p1Speed;
+		else if (p1y > ballY)
+		    p1y -= p1Speed;
+	    }
 
         //Player2/RightSide
-        if(p2LeftPress && players[0] == 0)
+        if(p2LeftPress && players[2] == 0)
             if( (p2y - p2Speed) > 0) 
                 p2y -= p2Speed;
 
-        if(p2RightPress && players[0] == 0)
+        if(p2RightPress && players[2] == 0)
             if( (p2y + p2Speed + p2Height) < getWidth() )
                 p2y += p2Speed;
 
-//        if(players[1] == 1)
-//            System.out.println("computer 2");
+        if(players[2] == 1)
+	    if (ballX > 400){
+		if (p2y < ballY)
+		    p2y += p2Speed;
+		else if (p2y > ballY)
+		    p2y -= p2Speed;
+	    }
 
         //Player3/TOP
-        if(p3LeftPress && players[0] == 0)
+        if(p3LeftPress && players[1] == 0)
             if( (p3x - p3Speed) > 0) 
                 p3x -= p3Speed;
 
-        if(p3RightPress && players[0] == 0)
+        if(p3RightPress && players[1] == 0)
             if( (p3x + p3Speed + p3Width) < getHeight() )
                 p3x += p3Speed;
 
-//        if(players[2] == 1)
-//            System.out.println("computer 3");
+        if(players[1] == 1)
+	    if (ballY < 400){
+		if (p3x > ballX)
+		    p3x -= p3Speed;
+		else if (p3x < ballX)
+		    p3x += p3Speed;
+	    }
+
 
         //Player4/BOTTOM
-        if(p4LeftPress && players[0] == 0)
-            if( (p4x - p3Speed) > 0) 
-                p4x -= p3Speed;
+        if(p4LeftPress && players[3] == 0)
+            if( (p4x - p4Speed) > 0) 
+                p4x -= p4Speed;
 
-        if(p4RightPress && players[0] == 0)
+        if(p4RightPress && players[3] == 0)
             if( (p4x + p4Speed + p4Width) < getHeight())
                 p4x += p4Speed;
 
-//        if(players[3] == 1)
-//            System.out.println("computer 4");
+        if(players[3] == 1)
+	    if (ballY > 400){
+		if (p4x > ballX)
+		    p4x -= p4Speed;
+		else if (p4x < ballX)
+		    p4x += p4Speed;
+	    }
 
 
         //Check for boundaries.
