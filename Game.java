@@ -9,12 +9,13 @@
 // *    ~/myers/cop3252/notes/examples/gui/Ball.java
 // ********************************************************
 
-import java.awt.*;
 import javax.swing.*;
-
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
     
@@ -25,11 +26,11 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private String[] controls;
     private int difficulty;
     private boolean loop;
-
-    private int player1Score = 0;
-    private int player2Score = 0;
-    private int player3Score = 0;
-    private int player4Score = 0; 
+    private boolean paused = false;
+    
+    private int maxPoints;
+    private int lastPaddle = 4;
+    private int playerScore[] = {0, 0, 0, 0, 0};
 
     // *********************
     // Wall Attributes
@@ -52,6 +53,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //Ball Size
     private int diameter = 20;
 
+    //Ball Direction Randomizer
+    private Random randX = new Random (System.currentTimeMillis());
+    private Random randY = new Random (System.currentTimeMillis() + 100);
+
     // *********************
     // Player Attributes
     // *********************
@@ -64,6 +69,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p1Width = 10;
     private int p1Height = 50;
     private int p1Speed = 5;
+    private int p1Score = 0;
 
     private boolean p1LeftPress = false;
     private boolean p1RightPress = false;
@@ -74,6 +80,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p2Width = 10;
     private int p2Height = 50;
     private int p2Speed = 5;
+    private int p2Score = 0;
 
     private boolean p2LeftPress = false;
     private boolean p2RightPress = false;
@@ -84,6 +91,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p3Width = 50;
     private int p3Height = 10;
     private int p3Speed = 5;
+    private int p3Score = 0;
 
     private boolean p3LeftPress = false;
     private boolean p3RightPress = false;
@@ -94,29 +102,34 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p4Width = 50;
     private int p4Height = 10;
     private int p4Speed = 5;
+    private int p4Score = 0;
 
     private boolean p4LeftPress = false;
     private boolean p4RightPress = false;
-
 
 
     // ********************
     //  Constructor
     // ********************
     public Game(int[] p, String[] c, int d, int pl, boolean l){
-        
+    System.out.println(""+p[0]+""+p[1]+""+p[2]+""+p[3]);
         //setting in passed in values
-        players = p;
-        controls = c;
-        difficulty = d;
-        loop = l;
+	players = new int[4];
+    for(int i = 0; i < 4; i++){
+		players[i] = p[i];
+	}
+
+	controls = c;
+	difficulty = d;
+	maxPoints = pl;
+	loop = l;
 
         if(p[1] == 2)
             wallTop = true;
         if(p[3] == 2)
             wallBottom = true;
 
-        setBackground(Color.BLACK);
+        setBackground(Color.RED);
 
         //Check Key Presses
         setFocusable(true);     //Allows key component to receive focus.
@@ -132,19 +145,24 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ************************************
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D)g;
+        
+        //Smooth Edges
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g.setColor(Color.WHITE);                    //Set Component Colors
-        g.fillOval(ballX,ballY,diameter,diameter);  //Create Ball
-        g.fillRect(p1x, p1y, p1Width, p1Height);    //Create P1 Paddle
-        g.fillRect(p2x, p2y, p2Width, p2Height);    //Create P2 Paddle 
+        g2d.setColor(Color.WHITE);                    //Set Component Colors
+        g2d.fillOval(ballX,ballY,diameter,diameter);  //Create Ball
+        g2d.fillRect(p1x, p1y, p1Width, p1Height);    //Create P1 Paddle
+        g2d.fillRect(p2x, p2y, p2Width, p2Height);    //Create P2 Paddle 
         
         if(!wallTop)
-            g.fillRect(p3x, p3y, p3Width, p3Height);    //Create P3 Paddle
+            g2d.fillRect(p3x, p3y, p3Width, p3Height);    //Create P3 Paddle
         else
             ;   //Don't draw anything.
 
         if(!wallBottom)
-            g.fillRect(p4x, p4y, p4Width, p4Height);    //Create p4 Paddle
+            g2d.fillRect(p4x, p4y, p4Width, p4Height);    //Create p4 Paddle
         else
             ; //Don't draw anything.
         
@@ -152,8 +170,43 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         // *
         // * Draw Scoreboard
         // *
-        g.fillOval(275-(diameter/4), 275-(diameter/4), 150, 150 );
-         
+        
+        //Circle
+        /*
+        Point2D center = new Point2D.Float(150,150);
+        Point2D focus = new Point2D.Float(50,50);
+        float radius = diameter/2;
+        float[] dist = {0,0f, 250};
+        Color[] colors = {Color.WHITE, Color.BLACK};
+        RadialGradientPaint p = 
+            new RadialGradientPaint(center, radius, focus, 
+                    dist, colors);
+        g2d.setPaint(p);
+        */
+        g2d.fillOval(275-(diameter/4), 275-(diameter/4), 150, 150 );
+       
+        //Dashed Lines
+        g2d.setColor(Color.BLACK);
+        final float dash[] = {10.0f};
+        final BasicStroke dashed = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+                                                         BasicStroke.JOIN_MITER,
+                                                         10.0f, dash, 0.0f);
+        g2d.setStroke(dashed);
+        g2d.draw(new Line2D.Double(270,270,420,420));
+        g2d.draw(new Line2D.Double(420,270,270,420));
+
+
+        //Actual Score Font
+
+        g2d.setColor(Color.BLACK);
+        
+        Font font = new Font("Serif", Font.PLAIN, 40);
+        g2d.setFont(font);
+       
+        g2d.drawString(Integer.toString(playerScore[0]), 398, 360);
+        g2d.drawString(Integer.toString(playerScore[1]), 267, 360);
+        g2d.drawString(Integer.toString(playerScore[2]), 332, 300);
+        g2d.drawString(Integer.toString(playerScore[3]), 332, 420);
     }
 
     // ***********************************
@@ -182,7 +235,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         */
 
         run();
-
         /*
         System.out.println("pLeft:" + p1x + " y:" + p1y);
         System.out.println("pRight:" + p2x + " y:" + p2y);
@@ -197,12 +249,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // Handles KeyEvents
     // ***********************************
     public void keyPressed(KeyEvent e){
-
-        System.out.println("Keys:");
-        System.out.println(e.getKeyCode());
-
-        System.out.println( ":" + e.getKeyText(e.getKeyCode()) );
-        
         //LEFT PLAYER
         if( e.getKeyText( e.getKeyCode() ).equals( controls[0] ) )
             p1LeftPress = true;
@@ -227,8 +273,10 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if( e.getKeyText( e.getKeyCode() ).equals( controls[7] ) )
             p4RightPress = true;
 
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-            pause();
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+	    if (!paused)
+               pause();
+	}
 
     }
 
@@ -270,40 +318,52 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public void run(){
 
         // Player1/LeftSide
-        if(p1LeftPress)
+        if(p1LeftPress && players[0] == 0)
             if( (p1y - p1Speed) > 0) 
                 p1y -= p1Speed;
 
-        if(p1RightPress)
+        if(p1RightPress && players[0] == 0)
             if( (p1y + p1Speed + p1Height) < getWidth() )
                 p1y += p1Speed;
 
+//        if(players[0] == 1)
+//            System.out.println("computer 1");
+
         //Player2/RightSide
-        if(p2LeftPress)
+        if(p2LeftPress && players[0] == 0)
             if( (p2y - p2Speed) > 0) 
                 p2y -= p2Speed;
 
-        if(p2RightPress)
+        if(p2RightPress && players[0] == 0)
             if( (p2y + p2Speed + p2Height) < getWidth() )
                 p2y += p2Speed;
 
+//        if(players[1] == 1)
+//            System.out.println("computer 2");
+
         //Player3/TOP
-        if(p3LeftPress)
+        if(p3LeftPress && players[0] == 0)
             if( (p3x - p3Speed) > 0) 
                 p3x -= p3Speed;
 
-        if(p3RightPress)
+        if(p3RightPress && players[0] == 0)
             if( (p3x + p3Speed + p3Width) < getHeight() )
                 p3x += p3Speed;
 
+//        if(players[2] == 1)
+//            System.out.println("computer 3");
+
         //Player4/BOTTOM
-        if(p4LeftPress)
+        if(p4LeftPress && players[0] == 0)
             if( (p4x - p3Speed) > 0) 
                 p4x -= p3Speed;
 
-        if(p4RightPress)
+        if(p4RightPress && players[0] == 0)
             if( (p4x + p4Speed + p4Width) < getHeight())
                 p4x += p4Speed;
+
+//        if(players[3] == 1)
+//            System.out.println("computer 4");
 
 
         //Check for boundaries.
@@ -319,11 +379,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             {    
                 //Announce Winner, Score Points
                 System.out.println("P1 Loses.");            //Game Blouses.
-                gameOver();
+                
+                playerScore[lastPaddle] += 1;
+                roundOver();
 
             }else                                    //Else, were good, it hit.
             {
                 ballDX = Math.abs(ballDX);
+                lastPaddle = 0;
                 rounds++;
             }
         }
@@ -334,11 +397,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             {
                 //Announce Winner, Score Points
                 System.out.println("P2 Loses.");            //Game Blouses.
-                gameOver();
+                playerScore[lastPaddle] += 1;
+                roundOver();
 
             }
             else{
                 ballDX = -Math.abs(ballDX);
+                lastPaddle = 1;
                 rounds++;
             }
         }
@@ -354,10 +419,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             {
                 //Announce Winner, Score Points
                 System.out.println("P3 Loses.");
-                gameOver();
+                playerScore[lastPaddle] += 1;
+                roundOver();
             }
             else{    
                 ballDY = Math.abs(ballDY);
+                lastPaddle = 2;
                 rounds++;
             }
         }
@@ -373,10 +440,19 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             if( (newBallPosX+diameter) < p4x || (newBallPosX) > (p4x+p4Width) )
             {
                 System.out.println("P4 Loses.");
-                gameOver();
+                playerScore[lastPaddle] += 1;
+               
+
+                        //scores:
+                for(int i=0; i<playerScore.length-1; i++){
+                    System.out.println("P"+i+": " + playerScore[i] );
+                }
+
+                roundOver();
             }
             else{
                 ballDY = -Math.abs(ballDY);
+                lastPaddle = 3;
                 rounds++;
             }
         }
@@ -385,17 +461,19 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Sets new ball position.
         ballX += ballDX;
         ballY += ballDY;
+
+
         
         //Draw it.
         repaint();
     }
 
     // ***********************************
-    // * GameOver
+    // * roundOver
     // *  Resets paddles, ball, counter w/
     // *   start values/positions.
     // ***********************************
-    public void gameOver(){
+    public void roundOver(){
     
         //Reset ball
         ballX = 325;
@@ -419,6 +497,96 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Reset Speed Up Counter
         rounds = 0;
+
+        //last touched
+        lastPaddle = 4; //4 is empty.
+       
+        //Check if GameOver
+        for(int i=0; i<playerScore.length-1; i++)
+            if(playerScore[i] >= maxPoints)
+                gameOver(playerScore[i]);
+
+	//Randomize Ball direction
+	do{
+	   ballDX = randX.nextInt(10) - 5;
+	   ballDY = randY.nextInt(10) - 5;
+	} while (ballDX == 0 || ballDY == 0);
+//gameOver(0);
+    }
+
+    // ***********************************
+    // * gameOver
+    // *  Stops the game, brings up popup
+    // *   asking to continue or end
+    // ***********************************
+    private void gameOver(int winner){
+	//0 = no winner; 1-4 correspond to different players
+	loop = true;
+	paused = true;
+	
+	final JPanel end = new JPanel ();
+	end.setLayout(new BoxLayout(end, BoxLayout.Y_AXIS));
+	end.setSize(200,200);
+	end.setBackground(new Color(255,255,255,255));
+
+	//section that pauses everything
+	final int[] holder = {p1Speed,p2Speed,p3Speed,p4Speed,ballDX,ballDY};
+	p1Speed = 0;
+	p2Speed = 0;
+	p3Speed = 0;
+	p4Speed = 0;
+	ballDX = 0;
+	ballDY = 0;
+
+	String message;
+	if (winner == 0)
+		message = "No Winner!";
+	else
+		message = "Player " + winner + " wins!!";
+	JLabel whoWins = new JLabel(message);
+	whoWins.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+	JButton restart = new JButton("Restart");
+	restart.setAlignmentX(Component.CENTER_ALIGNMENT);
+	restart.addActionListener(new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			//reset score, speeds, call roundOver
+            for(int i=0; i<playerScore.length; i++)
+                playerScore[i] = 0;
+
+            p1Speed = holder[0];
+			p2Speed = holder[1];
+			p3Speed = holder[2];
+			p4Speed = holder[3];
+			ballDX = randX.nextInt(10) - 5;
+			ballDY = randY.nextInt(10) - 5;
+			remove(end);
+		}
+	});
+
+	JButton mainMenu = new JButton("Main Menu");
+	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+	mainMenu.addActionListener(new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			//quit to main menu
+		}
+	});
+
+	JButton quit = new JButton("Quit");
+	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+	quit.addActionListener(new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			System.exit(0);
+		}
+	});
+
+	end.add(whoWins);
+	end.add(restart);
+	end.add(mainMenu);
+	end.add(quit);
+	add(end);
+	end.revalidate();
+	end.setLocation(250,250);
     }
 
     // ***********************************
@@ -427,7 +595,62 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // *   start values/positions.
     // ***********************************
     public void pause(){
-        System.out.println("\n\nPaused Called.\n\n");
+	paused = true;
+
+	final JPanel pauseScreen = new JPanel ();
+	pauseScreen.setLayout(new BoxLayout(pauseScreen, BoxLayout.Y_AXIS));
+	pauseScreen.setLocation(250,250);
+	pauseScreen.setSize(200,200);
+	pauseScreen.setBackground(new Color(0,0,0,0));
+
+	//section that pauses everything
+	final int[] holder = {p1Speed,p2Speed,p3Speed,p4Speed,ballDX,ballDY};
+	p1Speed = 0;
+	p2Speed = 0;
+	p3Speed = 0;
+	p4Speed = 0;
+	ballDX = 0;
+	ballDY = 0;
+
+	JButton resume = new JButton("Resume");
+	resume.setAlignmentX(Component.CENTER_ALIGNMENT);
+	resume.addActionListener(new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			//do something to resume
+			p1Speed = holder[0];
+			p2Speed = holder[1];
+			p3Speed = holder[2];
+			p4Speed = holder[3];
+			ballDX = holder[4];
+			ballDY = holder[5];	
+			remove(pauseScreen);
+			paused = false;
+		}
+	});
+
+	JButton mainMenu = new JButton("Main Menu");
+	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+	mainMenu.addActionListener(new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			//quit to main menu
+			gameOver(0);
+			remove(pauseScreen);
+		}
+	});
+
+	JButton quit = new JButton("Quit");
+	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+	quit.addActionListener(new ActionListener(){
+		public void actionPerformed( ActionEvent e){
+			System.exit(0);
+		}
+	});
+
+	pauseScreen.add(resume);
+	pauseScreen.add(mainMenu);
+	pauseScreen.add(quit);
+	add(pauseScreen);
+	revalidate();
     }
    
 }

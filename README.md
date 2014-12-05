@@ -4,17 +4,14 @@ HipPong
 Original Pong but way cooler.
 
 TODO:
-    Quit/MainMenu
-    Resume/Pause for "ESC"
+    make the main menu call work
     Implement Computers
     Swap controls back to default
+    check for proper max points entry and switch to doc listener
 
     Add BlackHole
-    Add Point System
 
 Known Issues:
     -Paddles intersect.
-    -Menu is not the right size. Needs to be 700x700
-    -Can't distinguish between similar keys.
-      ex: up/down/left/right is the same as 8, 2, 4, 6 on num pad.
-    -Top player buttons work for right player.
+    -On win, gameOver goes HAM. Should pause everything. 
+    -First round is null, so when game starts, no points are awarded.
