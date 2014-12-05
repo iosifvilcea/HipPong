@@ -35,6 +35,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int playerScore[] = {0, 0, 0, 0, 0};
 
     // *********************
+    // Computer Attributes
+    // *********************
+    private int trackDist = 275;
+    private int compSpeed = 3;
+
+    // *********************
     // Wall Attributes
     // *********************
     private boolean wallTop = false;
@@ -130,6 +136,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             wallTop = true;
         if(p[3] == 2)
             wallBottom = true;
+
+	//set computer difficulty
+	if (difficulty == 0)
+	    trackDist = 200;
+	else if (difficulty == 1)
+  	    trackDist = 275;
+	else
+	    trackDist = 350;
 
         setBackground(Color.BLACK);
 
@@ -328,9 +342,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(players[0] == 1)
 	    if (ballX < 400){
 		if (p1y < ballY)
-		    p1y += p1Speed;
+		    p1y += compSpeed;
 		else if (p1y > ballY)
-		    p1y -= p1Speed;
+		    p1y -= compSpeed;
 	    }
 
         //Player2/RightSide
@@ -345,9 +359,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(players[2] == 1)
 	    if (ballX > 400){
 		if (p2y < ballY)
-		    p2y += p2Speed;
+		    p2y += compSpeed;
 		else if (p2y > ballY)
-		    p2y -= p2Speed;
+		    p2y -= compSpeed;
 	    }
 
         //Player3/TOP
@@ -362,9 +376,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(players[1] == 1)
 	    if (ballY < 400){
 		if (p3x > ballX)
-		    p3x -= p3Speed;
+		    p3x -= compSpeed;
 		else if (p3x < ballX)
-		    p3x += p3Speed;
+		    p3x += compSpeed;
 	    }
 
 
@@ -380,9 +394,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         if(players[3] == 1)
 	    if (ballY > 400){
 		if (p4x > ballX)
-		    p4x -= p4Speed;
+		    p4x -= compSpeed;
 		else if (p4x < ballX)
-		    p4x += p4Speed;
+		    p4x += compSpeed;
 	    }
 
 
@@ -645,8 +659,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	mainMenu.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//quit to main menu
-			gameOver(0);
-			remove(pauseScreen);
+			HipPong.reset();
 		}
 	});
 
