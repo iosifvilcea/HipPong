@@ -138,10 +138,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	//set computer difficulty
 	if (difficulty == 0)
 	    trackDist = 200;
-	else if (difficulty == 1)
+	else if (difficulty == 1){
   	    trackDist = 275;
-	else
+	    compSpeed = 5;
+	}
+	else {
 	    trackDist = 350;
+	    compSpeed = 6;
+	}
 
         setBackground(Color.BLACK);
 
@@ -459,14 +463,17 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             }
         }
 
+	
         //Black Hole
         if(!hole){
             if( (newBallPosX > 305 && newBallPosX < 345) &&
                 (newBallPosY > 305 && newBallPosY < 345) &&
                 (lastPaddle != 0) )
-            { 
-                ballDX = randX.nextInt(10) - 5;
-	            ballDY = randY.nextInt(10) - 5;
+            {//Randomize Ball direction
+		do{
+	   		ballDX = randX.nextInt(8) - 4;
+	   		ballDY = randY.nextInt(8) - 4;
+		} while (ballDX == 0 || ballDY == 0);
             }
         }
         else
@@ -587,8 +594,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 			p2Speed = holder[1];
 			p3Speed = holder[2];
 			p4Speed = holder[3];
-			ballDX = randX.nextInt(10) - 5;
-			ballDY = randY.nextInt(10) - 5;
+			ballDX = randX.nextInt(8) - 4;
+			ballDY = randY.nextInt(8) - 4;
+			paused = false;
 			endframe.dispose();
 		}
 	});
