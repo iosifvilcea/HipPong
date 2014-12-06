@@ -43,7 +43,10 @@ public class HipPong{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridBagLayout());
 		frame.setSize(702,725);
-	        frame.setLocationRelativeTo(null); //Adds window in center of screen.
+	   
+        //COLORING
+        frame.getContentPane().setBackground(Color.BLACK);
+        frame.setLocationRelativeTo(null); //Adds window in center of screen.
 		frame.setResizable(true);
 		
 		//sets the constraints for spacing around the panels
@@ -114,7 +117,17 @@ public class HipPong{
 		JRadioButton normal = new JRadioButton("Normal",true);
 		JRadioButton hard = new JRadioButton("Hard",false);
 		ButtonGroup playerType = new ButtonGroup();
-		playerType.add(easy);
+		
+        easy.setForeground(Color.WHITE);
+        easy.setBackground(Color.BLACK);
+        
+        normal.setForeground(Color.WHITE);
+        normal.setBackground(Color.BLACK);
+
+        hard.setForeground(Color.WHITE);
+        hard.setBackground(Color.BLACK);
+
+        playerType.add(easy);
 		playerType.add(normal);
 		playerType.add(hard);
 		
@@ -147,7 +160,17 @@ public class HipPong{
 		//	boxlayout
 		JLabel mp = new JLabel("Max Points:");
 		final JTextField points = new JTextField("5");
-		points.getDocument().addDocumentListener(new DocumentListener(){
+
+        //COLORING
+        mp.setForeground(Color.WHITE);
+        points.setForeground(Color.WHITE);
+        points.setBackground(Color.BLACK);
+      
+        top.setBackground(Color.BLACK);
+        bottom.setBackground(Color.BLACK);
+        menu.setBackground(Color.BLACK);
+
+        points.getDocument().addDocumentListener(new DocumentListener(){
 			public void changedUpdate(DocumentEvent e){
 				check();
 			}
@@ -162,7 +185,13 @@ public class HipPong{
 			}
 		});
 		JButton accept = new JButton("Play");
-		accept.addActionListener(new ActionListener(){
+
+        //COLORING
+        accept.setForeground(Color.WHITE);
+        accept.setOpaque(false);
+        accept.setContentAreaFilled(false);
+        
+        accept.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				PlayGame();
 			}
@@ -328,6 +357,8 @@ public class HipPong{
 			who = new JLabel("Player 2");
 		else
 			who = new JLabel("Player 4");
+
+
 		
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
@@ -339,8 +370,27 @@ public class HipPong{
                 playerType.add(computer);
 		if(player == 1 || player == 2)
 	                playerType.add(wall);
-		
-		//adding listeners so that when ever a buttons state changes to
+
+	    //COLORING
+        top.setBackground(Color.BLACK);
+        bottom.setBackground(Color.BLACK);
+
+        upP.setBackground(Color.BLACK);
+        downP.setBackground(Color.BLACK);
+
+        menu.setBackground(Color.BLACK);
+        who.setForeground(Color.WHITE);
+
+	    human.setForeground(Color.WHITE);
+        human.setBackground(Color.BLACK);
+        
+        computer.setForeground(Color.WHITE);
+        computer.setBackground(Color.BLACK);
+
+        wall.setForeground(Color.WHITE);
+        wall.setBackground(Color.BLACK);
+
+        //adding listeners so that when ever a buttons state changes to
 		//	selected it updates the player type value
 		human.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e){
@@ -378,7 +428,23 @@ public class HipPong{
 		}
 		final JButton upControlKey = new JButton(String.valueOf(Controls[player * 2]));
 		final JButton downControlKey = new JButton(String.valueOf(Controls[(player * 2) + 1]));
-		
+
+
+        //COLORING
+        up.setForeground(Color.WHITE);
+        down.setForeground(Color.WHITE);
+
+        left.setForeground(Color.WHITE);
+        right.setForeground(Color.WHITE);
+
+        upControlKey.setOpaque(false);
+        upControlKey.setContentAreaFilled(false);
+        upControlKey.setForeground(Color.WHITE);
+
+        downControlKey.setOpaque(false);
+        downControlKey.setContentAreaFilled(false);
+        downControlKey.setForeground(Color.WHITE);
+
 		//creating the listeners for the buttons. when clicked it calls a dialog
 		//	asking the user for a key and returns the first key typed
 
