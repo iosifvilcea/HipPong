@@ -27,8 +27,9 @@ public class HipPong{
 	//initialization of the game options
 	private static int[] players = new int[4]; //0 = human; 1 = computer; 2 = wall;
 	//every pair is a player. first in pair is left/up. second in pair is right/down.
-	//private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
-	private static String[] Controls = {"W","S","A","D","Up","Down","Left","Right"};
+	private static String[] Controls = {"Q","R","C","V","Open Bracket","Semicolen","M","Comma"};
+	// controls for testing below
+	//private static String[] Controls = {"W","S","A","D","Up","Down","Left","Right"};
 	private static int difficulty = 1; //0 = easy; 1 = normal; 2 = hard;
 	
 	//*************************************************************************
@@ -160,7 +161,8 @@ public class HipPong{
 		//	boxlayout
 		JLabel mp = new JLabel("Max Points:");
 		final JTextField points = new JTextField("5");
-
+        points.setPreferredSize(new Dimension(20,20) );
+        
         //COLORING
         mp.setForeground(Color.WHITE);
         points.setForeground(Color.WHITE);
@@ -429,7 +431,7 @@ public class HipPong{
 		final JButton upControlKey = new JButton(String.valueOf(Controls[player * 2]));
 		final JButton downControlKey = new JButton(String.valueOf(Controls[(player * 2) + 1]));
 
-
+        
         //COLORING
         up.setForeground(Color.WHITE);
         down.setForeground(Color.WHITE);
@@ -458,7 +460,9 @@ public class HipPong{
 				getKey(player, false, downControlKey);
 			}
 		});
-		
+	
+
+
 		//adding everything to the top and bottom half's
 		top.add(human);
 		top.add(computer);

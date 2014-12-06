@@ -1,5 +1,8 @@
 HipPong
 =======
+COP3252 - Advanced Java
+By Daniel DeLeon & Iosif Vilcea
+
 Original Pong but way cooler.
     HipPong is a remake of the classic Pong game, but with some cool twists.
     HP allows you to play among 4 friends or a combination of friends and computers.
@@ -21,13 +24,9 @@ How to play:
 To Pause/Quit:
     Use 'ESC' Key.
 
-TODO:
-    Fix Bugs.
+Sources:
+    Class Examples, specifically Ball.java.
+    docs.oracle.com
 
 Known Issues:
-    -If ball direction changes to x=0 y=w/e, or x=w/e y=0, ball gets stuck
-    going back and forth between 2 paddles.
-    -If both walls and both computers selected, game gets stuck.
-    -Ball speed needs to be faster. Sometimes it gets way too slow.
-    -on resume, if x out, program doesnt resume, it's still paused.
-
+    No known issues at this time. 12/5/2014
