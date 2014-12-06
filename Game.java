@@ -505,7 +505,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // ***********************************
     private boolean ballSpeedCheck(){
 	double bspeed = Math.sqrt(Math.pow(ballDX, 2) + Math.pow(ballDY, 2));
-System.out.println("X: " + ballDX + " Y: " + ballDY + " speed " + bspeed + " boost " + roundBoost);
 	if (bspeed <= (ballMinSpeed + roundBoost) ||
 		bspeed >= (ballMinSpeed + roundBoost + 1) ||
 		ballDX == 0 || ballDY == 0) {
