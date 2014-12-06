@@ -30,7 +30,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private boolean paused = false;
     private boolean hole = false;
 
-    private int maxPoints;
+    private int maxPoints = 5;
     private int lastPaddle = 0;
     private int playerScore[] = {0, 0, 0, 0, 0};
 
@@ -49,7 +49,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // *********************
     // BlackHole Attributes
     // *********************
-    private int roundBoost;
+    private int roundBoost = 0;
 
     // *********************
     // Ball Attributes
@@ -61,6 +61,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //Ball Position Change
     private int ballDX = -3;
     private int ballDY = 5;
+    private int ballMinSpeed = 4;
     private int rounds = 0;
 
     //Ball Size
@@ -73,6 +74,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     // *********************
     // Player Attributes
     // *********************
+
+    //General
+    private int padelSpeed = 5;
     
     //Note: Real width: 698, height: 675
 
@@ -81,7 +85,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p1y = 325;
     private int p1Width = 10;
     private int p1Height = 50;
-    private int p1Speed = 5;
     private int p1Score = 0;
 
     private boolean p1LeftPress = false;
@@ -92,7 +95,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p2y = 325;
     private int p2Width = 10;
     private int p2Height = 50;
-    private int p2Speed = 5;
     private int p2Score = 0;
 
     private boolean p2LeftPress = false;
@@ -103,7 +105,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p3y = 25;
     private int p3Width = 50;
     private int p3Height = 10;
-    private int p3Speed = 5;
     private int p3Score = 0;
 
     private boolean p3LeftPress = false;
@@ -114,7 +115,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     private int p4y = 700 - 25 - 10;
     private int p4Width = 50;
     private int p4Height = 10;
-    private int p4Speed = 5;
     private int p4Score = 0;
 
     private boolean p4LeftPress = false;
@@ -141,15 +141,19 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             wallBottom = true;
 
 	//set computer difficulty
-	if (difficulty == 0)
+	if (difficulty == 0){
 	    trackDist = 200;
+	    ballMinSpeed = 3;
+	}
 	else if (difficulty == 1){
   	    trackDist = 275;
 	    compSpeed = 5;
+	    ballMinSpeed = 4;
 	}
 	else {
 	    trackDist = 350;
 	    compSpeed = 6;
+	    ballMinSpeed = 5;
 	}
 
         setBackground(Color.BLACK);
@@ -319,12 +323,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         // Player1/LeftSide
         if(p1LeftPress && players[0] == 0)
-            if( (p1y - p1Speed) > 0) 
-                p1y -= p1Speed;
+            if( (p1y - padelSpeed) > 0) 
+                p1y -= padelSpeed;
 
         if(p1RightPress && players[0] == 0)
-            if( (p1y + p1Speed + p1Height) < getWidth() )
-                p1y += p1Speed;
+            if( (p1y + padelSpeed + p1Height) < getWidth() )
+                p1y += padelSpeed;
 
         if(players[0] == 1)
 	    if (ballX < trackDist){
@@ -336,12 +340,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Player2/RightSide
         if(p2LeftPress && players[2] == 0)
-            if( (p2y - p2Speed) > 0) 
-                p2y -= p2Speed;
+            if( (p2y - padelSpeed) > 0) 
+                p2y -= padelSpeed;
 
         if(p2RightPress && players[2] == 0)
-            if( (p2y + p2Speed + p2Height) < getWidth() )
-                p2y += p2Speed;
+            if( (p2y + padelSpeed + p2Height) < getWidth() )
+                p2y += padelSpeed;
 
         if(players[2] == 1)
 	    if (ballX > trackDist){
@@ -353,12 +357,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Player3/TOP
         if(p3LeftPress && players[1] == 0)
-            if( (p3x - p3Speed) > 0) 
-                p3x -= p3Speed;
+            if( (p3x - padelSpeed) > 0) 
+                p3x -= padelSpeed;
 
         if(p3RightPress && players[1] == 0)
-            if( (p3x + p3Speed + p3Width) < getHeight() )
-                p3x += p3Speed;
+            if( (p3x + padelSpeed + p3Width) < getHeight() )
+                p3x += padelSpeed;
 
         if(players[1] == 1)
 	    if (ballY < trackDist){
@@ -371,12 +375,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Player4/BOTTOM
         if(p4LeftPress && players[3] == 0)
-            if( (p4x - p4Speed) > 0) 
-                p4x -= p4Speed;
+            if( (p4x - padelSpeed) > 0) 
+                p4x -= padelSpeed;
 
         if(p4RightPress && players[3] == 0)
-            if( (p4x + p4Speed + p4Width) < getHeight())
-                p4x += p4Speed;
+            if( (p4x + padelSpeed + p4Width) < getHeight())
+                p4x += padelSpeed;
 
         if(players[3] == 1)
 	    if (ballY > trackDist){
@@ -478,9 +482,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
                 (lastPaddle != 0) )
             {//Randomize Ball direction
 		do{
-	   		ballDX = randX.nextInt(8 + roundBoost) - (4 + roundBoost);
-	   		ballDY = randY.nextInt(8 + roundBoost) - (4 + roundBoost);
-		} while (ballDX < roundBoost || ballDY < roundBoost);
+	   		ballDX = randX.nextInt(40) - 20;
+	   		ballDY = randY.nextInt(40) - 20;
+		} while (ballSpeedCheck());
             }
         }
         else
@@ -492,6 +496,22 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         //Draw it.
         repaint();
+    }
+
+    // ***********************************
+    // * ballSpeedCheck
+    // *  makes sure ball's deltas are
+    // *   not too slow
+    // ***********************************
+    private boolean ballSpeedCheck(){
+	double bspeed = Math.sqrt(Math.pow(ballDX, 2) + Math.pow(ballDY, 2));
+System.out.println("X: " + ballDX + " Y: " + ballDY + " speed " + bspeed + " boost " + roundBoost);
+	if (bspeed <= (ballMinSpeed + roundBoost) ||
+		bspeed >= (ballMinSpeed + roundBoost + 1) ||
+		ballDX == 0 || ballDY == 0) {
+		return true;
+	}
+		return false;
     }
 
     // ***********************************
@@ -550,9 +570,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	//Randomize Ball direction
 	do{
-	   ballDX = randX.nextInt(8) - 4;
-	   ballDY = randY.nextInt(8) - 4;
-	} while (ballDX == 0 || ballDY == 0);
+	   ballDX = randX.nextInt(10) - 5;
+	   ballDY = randY.nextInt(10) - 5;
+	} while (ballSpeedCheck());
        
         //Check if GameOver
         for(int i=1; i<playerScore.length; i++)
@@ -570,11 +590,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	paused = true;
 	
 	//section that pauses everything
-	final int[] holder = {p1Speed,p2Speed,p3Speed,p4Speed,ballDX,ballDY};
-	p1Speed = 0;
-	p2Speed = 0;
-	p3Speed = 0;
-	p4Speed = 0;
+	final int[] holder = {padelSpeed,ballDX,ballDY};
+	padelSpeed = 0;
 	ballDX = 0;
 	ballDY = 0;
 
@@ -582,7 +599,16 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	endframe.setLocationRelativeTo(this);
 	endframe.setSize(170,200);
 	endframe.setLayout(new BoxLayout(endframe.getContentPane(), BoxLayout.Y_AXIS));
-    endframe.getContentPane().setBackground(Color.BLACK);
+    	endframe.getContentPane().setBackground(Color.BLACK);
+	endframe.addWindowListener(new WindowAdapter(){
+		public void windowClosing(WindowEvent evt){
+			padelSpeed = holder[0];
+			ballDX = holder[1];
+			ballDY = holder[2];
+			paused = false;
+			endframe.dispose();
+		}
+	});
 
 	String message;
 	if (winner == 0)
@@ -591,28 +617,27 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 		message = "Player " + winner + " wins!!";
 	JLabel whoWins = new JLabel(message);
 	whoWins.setAlignmentX(Component.CENTER_ALIGNMENT);
-    whoWins.setForeground(Color.WHITE);
+    	whoWins.setForeground(Color.WHITE);
 
 	JButton restart = new JButton("Restart");
 	
-    restart.setOpaque(false);
-    restart.setContentAreaFilled(false);
-    restart.setBorderPainted(false);
-    restart.setForeground(Color.WHITE);
+    	restart.setOpaque(false);
+    	restart.setContentAreaFilled(false);
+    	restart.setBorderPainted(false);
+    	restart.setForeground(Color.WHITE);
     
-    restart.setAlignmentX(Component.CENTER_ALIGNMENT);
+   	restart.setAlignmentX(Component.CENTER_ALIGNMENT);
 	restart.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//reset score, speeds, call roundOver
             		for(int i=0; i<playerScore.length; i++)
                 		playerScore[i] = 0;
 
-           		p1Speed = holder[0];
-			p2Speed = holder[1];
-			p3Speed = holder[2];
-			p4Speed = holder[3];
-			ballDX = randX.nextInt(8) - 4;
-			ballDY = randY.nextInt(8) - 4;
+           		padelSpeed = holder[0];
+			do{
+				ballDX = randX.nextInt(10) - 5;
+				ballDY = randY.nextInt(10) - 5;
+			}while (ballSpeedCheck());
 			paused = false;
 			endframe.dispose();
 		}
@@ -620,21 +645,18 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	final JButton resume = new JButton("Resume");
 
-    resume.setOpaque(false);
-    resume.setContentAreaFilled(false);
-    resume.setBorderPainted(false);
-    resume.setForeground(Color.WHITE);
+    	resume.setOpaque(false);
+    	resume.setContentAreaFilled(false);
+    	resume.setBorderPainted(false);
+    	resume.setForeground(Color.WHITE);
 
 	resume.setAlignmentX(Component.CENTER_ALIGNMENT);
 	resume.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//do something to resume
-			p1Speed = holder[0];
-			p2Speed = holder[1];
-			p3Speed = holder[2];
-			p4Speed = holder[3];
-			ballDX = holder[4];
-			ballDY = holder[5];
+			padelSpeed = holder[0];
+			ballDX = holder[1];
+			ballDY = holder[2];
 			paused = false;
 			endframe.dispose();
 		}
@@ -642,12 +664,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	JButton mainMenu = new JButton("Main Menu");
 	
-    mainMenu.setOpaque(false);
-    mainMenu.setContentAreaFilled(false);
-    mainMenu.setBorderPainted(false);
-    mainMenu.setForeground(Color.WHITE);
+    	mainMenu.setOpaque(false);
+    	mainMenu.setContentAreaFilled(false);
+    	mainMenu.setBorderPainted(false);
+    	mainMenu.setForeground(Color.WHITE);
     
-    mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
 	mainMenu.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//quit to main menu
@@ -658,12 +680,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	JButton quit = new JButton("Quit");
 	
-    quit.setOpaque(false);
-    quit.setContentAreaFilled(false);
-    quit.setBorderPainted(false);
-    quit.setForeground(Color.WHITE);
+    	quit.setOpaque(false);
+    	quit.setContentAreaFilled(false);
+    	quit.setBorderPainted(false);
+    	quit.setForeground(Color.WHITE);
 
-    quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
 	quit.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//terminate the game
@@ -681,7 +703,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	endframe.add(Box.createRigidArea(new Dimension(0,5)));
 	endframe.add(quit);
 	//endframe.pack();
-    endframe.setLocationRelativeTo(null);
+    	endframe.setLocationRelativeTo(null);
 	endframe.setVisible(true);
     }
    
