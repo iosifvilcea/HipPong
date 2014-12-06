@@ -441,9 +441,10 @@ public class HipPong{
 		frame.setResizable(true);
 		frame.setSize(702,725);
 		frame.setResizable(false);
-	        frame.setLayout(new BorderLayout());
-	        frame.add(game, BorderLayout.CENTER);
-	        frame.setVisible(true);
+	    frame.setLayout(new BorderLayout());
+	    frame.add(game, BorderLayout.CENTER);
+	    frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 	}
 	//*********************************************************************
 	//getKey

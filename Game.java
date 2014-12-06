@@ -181,13 +181,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         
         if(!wallTop)
             g2d.fillRect(p3x, p3y, p3Width, p3Height);    //Create P3 Paddle
-        else
-            ;   //Don't draw anything.
-
+        
         if(!wallBottom)
             g2d.fillRect(p4x, p4y, p4Width, p4Height);    //Create p4 Paddle
-        else
-            ; //Don't draw anything.
         
         
         // *
@@ -200,7 +196,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         float radius = 200;
         float[] dist = {0.1f, .7f};
         Color[] colors = {Color.BLACK, new Color(0,0,0,0)};
-        RadialGradientPaint p = new RadialGradientPaint(center, radius, focus, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+        RadialGradientPaint p = new RadialGradientPaint(center, radius, focus, dist, colors, 
+                                                        MultipleGradientPaint.CycleMethod.NO_CYCLE);
         g2d.setPaint(p);
         g2d.fill(new Ellipse2D.Double(200,200,290,290));
 
@@ -208,7 +205,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         center = new Point2D.Float(350,350);
         focus = new Point2D.Float(350, 350);
         radius = 100;
-        RadialGradientPaint p2 = new RadialGradientPaint(center, radius, focus, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+        RadialGradientPaint p2 = new RadialGradientPaint(center, radius, focus, dist, colors, 
+                                                        MultipleGradientPaint.CycleMethod.NO_CYCLE);
         g2d.setPaint(p2);       
         g2d.fill(new Ellipse2D.Double(295,295,100,100));
         
@@ -228,11 +226,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         
         Font font = new Font("Serif", Font.PLAIN, 40);
         g2d.setFont(font);
-       
-        g2d.drawString(Integer.toString(playerScore[1]), 398, 360);
-        g2d.drawString(Integer.toString(playerScore[2]), 267, 360);
-        g2d.drawString(Integer.toString(playerScore[3]), 332, 300);
-        g2d.drawString(Integer.toString(playerScore[4]), 332, 420);
+      
+        g2d.drawString(Integer.toString(playerScore[1]), 267, 360);
+        g2d.drawString(Integer.toString(playerScore[2]), 398, 360);
+        
+        if(!wallTop)
+            g2d.drawString(Integer.toString(playerScore[3]), 332, 300);
+        
+        if(!wallBottom)
+            g2d.drawString(Integer.toString(playerScore[4]), 332, 420);
     }
 
     // ***********************************
@@ -578,8 +580,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
 	final JFrame endframe = new JFrame("Game Over");
 	endframe.setLocationRelativeTo(this);
-	endframe.setSize(200,150);
+	endframe.setSize(170,200);
 	endframe.setLayout(new BoxLayout(endframe.getContentPane(), BoxLayout.Y_AXIS));
+    endframe.getContentPane().setBackground(Color.BLACK);
 
 	String message;
 	if (winner == 0)
@@ -588,9 +591,16 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 		message = "Player " + winner + " wins!!";
 	JLabel whoWins = new JLabel(message);
 	whoWins.setAlignmentX(Component.CENTER_ALIGNMENT);
+    whoWins.setForeground(Color.WHITE);
 
 	JButton restart = new JButton("Restart");
-	restart.setAlignmentX(Component.CENTER_ALIGNMENT);
+	
+    restart.setOpaque(false);
+    restart.setContentAreaFilled(false);
+    restart.setBorderPainted(false);
+    restart.setForeground(Color.WHITE);
+    
+    restart.setAlignmentX(Component.CENTER_ALIGNMENT);
 	restart.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//reset score, speeds, call roundOver
@@ -609,6 +619,12 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	});
 
 	final JButton resume = new JButton("Resume");
+
+    resume.setOpaque(false);
+    resume.setContentAreaFilled(false);
+    resume.setBorderPainted(false);
+    resume.setForeground(Color.WHITE);
+
 	resume.setAlignmentX(Component.CENTER_ALIGNMENT);
 	resume.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
@@ -625,7 +641,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	});
 
 	JButton mainMenu = new JButton("Main Menu");
-	mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+	
+    mainMenu.setOpaque(false);
+    mainMenu.setContentAreaFilled(false);
+    mainMenu.setBorderPainted(false);
+    mainMenu.setForeground(Color.WHITE);
+    
+    mainMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
 	mainMenu.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//quit to main menu
@@ -635,7 +657,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	});
 
 	JButton quit = new JButton("Quit");
-	quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+	
+    quit.setOpaque(false);
+    quit.setContentAreaFilled(false);
+    quit.setBorderPainted(false);
+    quit.setForeground(Color.WHITE);
+
+    quit.setAlignmentX(Component.CENTER_ALIGNMENT);
 	quit.addActionListener(new ActionListener(){
 		public void actionPerformed( ActionEvent e){
 			//terminate the game
@@ -652,7 +680,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	endframe.add(mainMenu);
 	endframe.add(Box.createRigidArea(new Dimension(0,5)));
 	endframe.add(quit);
-	endframe.pack();
+	//endframe.pack();
+    endframe.setLocationRelativeTo(null);
 	endframe.setVisible(true);
     }
    
