@@ -1,7 +1,8 @@
-HipPong
+#HipPong
 =======
-COP3252 - Advanced Java
-By Daniel DeLeon & Iosif Vilcea
+##COP3252 - Advanced Java
+
+###By Daniel DeLeon & Iosif Vilcea
 
 Original Pong but way cooler.
     HipPong is a remake of the classic Pong game, but with some cool twists.
@@ -18,15 +19,19 @@ Original Pong but way cooler.
 
 
 How to play:
+    
     Select desired side, controls, difficulty and opponents.
     Click Play.
 
 To Pause/Quit:
-    Use 'ESC' Key.
-
-Sources:
-    Class Examples, specifically Ball.java.
-    docs.oracle.com
+    Use *'ESC'* Key.
 
 Known Issues:
-    No known issues at this time. 12/5/2014
+    Menu UI
+     - Better Menu
+     - Bottom player radio not in same group.
+
+    Game UI
+     - Blackhole animation so you can tell what it is. "Swirly Thing".
+     - Countdown when gameplay starts.
+
