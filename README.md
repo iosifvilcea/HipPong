@@ -15,17 +15,17 @@
 
 
 **How to play:**
-    *Select desired side, controls, difficulty and opponents.
-    *Click Play.
+    * Select desired side, controls, difficulty and opponents.
+    * Click Play.
 
 **To Pause/Quit:**
-    Use *'ESC'* Key.
+    * Use *'ESC'* Key.
 
 **Known Issues:**
-    *Menu UI
-      *Better Menu
-      *Bottom player radio not in same group.
-    *Game UI
-      *Blackhole animation so you can tell what it is. "Swirly Thing".
-      *Countdown when gameplay starts.
+    * Menu UI
+      * Better Menu
+      * Bottom player radio not in same group.
+    * Game UI
+      * Blackhole animation so you can tell what it is. "Swirly Thing".
+      * Countdown when gameplay starts.
 
