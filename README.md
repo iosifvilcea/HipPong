@@ -22,13 +22,16 @@
 
 **To Pause/Quit:**
 
-  Use *'ESC'* Key.
+    Use *'ESC'* Key.
 
 
 **Known Issues:**
+  - No known issues at this time.
+
+**To Do:**
   - Menu UI
-      - Better Menu
-      - Bottom player radio not in same group.
+      - Menu look needs improvement.
+      - In-Game Menu look needs improvement.
   - Game UI
       - Blackhole animation so you can tell what it is. "Swirly Thing".
       - Countdown when gameplay starts.

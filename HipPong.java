@@ -365,13 +365,14 @@ public class HipPong{
 		//creating player type buttons and adding them to a group so
 		// they are aware of each other
 		JRadioButton human = new JRadioButton("Human",true);
-                JRadioButton computer = new JRadioButton("Computer",false);
-                JRadioButton wall = new JRadioButton("Wall",false);
-                ButtonGroup playerType = new ButtonGroup();
-                playerType.add(human);
-                playerType.add(computer);
-		if(player == 1 || player == 2)
-	                playerType.add(wall);
+        JRadioButton computer = new JRadioButton("Computer",false);
+        JRadioButton wall = new JRadioButton("Wall",false);
+        ButtonGroup playerType = new ButtonGroup();
+        playerType.add(human);
+        playerType.add(computer);
+		playerType.add(wall);
+        //if(player == 1 || player == 2)
+	    //    playerType.add(wall);
 
 	    //COLORING
         top.setBackground(Color.BLACK);
@@ -401,20 +402,22 @@ public class HipPong{
 				}
 			}
 		});
-		computer.addItemListener(new ItemListener(){
+		
+        computer.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e){
 				if (e.getStateChange() == ItemEvent.SELECTED){
 					players[player] = 1;
 				}
 			}
 		});
-                wall.addItemListener(new ItemListener(){
-                        public void itemStateChanged(ItemEvent e){
-                                if (e.getStateChange() == ItemEvent.SELECTED){
-                                        players[player] = 2;
-                                }
-                        }
-                });
+        
+        wall.addItemListener(new ItemListener(){
+            public void itemStateChanged(ItemEvent e){
+                if (e.getStateChange() == ItemEvent.SELECTED){
+                    players[player] = 2;
+                }
+            }
+        });
 		
 		//creates text labels and field for player controls
 		JLabel up = new JLabel();
@@ -489,7 +492,7 @@ public class HipPong{
 			menu.add(bottom);
 		
 		return menu;
-	}
+    }
 
 	//*************************************************************************
 	//PlayGame
