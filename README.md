@@ -1,10 +1,7 @@
 #HipPong
 =======
-##COP3252 - Advanced Java
-
 ###By Daniel DeLeon & Iosif Vilcea
 
-Original Pong but way cooler.
     HipPong is a remake of the classic Pong game, but with some cool twists.
     HP allows you to play among 4 friends or a combination of friends and computers.
     
@@ -18,15 +15,17 @@ Original Pong but way cooler.
     As the game goes on, the ball also changes speeds, so be prepared!
 
 
-How to play:
+**How to play:**
     
     Select desired side, controls, difficulty and opponents.
     Click Play.
 
-To Pause/Quit:
+**To Pause/Quit:**
+
     Use *'ESC'* Key.
 
-Known Issues:
+**Known Issues:**
+
     Menu UI
      - Better Menu
      - Bottom player radio not in same group.
