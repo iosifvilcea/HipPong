@@ -15,14 +15,13 @@
 
 
 **How to play:**
-    - *java -jar HipPong.jar*
-    - Select desired side, controls, difficulty and opponents.
-    - Click Play.
+  - *java -jar HipPong.jar*
+  - Select desired side, controls, difficulty and opponents.
+  - Click Play.
 
 
 **To Pause/Quit:**
-    
-    Use *'ESC'* Key.
+  Use *'ESC'* Key.
 
 
 **Known Issues:**
